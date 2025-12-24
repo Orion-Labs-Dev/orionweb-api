@@ -195,7 +195,7 @@
                 <div class="bg-[#111] p-3 rounded-lg border border-[#333] mb-2 space-y-3">
                     <div class="input-group">
                         <label>API Base URL</label>
-                        <input type="text" id="tester-base-url" class="tester-input font-mono text-blue-400 border-[#333] focus:border-blue-500" value="http://localhost:8000">
+                        <input type="text" id="tester-base-url" class="tester-input font-mono text-blue-400 border-[#333] focus:border-blue-500" placeholder="e.g., http://localhost:8000">
                     </div>
                     <div class="input-group">
                         <label>Simulated Steam ID (Header)</label>
@@ -781,10 +781,22 @@
                     tester.showResponse(res.ok, res.status, data);
 
                 } catch (e) {
+                    // Detect Mixed Content / CORS Errors generally result in TypeError with no status
+                    let errorDetails = e.message;
+                    let hint = "Ensure server is running at " + baseUrl;
+
+                    if (window.location.protocol === 'https:' && baseUrl.startsWith('http:')) {
+                        errorDetails = "Mixed Content Error (Blocked by Browser)";
+                        hint = "You are trying to access a non-secure (HTTP) API from a secure (HTTPS) site. <br>Browsers block this for security. <br><b>Solution:</b> Use localhost for both, or enable SSL on your API.";
+                    } else if (e.name === 'TypeError' && e.message === 'Failed to fetch') {
+                        errorDetails = "CORS Policy Block or Network Error";
+                        hint = "The server at " + baseUrl + " did not accept the request.<br>1. Check if the server is running.<br>2. Ensure the server sends 'Access-Control-Allow-Origin: *' headers.<br>3. Check if your browser is blocking local requests.";
+                    }
+
                     tester.showResponse(false, 0, { 
-                        error: "Network Error", 
-                        details: e.message,
-                        hint: "Ensure server is running at " + baseUrl
+                        error: "Request Failed", 
+                        details: errorDetails,
+                        hint: hint
                     });
                 } finally {
                     btn.disabled = false;
@@ -811,7 +823,7 @@
                     title.innerHTML = `<i class="fa-solid fa-triangle-exclamation"></i> Error (${status})`;
                 }
 
-                code.textContent = JSON.stringify(data, null, 2);
+                code.innerHTML = JSON.stringify(data, null, 2); // Use innerHTML to allow basic tags in hints
                 Prism.highlightElement(code);
             },
 
