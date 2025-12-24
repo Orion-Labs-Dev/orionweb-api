@@ -1,0 +1,424 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Orion API Documentation</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;900&family=JetBrains+Mono:wght@400;700&display=swap" rel="stylesheet">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/prism.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-json.min.js"></script>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism-tomorrow.min.css" rel="stylesheet" />
+
+    <style>
+        :root {
+            --bg-dark: #050505;
+            --bg-card: #0a0a0a;
+            --border: #222222;
+            --accent: #FFFC00;
+            --text-main: #FFFFFF;
+            --text-muted: #888888;
+        }
+
+        body {
+            background-color: var(--bg-dark);
+            color: var(--text-main);
+            font-family: 'Inter', sans-serif;
+            overflow-x: hidden;
+        }
+
+        /* Scrollbar */
+        ::-webkit-scrollbar { width: 8px; height: 8px; }
+        ::-webkit-scrollbar-track { background: var(--bg-dark); }
+        ::-webkit-scrollbar-thumb { background: #333; border-radius: 4px; }
+        ::-webkit-scrollbar-thumb:hover { background: #444; }
+
+        .sidebar-link {
+            transition: all 0.2s ease;
+            border-left: 2px solid transparent;
+        }
+        .sidebar-link:hover, .sidebar-link.active {
+            background: rgba(255, 255, 255, 0.05);
+            color: white;
+            border-left-color: var(--accent);
+        }
+
+        .method-badge {
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 0.7rem;
+            padding: 0.2rem 0.5rem;
+            border-radius: 0.25rem;
+            font-weight: 700;
+        }
+        .method-GET { background: rgba(59, 130, 246, 0.2); color: #60a5fa; border: 1px solid rgba(59, 130, 246, 0.3); }
+        .method-POST { background: rgba(34, 197, 94, 0.2); color: #4ade80; border: 1px solid rgba(34, 197, 94, 0.3); }
+
+        .code-block {
+            font-family: 'JetBrains Mono', monospace;
+            background: #111 !important;
+            border: 1px solid var(--border);
+            border-radius: 0.75rem;
+            font-size: 0.85rem;
+        }
+
+        /* Login Overlay */
+        #login-overlay {
+            background-color: var(--bg-dark);
+            background-image: radial-gradient(circle at 50% 50%, #1a1a1a 0%, #000000 100%);
+        }
+
+        .fade-in { animation: fadeIn 0.5s ease-out; }
+        @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
+    </style>
+</head>
+<body class="h-screen flex flex-col md:flex-row overflow-hidden">
+
+    <!-- LOGIN GATEKEEPER -->
+    <div id="login-overlay" class="fixed inset-0 z-[100] flex flex-col items-center justify-center p-4">
+        <div class="max-w-md w-full bg-[#0a0a0a] border border-[#222] p-8 rounded-3xl shadow-2xl text-center fade-in">
+            <div class="w-20 h-20 bg-[#111] rounded-full flex items-center justify-center mx-auto mb-6 border border-[#222]">
+                <i class="fa-solid fa-book-journal-whills text-4xl text-[#FFFC00]"></i>
+            </div>
+            <h1 class="text-3xl font-black mb-2">Orion API</h1>
+            <p class="text-gray-500 mb-8 text-sm">Restricted Documentation Access</p>
+            
+            <button onclick="auth.login()" class="w-full bg-[#24292e] hover:bg-[#2f363d] text-white font-bold py-4 rounded-xl flex items-center justify-center gap-3 transition-all transform hover:scale-[1.02]">
+                <i class="fa-brands fa-github text-2xl"></i>
+                <span>Login with GitHub</span>
+            </button>
+            <p class="mt-4 text-xs text-gray-600">Authentication required via GitHub OAuth</p>
+        </div>
+    </div>
+
+    <!-- SIDEBAR -->
+    <aside class="w-full md:w-80 bg-[#0a0a0a] border-r border-[#222] flex flex-col h-full z-10">
+        <div class="p-6 border-b border-[#222]">
+            <h1 class="text-2xl font-black tracking-tight flex items-center gap-2">
+                <span class="text-[#FFFC00]">Orion</span> Docs
+            </h1>
+            <div class="mt-4 relative">
+                <i class="fa-solid fa-search absolute left-3 top-3 text-gray-600 text-xs"></i>
+                <input type="text" id="search-input" placeholder="Search endpoints..." class="w-full bg-[#111] border border-[#222] rounded-lg py-2 pl-9 pr-4 text-sm text-white focus:outline-none focus:border-[#FFFC00] transition-colors placeholder-gray-600">
+            </div>
+        </div>
+        <nav id="sidebar-nav" class="flex-1 overflow-y-auto p-2 space-y-1">
+            <!-- Populated by JS -->
+        </nav>
+        <div class="p-4 border-t border-[#222] text-center">
+            <p class="text-xs text-gray-600 font-mono">v1.0.2 &bull; <a href="#" onclick="auth.logout()" class="text-red-500 hover:text-red-400">Logout</a></p>
+        </div>
+    </aside>
+
+    <!-- MAIN CONTENT -->
+    <main class="flex-1 overflow-y-auto bg-[#050505] relative scroll-smooth" id="main-content">
+        <div class="max-w-4xl mx-auto p-8 md:p-12 space-y-16">
+            
+            <!-- Intro -->
+            <section class="space-y-4 border-b border-[#222] pb-8">
+                <h2 class="text-4xl font-black text-white">Introduction</h2>
+                <p class="text-gray-400 leading-relaxed">
+                    Welcome to the Orion Game Server API. All endpoints are prefixed with <code class="bg-[#111] border border-[#222] px-1 py-0.5 rounded text-[#FFFC00] text-sm">/api/v1/command</code>.
+                    Authentication is handled via the <code class="text-blue-400">x-steam-id</code> header or session cookies depending on context.
+                </p>
+            </section>
+
+            <!-- Endpoints Container -->
+            <div id="endpoints-container" class="space-y-16">
+                <!-- Content injected by JS -->
+            </div>
+
+            <footer class="pt-20 pb-10 text-center text-gray-600 text-sm">
+                &copy; 2025 Orion Labs. All rights reserved.
+            </footer>
+        </div>
+    </main>
+
+    <script>
+        // --- DATA DEFINITION ---
+        const apiData = [
+            {
+                category: "Player Management",
+                items: [
+                    {
+                        title: "Retrieve Players List",
+                        method: "GET",
+                        route: "/players/list",
+                        desc: "Retrieves a list of all currently connected players.",
+                        response: {
+                            type: "player_list",
+                            count: 2,
+                            players: [
+                                { PlayerName: "DinoSlayer", SteamID: "765611980...", Location: "X: -1500, Y: 3000, Z: 500", IsDevOrAdmin: "Admin" },
+                                { PlayerName: "RaptorBlue", SteamID: "765611981...", Location: "X: 4500, Y: 100, Z: 0", IsDevOrAdmin: "None" }
+                            ]
+                        }
+                    },
+                    {
+                        title: "Retrieve Player Info",
+                        method: "GET",
+                        route: "/player/:steamId",
+                        desc: "Get detailed vitals and stats for a specific player.",
+                        response: {
+                            steamId: "765611980...",
+                            PlayerName: "DinoSlayer",
+                            dinoType: "Tyrannosaurus",
+                            growth: 0.75,
+                            health: 85.5,
+                            location: { x: -1500, y: 3000, z: 500 },
+                            nest: { code: "A1B2", eggCount: 3 }
+                        }
+                    }
+                ]
+            },
+            {
+                category: "Dino Actions",
+                items: [
+                    {
+                        title: "Slay Dino",
+                        method: "POST",
+                        route: "/slay/:steamId",
+                        desc: "Instantly kills the player's character.",
+                        response: { type: "SLAY_DINO_successful", status: "Success" }
+                    },
+                    {
+                        title: "Heal Dino",
+                        method: "POST",
+                        route: "/heal/:steamId",
+                        desc: "Restores health, hunger, thirst, and stamina to 100%.",
+                        response: { type: "HEAL_DINO_successful", status: "Success" }
+                    },
+                    {
+                        title: "Grow Dino",
+                        method: "POST",
+                        route: "/grow/:steamId/:percent",
+                        desc: "Sets growth percentage (0.0 to 1.0).",
+                        response: { type: "GROW_DINO_successful", status: "Success", reason: "Set to 1.0" }
+                    },
+                    {
+                        title: "Set Custom Dino",
+                        method: "POST",
+                        route: "/set-custom-dino/:steamId/:class",
+                        desc: "Forces a class change (e.g. BP_Rex_C).",
+                        response: { type: "SET_CUSTOM_DINO_successful", status: "Success" }
+                    }
+                ]
+            },
+            {
+                category: "Stats",
+                items: [
+                    {
+                        title: "Set Vitals",
+                        method: "POST",
+                        route: "/set-[stat]/:steamId/:value",
+                        desc: "Generic endpoint for set-health, set-hunger, set-thirst, set-stamina.",
+                        response: { type: "SET_HEALTH_successful", status: "Success" }
+                    }
+                ]
+            },
+            {
+                category: "Teleportation",
+                items: [
+                    {
+                        title: "Teleport to Player",
+                        method: "POST",
+                        route: "/teleport-to-player/:steamId/:targetId",
+                        desc: "Teleports source player to target player.",
+                        response: { type: "TELEPORT_TO_PLAYER_successful", status: "Success" }
+                    },
+                    {
+                        title: "Teleport to Coords",
+                        method: "POST",
+                        route: "/teleport-to-coords/:steamId/:x/:y/:z",
+                        desc: "Teleports player to specific coordinates.",
+                        response: { type: "TELEPORT_TO_COORDS_successful", status: "Success" }
+                    }
+                ]
+            },
+            {
+                category: "Communication",
+                items: [
+                    {
+                        title: "Send Message",
+                        method: "POST",
+                        route: "/message/send",
+                        desc: "Sends a chat message or announcement.",
+                        payload: {
+                            messageType: "Chat",
+                            text: "Server restart in 5m",
+                            chatType: "Global",
+                            senderName: "Admin"
+                        },
+                        response: { type: "SEND_MESSAGE_successful", status: "Sent" }
+                    },
+                    {
+                        title: "Send Notification",
+                        method: "POST",
+                        route: "/notification/send",
+                        desc: "Sends a UI popup notification to a specific player.",
+                        payload: {
+                            text: "You have been healed!",
+                            targetId: "765611980..."
+                        },
+                        response: { type: "SEND_NOTIFICATION_successful", status: "Sent" }
+                    }
+                ]
+            },
+            {
+                category: "Configuration",
+                items: [
+                    {
+                        title: "Update Config",
+                        method: "POST",
+                        route: "/config/update",
+                        desc: "Updates server settings dynamically.",
+                        payload: { ConfigServerName: "Orion Server", ConfigMaxPlayers: 100 },
+                        response: { type: "UPDATE_CONFIG_successful", status: "Updated" }
+                    },
+                    {
+                        title: "Get Config",
+                        method: "POST",
+                        route: "/config/get",
+                        desc: "Retrieves current server configuration.",
+                        response: { type: "config_data", gameSession: [], gameState: [] }
+                    }
+                ]
+            }
+        ];
+
+        // --- AUTH LOGIC (GITHUB) ---
+        const auth = {
+            // REPLACE THIS WITH YOUR GITHUB OAUTH CLIENT ID
+            clientId: 'YOUR_GITHUB_CLIENT_ID', 
+            
+            init: () => {
+                const overlay = document.getElementById('login-overlay');
+                const params = new URLSearchParams(window.location.search);
+                
+                // 1. Check LocalStorage
+                if (localStorage.getItem('orion_docs_auth') === 'true') {
+                    overlay.classList.add('hidden');
+                    return;
+                }
+
+                // 2. Check for OAuth Callback Code
+                const code = params.get('code');
+                if (code) {
+                    // In a real app, you would exchange this code for a token via a backend.
+                    // For this static page demo, we accept the code presence as "Proof of Login".
+                    localStorage.setItem('orion_docs_auth', 'true');
+                    
+                    // Clean URL
+                    window.history.replaceState({}, document.title, window.location.pathname);
+                    
+                    overlay.classList.add('hidden');
+                }
+            },
+            
+            login: () => {
+                if (auth.clientId === 'YOUR_GITHUB_CLIENT_ID') {
+                    alert("Please configure the GitHub Client ID in the HTML source code first.");
+                    // For demo purposes, we'll bypass if ID isn't set
+                    localStorage.setItem('orion_docs_auth', 'true');
+                    location.reload();
+                    return;
+                }
+                const redirectUri = window.location.href.split('?')[0]; // Current page
+                window.location.href = `https://github.com/login/oauth/authorize?client_id=${auth.clientId}&redirect_uri=${redirectUri}&scope=read:user`;
+            },
+
+            logout: () => {
+                localStorage.removeItem('orion_docs_auth');
+                location.reload();
+            }
+        };
+
+        // --- RENDER LOGIC ---
+        const renderer = {
+            init: () => {
+                const nav = document.getElementById('sidebar-nav');
+                const container = document.getElementById('endpoints-container');
+                
+                let navHtml = '';
+                let mainHtml = '';
+
+                apiData.forEach((cat, catIndex) => {
+                    // Category Header
+                    navHtml += `<div class="px-3 pt-5 pb-2 text-xs font-bold text-gray-500 uppercase tracking-wider">${cat.category}</div>`;
+                    
+                    cat.items.forEach((item, itemIndex) => {
+                        const id = `ep-${catIndex}-${itemIndex}`;
+                        
+                        // Sidebar Link
+                        navHtml += `
+                            <a href="#${id}" class="sidebar-link block px-3 py-2 text-sm text-gray-400 rounded-r-lg">
+                                <span class="mr-2 text-[10px] uppercase font-bold ${item.method === 'GET' ? 'text-blue-400' : 'text-green-400'}">${item.method}</span>
+                                ${item.title}
+                            </a>`;
+
+                        // Main Content Card
+                        mainHtml += `
+                            <section id="${id}" class="scroll-mt-24 endpoint-card">
+                                <div class="flex items-start justify-between mb-4">
+                                    <div>
+                                        <h3 class="text-2xl font-bold text-white mb-2">${item.title}</h3>
+                                        <div class="flex items-center gap-3">
+                                            <span class="method-badge ${item.method === 'GET' ? 'method-GET' : 'method-POST'}">${item.method}</span>
+                                            <code class="text-sm text-gray-400 font-mono bg-[#111] px-2 py-1 rounded border border-[#222]">${item.route}</code>
+                                        </div>
+                                    </div>
+                                </div>
+                                <p class="text-gray-400 mb-6 text-sm leading-relaxed border-l-2 border-[#333] pl-4">${item.desc}</p>
+                                
+                                <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
+                                    ${item.payload ? `
+                                    <div>
+                                        <p class="text-xs font-bold text-gray-500 uppercase mb-2 ml-1">Payload Body</p>
+                                        <pre class="code-block"><code class="language-json">${JSON.stringify(item.payload, null, 2)}</code></pre>
+                                    </div>` : ''}
+                                    
+                                    <div class="${!item.payload ? 'col-span-full' : ''}">
+                                        <p class="text-xs font-bold text-gray-500 uppercase mb-2 ml-1">Response Example</p>
+                                        <pre class="code-block"><code class="language-json">${JSON.stringify(item.response, null, 2)}</code></pre>
+                                    </div>
+                                </div>
+                            </section>
+                        `;
+                    });
+                });
+
+                nav.innerHTML = navHtml;
+                container.innerHTML = mainHtml;
+                
+                // Highlight syntax
+                Prism.highlightAll();
+            },
+
+            filter: (term) => {
+                const termLower = term.toLowerCase();
+                const cards = document.querySelectorAll('.endpoint-card');
+                const links = document.querySelectorAll('.sidebar-link');
+                
+                cards.forEach((card, idx) => {
+                    const text = card.innerText.toLowerCase();
+                    const visible = text.includes(termLower);
+                    
+                    card.style.display = visible ? 'block' : 'none';
+                    if (links[idx]) links[idx].style.display = visible ? 'block' : 'none';
+                });
+            }
+        };
+
+        // --- EVENTS ---
+        document.addEventListener('DOMContentLoaded', () => {
+            auth.init();
+            renderer.init();
+
+            document.getElementById('search-input').addEventListener('input', (e) => {
+                renderer.filter(e.target.value);
+            });
+        });
+
+    </script>
+</body>
+</html>
