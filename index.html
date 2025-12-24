@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Orion API Documentation</title>
+    <title>Orion API</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;900&family=JetBrains+Mono:wght@400;700&display=swap" rel="stylesheet">
@@ -95,7 +95,7 @@
     <aside class="w-full md:w-80 bg-[#0a0a0a] border-r border-[#222] flex flex-col h-full z-10">
         <div class="p-6 border-b border-[#222]">
             <h1 class="text-2xl font-black tracking-tight flex items-center gap-2">
-                <span class="text-[#FFFC00]">Orion</span> Docs
+                <span class="text-[#FFFC00]">Orion</span> API
             </h1>
             <div class="mt-4 relative">
                 <i class="fa-solid fa-search absolute left-3 top-3 text-gray-600 text-xs"></i>
@@ -288,8 +288,8 @@
 
         // --- AUTH LOGIC (GITHUB) ---
         const auth = {
-            // REPLACE THIS WITH YOUR GITHUB OAUTH CLIENT ID
-            clientId: 'YOUR_GITHUB_CLIENT_ID', 
+            // Updated with User Provided Client ID
+            clientId: 'Ov23liDZA1WWu3UIq2aJ', 
             
             init: () => {
                 const overlay = document.getElementById('login-overlay');
@@ -304,8 +304,6 @@
                 // 2. Check for OAuth Callback Code
                 const code = params.get('code');
                 if (code) {
-                    // In a real app, you would exchange this code for a token via a backend.
-                    // For this static page demo, we accept the code presence as "Proof of Login".
                     localStorage.setItem('orion_docs_auth', 'true');
                     
                     // Clean URL
@@ -316,13 +314,6 @@
             },
             
             login: () => {
-                if (auth.clientId === 'YOUR_GITHUB_CLIENT_ID') {
-                    alert("Please configure the GitHub Client ID in the HTML source code first.");
-                    // For demo purposes, we'll bypass if ID isn't set
-                    localStorage.setItem('orion_docs_auth', 'true');
-                    location.reload();
-                    return;
-                }
                 const redirectUri = window.location.href.split('?')[0]; // Current page
                 window.location.href = `https://github.com/login/oauth/authorize?client_id=${auth.clientId}&redirect_uri=${redirectUri}&scope=read:user`;
             },
