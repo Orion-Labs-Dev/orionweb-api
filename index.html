@@ -93,6 +93,75 @@
         }
         .tester-input:focus { border-color: var(--accent); }
 
+        /* Custom Select Styles */
+        .custom-select-trigger {
+            background: #111;
+            border: 1px solid #333;
+            padding: 0.75rem;
+            border-radius: 0.5rem;
+            color: white;
+            cursor: pointer;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            font-size: 0.9rem;
+            user-select: none;
+        }
+        .custom-select-trigger:hover { border-color: #555; }
+        
+        .custom-select-options {
+            position: absolute;
+            top: 100%;
+            left: 0;
+            right: 0;
+            background: #111;
+            border: 1px solid #333;
+            border-top: none;
+            border-radius: 0 0 0.5rem 0.5rem;
+            z-index: 50;
+            max-height: 300px;
+            overflow-y: auto;
+            opacity: 0;
+            visibility: hidden;
+            transform: translateY(-10px);
+            transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1);
+            box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.5);
+        }
+        
+        .custom-select.open .custom-select-options {
+            opacity: 1;
+            visibility: visible;
+            transform: translateY(0);
+        }
+        .custom-select.open .custom-select-trigger {
+            border-bottom-color: #111;
+            border-radius: 0.5rem 0.5rem 0 0;
+        }
+
+        .custom-option {
+            padding: 0.75rem;
+            cursor: pointer;
+            transition: background 0.1s;
+            border-bottom: 1px solid #1a1a1a;
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+        }
+        .custom-option:last-child { border-bottom: none; }
+        .custom-option:hover { background: #1a1a1a; }
+        .custom-option.selected { background: #222; }
+        
+        .custom-optgroup-label {
+            padding: 0.5rem 0.75rem;
+            font-size: 0.7rem;
+            font-weight: bold;
+            color: #555;
+            text-transform: uppercase;
+            background: #0d0d0d;
+            position: sticky;
+            top: 0;
+        }
+
         .fade-in { animation: fadeIn 0.5s ease-out; }
         @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
     </style>
@@ -122,14 +191,31 @@
             <!-- Body -->
             <div class="p-6 overflow-y-auto flex-1 space-y-6">
                 
+                <!-- Settings: API URL and Steam ID Header -->
+                <div class="bg-[#111] p-3 rounded-lg border border-[#333] mb-2 space-y-3">
+                    <div class="input-group">
+                        <label>API Base URL</label>
+                        <input type="text" id="tester-base-url" class="tester-input font-mono text-blue-400 border-[#333] focus:border-blue-500" value="http://localhost:8000">
+                    </div>
+                    <div class="input-group">
+                        <label>Simulated Steam ID (Header)</label>
+                        <input type="text" id="tester-header-steamid" class="tester-input font-mono text-[#FFFC00] border-[#333] focus:border-[#FFFC00]" value="76561198012345678">
+                    </div>
+                </div>
+
                 <!-- Endpoint Selector -->
-                <div>
+                <div class="relative">
                     <label class="block text-xs font-bold text-gray-500 uppercase mb-2">Select Endpoint</label>
-                    <div class="relative">
-                        <select id="tester-endpoint-select" onchange="tester.selectEndpoint(this.value)" class="w-full bg-[#111] border border-[#333] text-white p-3 rounded-lg appearance-none font-mono text-sm focus:border-[#FFFC00] outline-none cursor-pointer">
-                            <option value="">-- Choose an endpoint --</option>
-                        </select>
-                        <i class="fa-solid fa-chevron-down absolute right-4 top-4 text-gray-500 pointer-events-none text-xs"></i>
+                    
+                    <!-- Custom Select DOM -->
+                    <div id="custom-select" class="custom-select relative w-full">
+                        <div class="custom-select-trigger" onclick="this.parentElement.classList.toggle('open')">
+                            <span id="custom-select-value" class="text-gray-400">-- Choose an endpoint --</span>
+                            <i class="fa-solid fa-chevron-down text-gray-500 text-xs"></i>
+                        </div>
+                        <div class="custom-select-options custom-scrollbar" id="custom-select-list">
+                            <!-- Populated by JS -->
+                        </div>
                     </div>
                 </div>
 
@@ -147,7 +233,7 @@
 
                 <!-- Info Box -->
                 <div id="tester-info" class="bg-[#111] border border-[#222] p-4 rounded-lg text-center text-gray-500 text-sm">
-                    Select an endpoint to begin testing.
+                    Select an endpoint above to begin testing.
                 </div>
 
             </div>
@@ -157,7 +243,7 @@
                 <button onclick="tester.generateData()" id="btn-gen-data" class="hidden text-gray-400 hover:text-[#FFFC00] text-sm font-bold flex items-center gap-2 transition">
                     <i class="fa-solid fa-wand-magic-sparkles"></i> Generate Data
                 </button>
-                <div class="flex gap-3">
+                <div class="flex gap-3 ml-auto">
                     <button onclick="tester.close()" class="px-4 py-2 text-gray-400 hover:text-white font-bold text-sm">Cancel</button>
                     <button onclick="tester.send()" id="btn-send-req" disabled class="bg-[#FFFC00] hover:bg-[#e6e300] text-black px-6 py-2 rounded-lg font-bold text-sm flex items-center gap-2 transition disabled:opacity-50 disabled:cursor-not-allowed">
                         <span>Send Request</span>
@@ -256,6 +342,8 @@
     </main>
 
     <script>
+        // Removed hardcoded const API_BASE_URL
+
         const apiData = [
             {
                 category: "Player Management",
@@ -480,26 +568,61 @@
             currentEndpoint: null,
             
             init: () => {
-                // Flatten data for select
-                const select = document.getElementById('tester-endpoint-select');
+                // Initialize Custom Select Dropdown
+                const list = document.getElementById('custom-select-list');
+                const triggerVal = document.getElementById('custom-select-value');
+                const selectContainer = document.getElementById('custom-select');
                 let idx = 0;
+
+                // Close on outside click
+                document.addEventListener('click', (e) => {
+                    if (!selectContainer.contains(e.target)) selectContainer.classList.remove('open');
+                });
+
                 apiData.forEach(cat => {
-                    const group = document.createElement('optgroup');
-                    group.label = cat.category;
+                    // Optgroup Header
+                    const groupHeader = document.createElement('div');
+                    groupHeader.className = 'custom-optgroup-label';
+                    groupHeader.textContent = cat.category;
+                    list.appendChild(groupHeader);
+
                     cat.items.forEach(item => {
-                        const opt = document.createElement('option');
-                        opt.value = idx;
-                        opt.textContent = `${item.method} - ${item.title}`;
-                        group.appendChild(opt);
+                        const opt = document.createElement('div');
+                        opt.className = 'custom-option';
+                        opt.innerHTML = `
+                            <span class="method-badge ${item.method === 'GET' ? 'method-GET' : 'method-POST'}">${item.method}</span>
+                            <span class="text-sm font-medium text-gray-300">${item.title}</span>
+                        `;
+                        
+                        opt.onclick = () => {
+                            triggerVal.innerHTML = `
+                                <span class="method-badge ${item.method === 'GET' ? 'method-GET' : 'method-POST'} mr-2">${item.method}</span>
+                                ${item.title}
+                            `;
+                            triggerVal.className = "text-white flex items-center";
+                            selectContainer.classList.remove('open');
+                            tester.selectEndpoint(item._flatIndex);
+                        };
+
+                        list.appendChild(opt);
                         item._flatIndex = idx;
                         idx++;
                     });
-                    select.appendChild(group);
                 });
             },
 
             open: () => {
                 document.getElementById('tester-modal').classList.remove('hidden');
+                // Generate random default steam ID if empty
+                if(!document.getElementById('tester-header-steamid').value) {
+                    document.getElementById('tester-header-steamid').value = "7656119" + Math.floor(Math.random() * 10000000000);
+                }
+                
+                // Initialize base URL from local storage if available
+                const storedBaseUrl = localStorage.getItem('orion_tester_url');
+                if (storedBaseUrl) {
+                    document.getElementById('tester-base-url').value = storedBaseUrl;
+                }
             },
 
             close: () => {
@@ -516,23 +639,16 @@
                 return found;
             },
 
-            selectEndpoint: (val) => {
+            selectEndpoint: (index) => {
                 const container = document.getElementById('tester-params-container');
                 const grid = document.getElementById('tester-inputs-grid');
                 const info = document.getElementById('tester-info');
                 const btnSend = document.getElementById('btn-send-req');
                 const btnGen = document.getElementById('btn-gen-data');
 
-                if (val === "") {
-                    container.classList.add('hidden');
-                    info.classList.remove('hidden');
-                    btnSend.disabled = true;
-                    btnGen.classList.add('hidden');
-                    tester.currentEndpoint = null;
-                    return;
-                }
+                const item = tester.getFlatItem(index);
+                if (!item) return;
 
-                const item = tester.getFlatItem(val);
                 tester.currentEndpoint = item;
                 
                 info.classList.add('hidden');
@@ -571,6 +687,8 @@
             generateData: () => {
                 const inputs = document.querySelectorAll('.tester-input');
                 inputs.forEach(input => {
+                    if(input.id === 'tester-header-steamid' || input.id === 'tester-base-url') return; // Don't regen auth header or url
+
                     const k = input.getAttribute('data-key').toLowerCase();
                     let val = "TestValue";
                     
@@ -589,24 +707,37 @@
                 const item = tester.currentEndpoint;
                 if (!item) return;
 
+                const headerSteamId = document.getElementById('tester-header-steamid').value.trim();
+                const baseUrl = document.getElementById('tester-base-url').value.trim().replace(/\/$/, ''); // Trim trailing slash
+
+                if(!headerSteamId) {
+                    alert("Simulated Steam ID (Header) is required for server authentication.");
+                    return;
+                }
+                
+                if(!baseUrl) {
+                    alert("Please enter a valid API Base URL.");
+                    return;
+                }
+                
+                // Save base URL preference
+                localStorage.setItem('orion_tester_url', baseUrl);
+
                 // Build Route
-                let finalUrl = '/api/v1/command' + item.route;
+                let finalPath = '/api/v1/command' + item.route;
                 const body = {};
                 const inputs = document.querySelectorAll('.tester-input');
-                let missingParams = false;
-
+                
                 inputs.forEach(input => {
+                    if(input.id === 'tester-header-steamid' || input.id === 'tester-base-url') return;
+
                     const key = input.getAttribute('data-key');
                     const val = input.value.trim();
                     
-                    if (!val) missingParams = true;
-
-                    // URL Replace
-                    if (finalUrl.includes(`:${key}`)) {
-                        finalUrl = finalUrl.replace(`:${key}`, val);
+                    if (finalPath.includes(`:${key}`)) {
+                        finalPath = finalPath.replace(`:${key}`, val);
                     } else {
-                        // Body param
-                        // Try to parse number/bool
+                        // Body param logic
                         if (val === 'true') body[key] = true;
                         else if (val === 'false') body[key] = false;
                         else if (!isNaN(val) && val !== '') body[key] = Number(val);
@@ -614,8 +745,7 @@
                     }
                 });
 
-                // Since we are mocking, we won't stop for missing params in UI, but server would fail.
-                
+                // UI Loading State
                 const btn = document.getElementById('btn-send-req');
                 const icon = btn.querySelector('i');
                 const origIcon = icon.className;
@@ -623,33 +753,43 @@
                 btn.disabled = true;
                 icon.className = "fa-solid fa-circle-notch fa-spin";
 
-                // Simulate Request for Demo (Since static file usually cant hit real API due to CORS/Path)
-                // In a real scenario:
-                /*
+                const fullUrl = baseUrl + finalPath;
+
                 try {
-                    const res = await fetch(finalUrl, {
+                    const options = {
                         method: item.method,
-                        headers: { 'Content-Type': 'application/json', 'x-steam-id': 'TESTER' },
-                        body: item.method === 'POST' ? JSON.stringify(body) : null
-                    });
-                    const data = await res.json();
-                    tester.showResponse(res.ok, res.status, data);
-                } catch (e) {
-                    tester.showResponse(false, 0, { error: e.message });
-                }
-                */
+                        headers: {
+                            'Content-Type': 'application/json',
+                            'x-steam-id': headerSteamId
+                        }
+                    };
 
-                // MOCKED RESPONSE FOR DEMO
-                setTimeout(() => {
-                    const success = Math.random() > 0.3; // 70% success chance for demo
-                    const status = success ? 200 : (Math.random() > 0.5 ? 404 : 500);
-                    const mockRes = success ? (item.response || { status: "Success" }) : { error: "Failed to execute command", reason: "Mock Error or Server Unreachable" };
+                    if (item.method !== 'GET') {
+                        options.body = JSON.stringify(body);
+                    }
+
+                    const res = await fetch(fullUrl, options);
                     
-                    tester.showResponse(success, status, mockRes);
+                    let data;
+                    const text = await res.text();
+                    try {
+                        data = JSON.parse(text);
+                    } catch {
+                        data = { raw: text };
+                    }
 
+                    tester.showResponse(res.ok, res.status, data);
+
+                } catch (e) {
+                    tester.showResponse(false, 0, { 
+                        error: "Network Error", 
+                        details: e.message,
+                        hint: "Ensure server is running at " + baseUrl
+                    });
+                } finally {
                     btn.disabled = false;
                     icon.className = origIcon;
-                }, 800);
+                }
             },
 
             showResponse: (success, status, data) => {
