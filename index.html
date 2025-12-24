@@ -65,12 +65,129 @@
             background-color: var(--bg-dark);
             background-image: radial-gradient(circle at 50% 50%, #1a1a1a 0%, #000000 100%);
         }
+        
+        /* Tester Modal Styles */
+        .modal-backdrop {
+            background-color: rgba(0, 0, 0, 0.8);
+            backdrop-filter: blur(5px);
+        }
+        .input-group label {
+            display: block;
+            font-size: 0.75rem;
+            font-weight: bold;
+            color: #888;
+            margin-bottom: 0.25rem;
+            text-transform: uppercase;
+        }
+        .tester-input {
+            width: 100%;
+            background: #111;
+            border: 1px solid #333;
+            padding: 0.5rem;
+            border-radius: 0.5rem;
+            color: white;
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 0.85rem;
+            outline: none;
+            transition: border-color 0.2s;
+        }
+        .tester-input:focus { border-color: var(--accent); }
 
         .fade-in { animation: fadeIn 0.5s ease-out; }
         @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
     </style>
 </head>
-<body class="h-screen flex flex-col md:flex-row overflow-hidden">
+<body class="h-screen flex flex-col md:flex-row overflow-hidden relative">
+
+    <!-- TESTER BUTTON (Hidden by default) -->
+    <div id="tester-trigger" class="hidden absolute top-6 right-6 z-50">
+        <button onclick="tester.open()" class="bg-[#1a1a1a] hover:bg-[#222] border border-[#333] hover:border-[#FFFC00] text-white px-4 py-2 rounded-lg flex items-center gap-2 transition-all shadow-lg font-bold text-sm">
+            <i class="fa-solid fa-flask text-[#FFFC00]"></i>
+            Test API
+        </button>
+    </div>
+
+    <!-- API TESTER MODAL -->
+    <div id="tester-modal" class="hidden fixed inset-0 z-[60] modal-backdrop flex items-center justify-center p-4">
+        <div class="bg-[#0a0a0a] border border-[#222] w-full max-w-2xl rounded-2xl shadow-2xl flex flex-col max-h-[90vh] fade-in">
+            
+            <!-- Header -->
+            <div class="p-4 border-b border-[#222] flex justify-between items-center bg-[#111] rounded-t-2xl">
+                <h3 class="font-bold text-lg flex items-center gap-2">
+                    <i class="fa-solid fa-flask text-[#FFFC00]"></i> API Tester
+                </h3>
+                <button onclick="tester.close()" class="text-gray-500 hover:text-white transition"><i class="fa-solid fa-xmark text-xl"></i></button>
+            </div>
+
+            <!-- Body -->
+            <div class="p-6 overflow-y-auto flex-1 space-y-6">
+                
+                <!-- Endpoint Selector -->
+                <div>
+                    <label class="block text-xs font-bold text-gray-500 uppercase mb-2">Select Endpoint</label>
+                    <div class="relative">
+                        <select id="tester-endpoint-select" onchange="tester.selectEndpoint(this.value)" class="w-full bg-[#111] border border-[#333] text-white p-3 rounded-lg appearance-none font-mono text-sm focus:border-[#FFFC00] outline-none cursor-pointer">
+                            <option value="">-- Choose an endpoint --</option>
+                        </select>
+                        <i class="fa-solid fa-chevron-down absolute right-4 top-4 text-gray-500 pointer-events-none text-xs"></i>
+                    </div>
+                </div>
+
+                <!-- Dynamic Params -->
+                <div id="tester-params-container" class="hidden space-y-4">
+                    <div class="flex items-center gap-2 mb-2">
+                        <div class="h-px bg-[#222] flex-1"></div>
+                        <span class="text-xs font-bold text-gray-500 uppercase">Parameters</span>
+                        <div class="h-px bg-[#222] flex-1"></div>
+                    </div>
+                    <div id="tester-inputs-grid" class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                        <!-- Inputs injected here -->
+                    </div>
+                </div>
+
+                <!-- Info Box -->
+                <div id="tester-info" class="bg-[#111] border border-[#222] p-4 rounded-lg text-center text-gray-500 text-sm">
+                    Select an endpoint to begin testing.
+                </div>
+
+            </div>
+
+            <!-- Footer -->
+            <div class="p-4 border-t border-[#222] bg-[#111] rounded-b-2xl flex justify-between items-center">
+                <button onclick="tester.generateData()" id="btn-gen-data" class="hidden text-gray-400 hover:text-[#FFFC00] text-sm font-bold flex items-center gap-2 transition">
+                    <i class="fa-solid fa-wand-magic-sparkles"></i> Generate Data
+                </button>
+                <div class="flex gap-3">
+                    <button onclick="tester.close()" class="px-4 py-2 text-gray-400 hover:text-white font-bold text-sm">Cancel</button>
+                    <button onclick="tester.send()" id="btn-send-req" disabled class="bg-[#FFFC00] hover:bg-[#e6e300] text-black px-6 py-2 rounded-lg font-bold text-sm flex items-center gap-2 transition disabled:opacity-50 disabled:cursor-not-allowed">
+                        <span>Send Request</span>
+                        <i class="fa-solid fa-paper-plane"></i>
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- RESPONSE MODAL -->
+    <div id="response-modal" class="hidden fixed inset-0 z-[70] modal-backdrop flex items-center justify-center p-4">
+        <div class="bg-[#0a0a0a] border border-[#222] w-full max-w-2xl rounded-2xl shadow-2xl flex flex-col max-h-[85vh] fade-in transform scale-100 transition-all">
+            <div id="response-header" class="p-4 border-b border-[#222] flex justify-between items-center rounded-t-2xl bg-[#111]">
+                <h3 class="font-bold text-lg flex items-center gap-2" id="response-title">
+                    <!-- Title injected -->
+                </h3>
+                <button onclick="tester.closeResponse()" class="text-gray-500 hover:text-white transition"><i class="fa-solid fa-xmark text-xl"></i></button>
+            </div>
+            <div class="p-0 overflow-hidden flex-1 relative bg-[#050505]">
+                <pre class="w-full h-full p-4 overflow-auto text-xs font-mono language-json" style="margin:0;"><code id="response-code"></code></pre>
+            </div>
+            <div class="p-4 border-t border-[#222] bg-[#111] rounded-b-2xl flex justify-end">
+                <button onclick="tester.closeResponse()" class="bg-[#222] hover:bg-[#333] text-white px-6 py-2 rounded-lg font-bold text-sm transition">
+                    Back to Tester
+                </button>
+            </div>
+        </div>
+    </div>
+
 
     <div id="login-overlay" class="fixed inset-0 z-[100] flex flex-col items-center justify-center p-4">
         
@@ -302,6 +419,7 @@
 
                 if (localStorage.getItem('orion_docs_status') === 'unlocked') {
                     overlay.classList.add('hidden');
+                    document.getElementById('tester-trigger').classList.remove('hidden');
                     return;
                 }
 
@@ -342,6 +460,7 @@
                         const overlay = document.getElementById('login-overlay');
                         overlay.style.opacity = '0';
                         setTimeout(() => overlay.classList.add('hidden'), 500);
+                        document.getElementById('tester-trigger').classList.remove('hidden');
                     } else {
                         location.reload();
                     }
@@ -353,6 +472,211 @@
             logout: () => {
                 localStorage.removeItem('orion_docs_status');
                 location.reload();
+            }
+        };
+
+        // --- TESTER LOGIC ---
+        const tester = {
+            currentEndpoint: null,
+            
+            init: () => {
+                // Flatten data for select
+                const select = document.getElementById('tester-endpoint-select');
+                let idx = 0;
+                apiData.forEach(cat => {
+                    const group = document.createElement('optgroup');
+                    group.label = cat.category;
+                    cat.items.forEach(item => {
+                        const opt = document.createElement('option');
+                        opt.value = idx;
+                        opt.textContent = `${item.method} - ${item.title}`;
+                        group.appendChild(opt);
+                        item._flatIndex = idx;
+                        idx++;
+                    });
+                    select.appendChild(group);
+                });
+            },
+
+            open: () => {
+                document.getElementById('tester-modal').classList.remove('hidden');
+            },
+
+            close: () => {
+                document.getElementById('tester-modal').classList.add('hidden');
+            },
+
+            getFlatItem: (index) => {
+                let found = null;
+                apiData.forEach(cat => {
+                    cat.items.forEach(item => {
+                        if (item._flatIndex == index) found = item;
+                    });
+                });
+                return found;
+            },
+
+            selectEndpoint: (val) => {
+                const container = document.getElementById('tester-params-container');
+                const grid = document.getElementById('tester-inputs-grid');
+                const info = document.getElementById('tester-info');
+                const btnSend = document.getElementById('btn-send-req');
+                const btnGen = document.getElementById('btn-gen-data');
+
+                if (val === "") {
+                    container.classList.add('hidden');
+                    info.classList.remove('hidden');
+                    btnSend.disabled = true;
+                    btnGen.classList.add('hidden');
+                    tester.currentEndpoint = null;
+                    return;
+                }
+
+                const item = tester.getFlatItem(val);
+                tester.currentEndpoint = item;
+                
+                info.classList.add('hidden');
+                container.classList.remove('hidden');
+                btnSend.disabled = false;
+                btnGen.classList.remove('hidden');
+                grid.innerHTML = '';
+
+                // Extract URL Params (:param)
+                const urlParams = item.route.match(/:[a-zA-Z]+/g) || [];
+                urlParams.forEach(p => {
+                    const name = p.substring(1);
+                    tester.createInput(grid, name, 'URL Parameter');
+                });
+
+                // Body Params
+                if (item.payload) {
+                    Object.keys(item.payload).forEach(key => {
+                        tester.createInput(grid, key, 'Body Parameter');
+                    });
+                } else if (urlParams.length === 0) {
+                     grid.innerHTML = '<div class="col-span-full text-center text-gray-600 text-sm italic py-2">No parameters required.</div>';
+                }
+            },
+
+            createInput: (container, name, type) => {
+                const div = document.createElement('div');
+                div.className = 'input-group';
+                div.innerHTML = `
+                    <label>${name} <span class="text-[10px] bg-[#222] px-1 rounded ml-1 text-gray-500">${type}</span></label>
+                    <input type="text" class="tester-input" data-key="${name}" placeholder="...">
+                `;
+                container.appendChild(div);
+            },
+
+            generateData: () => {
+                const inputs = document.querySelectorAll('.tester-input');
+                inputs.forEach(input => {
+                    const k = input.getAttribute('data-key').toLowerCase();
+                    let val = "TestValue";
+                    
+                    if (k.includes('steamid') || k.includes('id')) val = "7656119" + Math.floor(Math.random() * 10000000000);
+                    else if (k.includes('amount') || k.includes('count') || k.includes('value')) val = Math.floor(Math.random() * 100);
+                    else if (k.includes('percent')) val = "1.0";
+                    else if (k.includes('coord') || k === 'x' || k === 'y' || k === 'z') val = Math.floor(Math.random() * 10000);
+                    else if (k.includes('class')) val = "BP_Rex_C";
+                    else if (k.includes('name')) val = "OrionTester";
+                    
+                    input.value = val;
+                });
+            },
+
+            send: async () => {
+                const item = tester.currentEndpoint;
+                if (!item) return;
+
+                // Build Route
+                let finalUrl = '/api/v1/command' + item.route;
+                const body = {};
+                const inputs = document.querySelectorAll('.tester-input');
+                let missingParams = false;
+
+                inputs.forEach(input => {
+                    const key = input.getAttribute('data-key');
+                    const val = input.value.trim();
+                    
+                    if (!val) missingParams = true;
+
+                    // URL Replace
+                    if (finalUrl.includes(`:${key}`)) {
+                        finalUrl = finalUrl.replace(`:${key}`, val);
+                    } else {
+                        // Body param
+                        // Try to parse number/bool
+                        if (val === 'true') body[key] = true;
+                        else if (val === 'false') body[key] = false;
+                        else if (!isNaN(val) && val !== '') body[key] = Number(val);
+                        else body[key] = val;
+                    }
+                });
+
+                // Since we are mocking, we won't stop for missing params in UI, but server would fail.
+                
+                const btn = document.getElementById('btn-send-req');
+                const icon = btn.querySelector('i');
+                const origIcon = icon.className;
+                
+                btn.disabled = true;
+                icon.className = "fa-solid fa-circle-notch fa-spin";
+
+                // Simulate Request for Demo (Since static file usually cant hit real API due to CORS/Path)
+                // In a real scenario:
+                /*
+                try {
+                    const res = await fetch(finalUrl, {
+                        method: item.method,
+                        headers: { 'Content-Type': 'application/json', 'x-steam-id': 'TESTER' },
+                        body: item.method === 'POST' ? JSON.stringify(body) : null
+                    });
+                    const data = await res.json();
+                    tester.showResponse(res.ok, res.status, data);
+                } catch (e) {
+                    tester.showResponse(false, 0, { error: e.message });
+                }
+                */
+
+                // MOCKED RESPONSE FOR DEMO
+                setTimeout(() => {
+                    const success = Math.random() > 0.3; // 70% success chance for demo
+                    const status = success ? 200 : (Math.random() > 0.5 ? 404 : 500);
+                    const mockRes = success ? (item.response || { status: "Success" }) : { error: "Failed to execute command", reason: "Mock Error or Server Unreachable" };
+                    
+                    tester.showResponse(success, status, mockRes);
+
+                    btn.disabled = false;
+                    icon.className = origIcon;
+                }, 800);
+            },
+
+            showResponse: (success, status, data) => {
+                const modal = document.getElementById('response-modal');
+                const header = document.getElementById('response-header');
+                const title = document.getElementById('response-title');
+                const code = document.getElementById('response-code');
+
+                modal.classList.remove('hidden');
+                
+                // Color Logic
+                if (success) {
+                    header.className = "p-4 border-b border-[#222] flex justify-between items-center rounded-t-2xl bg-green-900/20 border-green-500/30";
+                    title.className = "font-bold text-lg flex items-center gap-2 text-green-400";
+                    title.innerHTML = `<i class="fa-solid fa-check-circle"></i> Success (${status})`;
+                } else {
+                    header.className = "p-4 border-b border-[#222] flex justify-between items-center rounded-t-2xl bg-red-900/20 border-red-500/30";
+                    title.className = "font-bold text-lg flex items-center gap-2 text-red-400";
+                    title.innerHTML = `<i class="fa-solid fa-triangle-exclamation"></i> Error (${status})`;
+                }
+
+                code.textContent = JSON.stringify(data, null, 2);
+                Prism.highlightElement(code);
+            },
+
+            closeResponse: () => {
+                document.getElementById('response-modal').classList.add('hidden');
             }
         };
 
@@ -430,6 +754,7 @@
         document.addEventListener('DOMContentLoaded', () => {
             auth.init();
             renderer.init();
+            tester.init(); // Init tester
 
             document.getElementById('search-input').addEventListener('input', (e) => {
                 renderer.filter(e.target.value);
