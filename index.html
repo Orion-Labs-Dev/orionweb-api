@@ -28,7 +28,6 @@
             overflow-x: hidden;
         }
 
-        /* Scrollbar */
         ::-webkit-scrollbar { width: 8px; height: 8px; }
         ::-webkit-scrollbar-track { background: var(--bg-dark); }
         ::-webkit-scrollbar-thumb { background: #333; border-radius: 4px; }
@@ -62,7 +61,6 @@
             font-size: 0.85rem;
         }
 
-        /* Login Overlay */
         #login-overlay {
             background-color: var(--bg-dark);
             background-image: radial-gradient(circle at 50% 50%, #1a1a1a 0%, #000000 100%);
@@ -70,22 +68,12 @@
 
         .fade-in { animation: fadeIn 0.5s ease-out; }
         @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
-
-        .shake { animation: shake 0.5s cubic-bezier(.36,.07,.19,.97) both; }
-        @keyframes shake {
-            10%, 90% { transform: translate3d(-1px, 0, 0); }
-            20%, 80% { transform: translate3d(2px, 0, 0); }
-            30%, 50%, 70% { transform: translate3d(-4px, 0, 0); }
-            40%, 60% { transform: translate3d(4px, 0, 0); }
-        }
     </style>
 </head>
 <body class="h-screen flex flex-col md:flex-row overflow-hidden">
 
-    <!-- LOGIN GATEKEEPER -->
     <div id="login-overlay" class="fixed inset-0 z-[100] flex flex-col items-center justify-center p-4">
         
-        <!-- STEP 1: GITHUB LOGIN -->
         <div id="step-github" class="max-w-md w-full bg-[#0a0a0a] border border-[#222] p-8 rounded-3xl shadow-2xl text-center fade-in">
             <div class="w-20 h-20 bg-[#111] rounded-full flex items-center justify-center mx-auto mb-6 border border-[#222]">
                 <i class="fa-solid fa-book-journal-whills text-4xl text-[#FFFC00]"></i>
@@ -100,27 +88,19 @@
             <p class="mt-4 text-xs text-gray-600">Authentication required via GitHub OAuth</p>
         </div>
 
-        <!-- STEP 2: PASSWORD PROMPT (Hidden by default) -->
-        <div id="step-password" class="max-w-md w-full bg-[#0a0a0a] border border-[#222] p-8 rounded-3xl shadow-2xl text-center fade-in hidden">
-            <div class="w-16 h-16 bg-[#111] rounded-full flex items-center justify-center mx-auto mb-6 border border-[#222]">
-                <i class="fa-solid fa-lock text-2xl text-[#FFFC00]"></i>
+        <div id="step-decoy" class="hidden w-full h-full flex flex-col items-center justify-center fade-in">
+            <div class="text-center">
+                <h1 class="text-9xl font-black text-[#222] select-none">404</h1>
+                <h2 class="text-2xl font-bold text-white mt-4 select-none">Page Not Found</h2>
+                <p class="text-gray-500 mt-2 select-none">The requested resource could not be located on this server.</p>
+                <div class="mt-8">
+                     <button onclick="location.href = location.href.split('?')[0]" class="px-6 py-2 bg-[#111] border border-[#222] rounded-lg text-sm text-gray-400 hover:text-white hover:border-white transition">Go Home</button>
+                </div>
             </div>
-            <h2 class="text-2xl font-black mb-2 text-white">Security Check</h2>
-            <p class="text-gray-500 mb-6 text-sm">GitHub Verified. Please enter the access key.</p>
-            
-            <div class="space-y-4">
-                <input type="password" id="access-password" placeholder="Enter Access Password" class="w-full bg-[#111] border border-[#222] rounded-xl px-4 py-3 text-white focus:outline-none focus:border-[#FFFC00] transition-colors text-center font-mono">
-                <button onclick="auth.verifyPassword()" class="w-full bg-[#FFFC00] hover:bg-[#e6e300] text-black font-bold py-3 rounded-xl flex items-center justify-center gap-2 transition-all transform hover:scale-[1.02]">
-                    <i class="fa-solid fa-key"></i>
-                    <span>Unlock</span>
-                </button>
-            </div>
-            <p id="error-msg" class="mt-4 text-xs text-red-500 font-bold hidden">Incorrect Password</p>
         </div>
 
     </div>
 
-    <!-- SIDEBAR -->
     <aside class="w-full md:w-80 bg-[#0a0a0a] border-r border-[#222] flex flex-col h-full z-10">
         <div class="p-6 border-b border-[#222]">
             <h1 class="text-2xl font-black tracking-tight flex items-center gap-2">
@@ -132,18 +112,15 @@
             </div>
         </div>
         <nav id="sidebar-nav" class="flex-1 overflow-y-auto p-2 space-y-1">
-            <!-- Populated by JS -->
         </nav>
         <div class="p-4 border-t border-[#222] text-center">
             <p class="text-xs text-gray-600 font-mono">v1.0.2 &bull; <a href="#" onclick="auth.logout()" class="text-red-500 hover:text-red-400">Logout</a></p>
         </div>
     </aside>
 
-    <!-- MAIN CONTENT -->
     <main class="flex-1 overflow-y-auto bg-[#050505] relative scroll-smooth" id="main-content">
         <div class="max-w-4xl mx-auto p-8 md:p-12 space-y-16">
             
-            <!-- Intro -->
             <section class="space-y-4 border-b border-[#222] pb-8">
                 <h2 class="text-4xl font-black text-white">Introduction</h2>
                 <p class="text-gray-400 leading-relaxed">
@@ -152,9 +129,7 @@
                 </p>
             </section>
 
-            <!-- Endpoints Container -->
             <div id="endpoints-container" class="space-y-16">
-                <!-- Content injected by JS -->
             </div>
 
             <footer class="pt-20 pb-10 text-center text-gray-600 text-sm">
@@ -164,7 +139,6 @@
     </main>
 
     <script>
-        // --- DATA DEFINITION ---
         const apiData = [
             {
                 category: "Player Management",
@@ -315,36 +289,28 @@
             }
         ];
 
-        // --- AUTH & SECURITY LOGIC ---
         const auth = {
             clientId: 'Ov23li9jHMqW9mz8Q8LX',
+            buffer: "",
+            timer: null,
             
             init: () => {
                 const overlay = document.getElementById('login-overlay');
                 const stepGithub = document.getElementById('step-github');
-                const stepPass = document.getElementById('step-password');
+                const stepDecoy = document.getElementById('step-decoy');
                 const params = new URLSearchParams(window.location.search);
 
-                // 1. Fully Authenticated Check
                 if (localStorage.getItem('orion_docs_status') === 'unlocked') {
                     overlay.classList.add('hidden');
                     return;
                 }
 
-                // 2. Check for GitHub Callback Code
                 const code = params.get('code');
                 if (code) {
-                    // Clean URL
                     window.history.replaceState({}, document.title, window.location.pathname);
-                    
-                    // Switch to Password Step
                     stepGithub.classList.add('hidden');
-                    stepPass.classList.remove('hidden');
-                    
-                    // Add Enter key listener for password
-                    document.getElementById('access-password').addEventListener('keypress', (e) => {
-                        if (e.key === 'Enter') auth.verifyPassword();
-                    });
+                    stepDecoy.classList.remove('hidden');
+                    auth.startSecretListener();
                 }
             },
             
@@ -353,32 +319,34 @@
                 window.location.href = `https://github.com/login/oauth/authorize?client_id=${auth.clientId}&redirect_uri=${redirectUri}&scope=read:user`;
             },
 
-            // --- OBFUSCATED VERIFICATION ---
-            verifyPassword: () => {
-                const input = document.getElementById('access-password');
-                const val = input.value;
-                const err = document.getElementById('error-msg');
-                const overlay = document.getElementById('login-overlay');
+            startSecretListener: () => {
+                auth.timer = setTimeout(auth.checkTime, 10000);
+                document.addEventListener('keydown', auth.handleKey);
+            },
 
-                // 1. The Target Obfuscated String (Jumbled)
-                // Logic: ROT1 (Shift every char code by +1)
-                
-                const targetHash = "SbutBsfRvjufUifJoufrestujohDsfbuvsftEpouZpvUijol";
-
-                // 2. Transform User Input to Compare
-                const userInputHash = val.split('').map(c => String.fromCharCode(c.charCodeAt(0) + 1)).join('');
-
-                if (userInputHash === targetHash) {
-                    localStorage.setItem('orion_docs_status', 'unlocked');
-                    
-                    // Success Animation & Unlock
-                    overlay.style.opacity = '0';
-                    setTimeout(() => overlay.classList.add('hidden'), 500);
+            checkTime: () => {
+                if (auth.buffer.toUpperCase().startsWith("RAT")) {
+                    auth.timer = setTimeout(() => {
+                        location.reload(); 
+                    }, 10000);
                 } else {
-                    err.classList.remove('hidden');
-                    input.classList.add('shake');
-                    setTimeout(() => input.classList.remove('shake'), 500);
-                    input.value = '';
+                    location.reload();
+                }
+            },
+
+            handleKey: (e) => {
+                if (e.key === 'Enter') {
+                    if (auth.buffer.toUpperCase() === 'RATS') {
+                        clearTimeout(auth.timer); 
+                        localStorage.setItem('orion_docs_status', 'unlocked');
+                        const overlay = document.getElementById('login-overlay');
+                        overlay.style.opacity = '0';
+                        setTimeout(() => overlay.classList.add('hidden'), 500);
+                    } else {
+                        location.reload();
+                    }
+                } else if (e.key.length === 1) {
+                    auth.buffer += e.key;
                 }
             },
 
@@ -388,7 +356,6 @@
             }
         };
 
-        // --- RENDER LOGIC ---
         const renderer = {
             init: () => {
                 const nav = document.getElementById('sidebar-nav');
@@ -398,20 +365,17 @@
                 let mainHtml = '';
 
                 apiData.forEach((cat, catIndex) => {
-                    // Category Header
                     navHtml += `<div class="px-3 pt-5 pb-2 text-xs font-bold text-gray-500 uppercase tracking-wider">${cat.category}</div>`;
                     
                     cat.items.forEach((item, itemIndex) => {
                         const id = `ep-${catIndex}-${itemIndex}`;
                         
-                        // Sidebar Link
                         navHtml += `
                             <a href="#${id}" class="sidebar-link block px-3 py-2 text-sm text-gray-400 rounded-r-lg">
                                 <span class="mr-2 text-[10px] uppercase font-bold ${item.method === 'GET' ? 'text-blue-400' : 'text-green-400'}">${item.method}</span>
                                 ${item.title}
                             </a>`;
 
-                        // Main Content Card
                         mainHtml += `
                             <section id="${id}" class="scroll-mt-24 endpoint-card">
                                 <div class="flex items-start justify-between mb-4">
@@ -445,7 +409,6 @@
                 nav.innerHTML = navHtml;
                 container.innerHTML = mainHtml;
                 
-                // Highlight syntax
                 Prism.highlightAll();
             },
 
@@ -464,7 +427,6 @@
             }
         };
 
-        // --- EVENTS ---
         document.addEventListener('DOMContentLoaded', () => {
             auth.init();
             renderer.init();
