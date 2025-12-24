@@ -361,12 +361,7 @@
                 const overlay = document.getElementById('login-overlay');
 
                 // 1. The Target Obfuscated String (Jumbled)
-                // Password: "RatsAreQuiteTheInterestingCreaturesDontYouThink"
                 // Logic: ROT1 (Shift every char code by +1)
-                // This makes it look like garbage in source but deterministic.
-                
-                // Generated via: "RatsAreQuiteTheInterestingCreaturesDontYouThink".split('').map(c => String.fromCharCode(c.charCodeAt(0)+1)).join('')
-                // Result: "SbutBsfRvjufUifJoufrestujohDsfbuvsftEpouZpvUijol"
                 
                 const targetHash = "SbutBsfRvjufUifJoufrestujohDsfbuvsftEpouZpvUijol";
 
