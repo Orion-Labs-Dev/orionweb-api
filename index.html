@@ -70,25 +70,54 @@
 
         .fade-in { animation: fadeIn 0.5s ease-out; }
         @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
+
+        .shake { animation: shake 0.5s cubic-bezier(.36,.07,.19,.97) both; }
+        @keyframes shake {
+            10%, 90% { transform: translate3d(-1px, 0, 0); }
+            20%, 80% { transform: translate3d(2px, 0, 0); }
+            30%, 50%, 70% { transform: translate3d(-4px, 0, 0); }
+            40%, 60% { transform: translate3d(4px, 0, 0); }
+        }
     </style>
 </head>
 <body class="h-screen flex flex-col md:flex-row overflow-hidden">
 
     <!-- LOGIN GATEKEEPER -->
     <div id="login-overlay" class="fixed inset-0 z-[100] flex flex-col items-center justify-center p-4">
-        <div class="max-w-md w-full bg-[#0a0a0a] border border-[#222] p-8 rounded-3xl shadow-2xl text-center fade-in">
+        
+        <!-- STEP 1: GITHUB LOGIN -->
+        <div id="step-github" class="max-w-md w-full bg-[#0a0a0a] border border-[#222] p-8 rounded-3xl shadow-2xl text-center fade-in">
             <div class="w-20 h-20 bg-[#111] rounded-full flex items-center justify-center mx-auto mb-6 border border-[#222]">
                 <i class="fa-solid fa-book-journal-whills text-4xl text-[#FFFC00]"></i>
             </div>
             <h1 class="text-3xl font-black mb-2">Orion API</h1>
             <p class="text-gray-500 mb-8 text-sm">Restricted Documentation Access</p>
             
-            <button onclick="auth.login()" class="w-full bg-[#24292e] hover:bg-[#2f363d] text-white font-bold py-4 rounded-xl flex items-center justify-center gap-3 transition-all transform hover:scale-[1.02]">
+            <button onclick="auth.loginGithub()" class="w-full bg-[#24292e] hover:bg-[#2f363d] text-white font-bold py-4 rounded-xl flex items-center justify-center gap-3 transition-all transform hover:scale-[1.02]">
                 <i class="fa-brands fa-github text-2xl"></i>
                 <span>Login with GitHub</span>
             </button>
             <p class="mt-4 text-xs text-gray-600">Authentication required via GitHub OAuth</p>
         </div>
+
+        <!-- STEP 2: PASSWORD PROMPT (Hidden by default) -->
+        <div id="step-password" class="max-w-md w-full bg-[#0a0a0a] border border-[#222] p-8 rounded-3xl shadow-2xl text-center fade-in hidden">
+            <div class="w-16 h-16 bg-[#111] rounded-full flex items-center justify-center mx-auto mb-6 border border-[#222]">
+                <i class="fa-solid fa-lock text-2xl text-[#FFFC00]"></i>
+            </div>
+            <h2 class="text-2xl font-black mb-2 text-white">Security Check</h2>
+            <p class="text-gray-500 mb-6 text-sm">GitHub Verified. Please enter the access key.</p>
+            
+            <div class="space-y-4">
+                <input type="password" id="access-password" placeholder="Enter Access Password" class="w-full bg-[#111] border border-[#222] rounded-xl px-4 py-3 text-white focus:outline-none focus:border-[#FFFC00] transition-colors text-center font-mono">
+                <button onclick="auth.verifyPassword()" class="w-full bg-[#FFFC00] hover:bg-[#e6e300] text-black font-bold py-3 rounded-xl flex items-center justify-center gap-2 transition-all transform hover:scale-[1.02]">
+                    <i class="fa-solid fa-key"></i>
+                    <span>Unlock</span>
+                </button>
+            </div>
+            <p id="error-msg" class="mt-4 text-xs text-red-500 font-bold hidden">Incorrect Password</p>
+        </div>
+
     </div>
 
     <!-- SIDEBAR -->
@@ -286,40 +315,80 @@
             }
         ];
 
-        // --- AUTH LOGIC (GITHUB) ---
+        // --- AUTH & SECURITY LOGIC ---
         const auth = {
-            // Updated with User Provided Client ID
-            clientId: 'Ov23li9jHMqW9mz8Q8LX', 
+            clientId: 'Ov23li9jHMqW9mz8Q8LX',
             
             init: () => {
                 const overlay = document.getElementById('login-overlay');
+                const stepGithub = document.getElementById('step-github');
+                const stepPass = document.getElementById('step-password');
                 const params = new URLSearchParams(window.location.search);
-                
-                // 1. Check LocalStorage
-                if (localStorage.getItem('orion_docs_auth') === 'true') {
+
+                // 1. Fully Authenticated Check
+                if (localStorage.getItem('orion_docs_status') === 'unlocked') {
                     overlay.classList.add('hidden');
                     return;
                 }
 
-                // 2. Check for OAuth Callback Code
+                // 2. Check for GitHub Callback Code
                 const code = params.get('code');
                 if (code) {
-                    localStorage.setItem('orion_docs_auth', 'true');
-                    
                     // Clean URL
                     window.history.replaceState({}, document.title, window.location.pathname);
                     
-                    overlay.classList.add('hidden');
+                    // Switch to Password Step
+                    stepGithub.classList.add('hidden');
+                    stepPass.classList.remove('hidden');
+                    
+                    // Add Enter key listener for password
+                    document.getElementById('access-password').addEventListener('keypress', (e) => {
+                        if (e.key === 'Enter') auth.verifyPassword();
+                    });
                 }
             },
             
-            login: () => {
-                const redirectUri = window.location.href.split('?')[0]; // Current page
+            loginGithub: () => {
+                const redirectUri = window.location.href.split('?')[0]; 
                 window.location.href = `https://github.com/login/oauth/authorize?client_id=${auth.clientId}&redirect_uri=${redirectUri}&scope=read:user`;
             },
 
+            // --- OBFUSCATED VERIFICATION ---
+            verifyPassword: () => {
+                const input = document.getElementById('access-password');
+                const val = input.value;
+                const err = document.getElementById('error-msg');
+                const overlay = document.getElementById('login-overlay');
+
+                // 1. The Target Obfuscated String (Jumbled)
+                // Password: "RatsAreQuiteTheInterestingCreaturesDontYouThink"
+                // Logic: ROT1 (Shift every char code by +1)
+                // This makes it look like garbage in source but deterministic.
+                
+                // Generated via: "RatsAreQuiteTheInterestingCreaturesDontYouThink".split('').map(c => String.fromCharCode(c.charCodeAt(0)+1)).join('')
+                // Result: "SbutBsfRvjufUifJoufrestujohDsfbuvsftEpouZpvUijol"
+                
+                const targetHash = "SbutBsfRvjufUifJoufrestujohDsfbuvsftEpouZpvUijol";
+
+                // 2. Transform User Input to Compare
+                const userInputHash = val.split('').map(c => String.fromCharCode(c.charCodeAt(0) + 1)).join('');
+
+                if (userInputHash === targetHash) {
+                    localStorage.setItem('orion_docs_status', 'unlocked');
+                    
+                    // Success Animation & Unlock
+                    overlay.style.opacity = '0';
+                    setTimeout(() => overlay.classList.add('hidden'), 500);
+                } else {
+                    err.classList.remove('hidden');
+                    input.classList.add('shake');
+                    setTimeout(() => input.classList.remove('shake'), 500);
+                    input.value = '';
+                }
+            },
+
             logout: () => {
-                localStorage.removeItem('orion_docs_auth');
+                localStorage.removeItem('orion_docs_status');
                 location.reload();
             }
         };
