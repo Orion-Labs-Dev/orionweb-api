@@ -197,6 +197,14 @@
     </style>
 </head>
 <body class="h-screen flex flex-col overflow-hidden relative">
+    <!-- Tailwind CDN Safelist: ensures dynamic JS classes are generated -->
+    <div class="hidden">
+        <span class="text-purple-400 bg-purple-500/10 border-purple-500/20 border-purple-500/30 hover:border-purple-500/30 group-hover:text-purple-400"></span>
+        <span class="text-green-400 bg-green-500/10 border-green-500/20 border-green-500/30 hover:border-green-500/30 group-hover:text-green-400"></span>
+        <span class="text-yellow-400 bg-yellow-500/10 border-yellow-500/20 border-yellow-500/30 hover:border-yellow-500/30 group-hover:text-yellow-400"></span>
+        <span class="text-red-400 bg-red-500/10 border-red-500/20 border-red-500/30 hover:border-red-500/30 group-hover:text-red-400"></span>
+        <span class="text-blue-400 bg-blue-500/10 border-blue-500/20 border-blue-500/30 hover:border-blue-500/30 group-hover:text-blue-400"></span>
+    </div>
 
     <!-- AUTH OVERLAY -->
     <div id="login-overlay" class="fixed inset-0 z-[100] flex flex-col items-center justify-center p-4">
@@ -276,6 +284,18 @@
                     </div>
                 </div>
             </div>
+        </div>
+    </div>
+
+    <!-- COMMAND DETAIL MODAL -->
+    <div id="cmd-detail-modal" class="hidden fixed inset-0 z-[130] flex items-center justify-center p-4" onclick="if(event.target===this)cmdModal.close()">
+        <div class="absolute inset-0 bg-black/70 backdrop-blur-sm"></div>
+        <div class="bg-[#0a0a0a] border border-[#222] w-full max-w-xl rounded-2xl shadow-2xl flex flex-col max-h-[85vh] fade-in relative z-10">
+            <div class="p-5 border-b border-[#222] flex justify-between items-center bg-[#111] rounded-t-2xl">
+                <code id="cmd-modal-title" class="text-[#FFFC00] text-lg font-bold"></code>
+                <button onclick="cmdModal.close()" class="text-gray-500 hover:text-white transition"><i class="fa-solid fa-xmark text-xl"></i></button>
+            </div>
+            <div class="flex-1 overflow-y-auto p-6 space-y-6 custom-scrollbar" id="cmd-modal-body"></div>
         </div>
     </div>
 
@@ -443,195 +463,7 @@ SocketWhitelistIP=</code></pre>
                             </div>
                         </div>
 
-                        <!-- CATEGORY: Role Management -->
-                        <div class="cmd-category mb-8" data-category="roles">
-                            <div class="flex items-center gap-3 mb-4">
-                                <div class="w-8 h-8 rounded-lg bg-purple-500/10 border border-purple-500/30 flex items-center justify-center">
-                                    <i class="fa-solid fa-user-shield text-purple-400 text-sm"></i>
-                                </div>
-                                <h4 class="text-sm font-black text-white uppercase tracking-widest">Role Management</h4>
-                            </div>
-                            <div class="space-y-2 cmd-list">
-                                <div class="cmd-row bg-[#0a0a0a] border border-[#222] rounded-xl p-4 hover:border-purple-500/30 transition-colors">
-                                    <div class="flex flex-col lg:flex-row lg:items-center gap-3">
-                                        <div class="flex items-center gap-1.5 shrink-0 lg:w-72"><code class="text-[#FFFC00] text-sm font-bold">/createrole</code> <span class="text-[10px] font-mono bg-cyan-500/10 text-cyan-400 border border-cyan-500/20 px-1.5 py-0.5 rounded">Name</span> <span class="text-[10px] font-mono bg-cyan-500/10 text-cyan-400 border border-cyan-500/20 px-1.5 py-0.5 rounded">Priority</span></div>
-                                        <span class="text-[10px] font-black text-purple-400 bg-purple-500/10 border border-purple-500/20 px-2 py-0.5 rounded-md w-fit uppercase tracking-wider shrink-0">CanCreateRoles</span>
-                                        <p class="text-xs text-gray-500 leading-relaxed flex-1">Defines a new role. Priority must be lower than yours.</p>
-                                    </div>
-                                </div>
-                                <div class="cmd-row bg-[#0a0a0a] border border-[#222] rounded-xl p-4 hover:border-purple-500/30 transition-colors">
-                                    <div class="flex flex-col lg:flex-row lg:items-center gap-3">
-                                        <div class="flex items-center gap-1.5 shrink-0 lg:w-72"><code class="text-[#FFFC00] text-sm font-bold">/deleterole</code> <span class="text-[10px] font-mono bg-cyan-500/10 text-cyan-400 border border-cyan-500/20 px-1.5 py-0.5 rounded">Name</span></div>
-                                        <span class="text-[10px] font-black text-red-400 bg-red-500/10 border border-red-500/20 px-2 py-0.5 rounded-md w-fit uppercase tracking-wider shrink-0">CanDeleteRoles</span>
-                                        <p class="text-xs text-gray-500 leading-relaxed flex-1">Permanently removes a role definition from the server.</p>
-                                    </div>
-                                </div>
-                                <div class="cmd-row bg-[#0a0a0a] border border-[#222] rounded-xl p-4 hover:border-purple-500/30 transition-colors">
-                                    <div class="flex flex-col lg:flex-row lg:items-center gap-3">
-                                        <div class="flex items-center gap-1.5 shrink-0 lg:w-72"><code class="text-[#FFFC00] text-sm font-bold">/assignrole</code> <span class="text-[10px] font-mono bg-cyan-500/10 text-cyan-400 border border-cyan-500/20 px-1.5 py-0.5 rounded">Player</span> <span class="text-[10px] font-mono bg-cyan-500/10 text-cyan-400 border border-cyan-500/20 px-1.5 py-0.5 rounded">Role</span></div>
-                                        <span class="text-[10px] font-black text-purple-400 bg-purple-500/10 border border-purple-500/20 px-2 py-0.5 rounded-md w-fit uppercase tracking-wider shrink-0">CanManageRolesOthers</span>
-                                        <p class="text-xs text-gray-500 leading-relaxed flex-1">Assigns a role to a target player. Priority checks apply.</p>
-                                    </div>
-                                </div>
-                                <div class="cmd-row bg-[#0a0a0a] border border-[#222] rounded-xl p-4 hover:border-purple-500/30 transition-colors">
-                                    <div class="flex flex-col lg:flex-row lg:items-center gap-3">
-                                        <div class="flex items-center gap-1.5 shrink-0 lg:w-72"><code class="text-[#FFFC00] text-sm font-bold">/removerole</code> <span class="text-[10px] font-mono bg-cyan-500/10 text-cyan-400 border border-cyan-500/20 px-1.5 py-0.5 rounded">Player</span> <span class="text-[10px] font-mono bg-cyan-500/10 text-cyan-400 border border-cyan-500/20 px-1.5 py-0.5 rounded">Role</span></div>
-                                        <span class="text-[10px] font-black text-purple-400 bg-purple-500/10 border border-purple-500/20 px-2 py-0.5 rounded-md w-fit uppercase tracking-wider shrink-0">CanManageRolesOthers</span>
-                                        <p class="text-xs text-gray-500 leading-relaxed flex-1">Removes a role from a target player.</p>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-
-                        <!-- CATEGORY: Dino & Player Stats -->
-                        <div class="cmd-category mb-8" data-category="stats">
-                            <div class="flex items-center gap-3 mb-4">
-                                <div class="w-8 h-8 rounded-lg bg-green-500/10 border border-green-500/30 flex items-center justify-center">
-                                    <i class="fa-solid fa-dna text-green-400 text-sm"></i>
-                                </div>
-                                <h4 class="text-sm font-black text-white uppercase tracking-widest">Dino &amp; Player Stats</h4>
-                            </div>
-                            <div class="space-y-2 cmd-list">
-                                <div class="cmd-row bg-[#0a0a0a] border border-[#222] rounded-xl p-4 hover:border-green-500/30 transition-colors">
-                                    <div class="flex flex-col lg:flex-row lg:items-center gap-3">
-                                        <div class="flex items-center gap-1.5 shrink-0 lg:w-72"><code class="text-[#FFFC00] text-sm font-bold">/heal</code></div>
-                                        <span class="text-[10px] font-black text-green-400 bg-green-500/10 border border-green-500/20 px-2 py-0.5 rounded-md w-fit uppercase tracking-wider shrink-0">CanHeal</span>
-                                        <p class="text-xs text-gray-500 leading-relaxed flex-1">Restores all vitals (Health, Hunger, Thirst, Stamina, Blood) to 100%.</p>
-                                    </div>
-                                </div>
-                                <div class="cmd-row bg-[#0a0a0a] border border-[#222] rounded-xl p-4 hover:border-green-500/30 transition-colors">
-                                    <div class="flex flex-col lg:flex-row lg:items-center gap-3">
-                                        <div class="flex items-center gap-1.5 shrink-0 lg:w-72"><code class="text-[#FFFC00] text-sm font-bold">/grow</code></div>
-                                        <span class="text-[10px] font-black text-green-400 bg-green-500/10 border border-green-500/20 px-2 py-0.5 rounded-md w-fit uppercase tracking-wider shrink-0">CanGrow</span>
-                                        <p class="text-xs text-gray-500 leading-relaxed flex-1">Sets growth development to 100%.</p>
-                                    </div>
-                                </div>
-                                <div class="cmd-row bg-[#0a0a0a] border border-[#222] rounded-xl p-4 hover:border-green-500/30 transition-colors">
-                                    <div class="flex flex-col lg:flex-row lg:items-center gap-3">
-                                        <div class="flex items-center gap-1.5 shrink-0 lg:w-72"><code class="text-[#FFFC00] text-sm font-bold">/vanish</code></div>
-                                        <span class="text-[10px] font-black text-green-400 bg-green-500/10 border border-green-500/20 px-2 py-0.5 rounded-md w-fit uppercase tracking-wider shrink-0">CanVanish</span>
-                                        <p class="text-xs text-gray-500 leading-relaxed flex-1">Toggles invisibility/ghost state on your character.</p>
-                                    </div>
-                                </div>
-                                <div class="cmd-row bg-[#0a0a0a] border border-[#222] rounded-xl p-4 hover:border-green-500/30 transition-colors">
-                                    <div class="flex flex-col lg:flex-row lg:items-center gap-3">
-                                        <div class="flex items-center gap-1.5 shrink-0 lg:w-72"><code class="text-[#FFFC00] text-sm font-bold">/slay</code></div>
-                                        <span class="text-[10px] font-black text-red-400 bg-red-500/10 border border-red-500/20 px-2 py-0.5 rounded-md w-fit uppercase tracking-wider shrink-0">CanSlay</span>
-                                        <p class="text-xs text-gray-500 leading-relaxed flex-1">Deals fatal damage to the target specimen.</p>
-                                    </div>
-                                </div>
-                                <div class="cmd-row bg-[#0a0a0a] border border-[#222] rounded-xl p-4 hover:border-green-500/30 transition-colors">
-                                    <div class="flex flex-col lg:flex-row lg:items-center gap-3">
-                                        <div class="flex items-center gap-1.5 shrink-0 lg:w-72"><code class="text-[#FFFC00] text-sm font-bold">/tp</code> <span class="text-[10px] font-mono bg-cyan-500/10 text-cyan-400 border border-cyan-500/20 px-1.5 py-0.5 rounded">Target | X Y Z</span></div>
-                                        <span class="text-[10px] font-black text-blue-400 bg-blue-500/10 border border-blue-500/20 px-2 py-0.5 rounded-md w-fit uppercase tracking-wider shrink-0">CanTeleport</span>
-                                        <p class="text-xs text-gray-500 leading-relaxed flex-1">Teleports to a player by name or to specific X Y Z world coordinates.</p>
-                                    </div>
-                                </div>
-                                <div class="cmd-row bg-[#0a0a0a] border border-[#222] rounded-xl p-4 hover:border-green-500/30 transition-colors">
-                                    <div class="flex flex-col lg:flex-row lg:items-center gap-3">
-                                        <div class="flex items-center gap-1.5 shrink-0 lg:w-72"><code class="text-[#FFFC00] text-sm font-bold">/swap</code> <span class="text-[10px] font-mono bg-cyan-500/10 text-cyan-400 border border-cyan-500/20 px-1.5 py-0.5 rounded">Class</span></div>
-                                        <span class="text-[10px] font-black text-blue-400 bg-blue-500/10 border border-blue-500/20 px-2 py-0.5 rounded-md w-fit uppercase tracking-wider shrink-0">CanSwap</span>
-                                        <p class="text-xs text-gray-500 leading-relaxed flex-1">Transforms your active character into a different dinosaur species.</p>
-                                    </div>
-                                </div>
-                                <div class="cmd-row bg-[#0a0a0a] border border-[#222] rounded-xl p-4 hover:border-green-500/30 transition-colors">
-                                    <div class="flex flex-col lg:flex-row lg:items-center gap-3">
-                                        <div class="flex items-center gap-1.5 shrink-0 lg:w-72"><code class="text-[#FFFC00] text-sm font-bold">/health</code></div>
-                                        <span class="text-[10px] font-black text-green-400 bg-green-500/10 border border-green-500/20 px-2 py-0.5 rounded-md w-fit uppercase tracking-wider shrink-0">CanSetHealth</span>
-                                        <p class="text-xs text-gray-500 leading-relaxed flex-1">Sets health to 100%.</p>
-                                    </div>
-                                </div>
-                                <div class="cmd-row bg-[#0a0a0a] border border-[#222] rounded-xl p-4 hover:border-green-500/30 transition-colors">
-                                    <div class="flex flex-col lg:flex-row lg:items-center gap-3">
-                                        <div class="flex items-center gap-1.5 shrink-0 lg:w-72"><code class="text-[#FFFC00] text-sm font-bold">/hunger</code></div>
-                                        <span class="text-[10px] font-black text-green-400 bg-green-500/10 border border-green-500/20 px-2 py-0.5 rounded-md w-fit uppercase tracking-wider shrink-0">CanSetHunger</span>
-                                        <p class="text-xs text-gray-500 leading-relaxed flex-1">Sets hunger to 100%.</p>
-                                    </div>
-                                </div>
-                                <div class="cmd-row bg-[#0a0a0a] border border-[#222] rounded-xl p-4 hover:border-green-500/30 transition-colors">
-                                    <div class="flex flex-col lg:flex-row lg:items-center gap-3">
-                                        <div class="flex items-center gap-1.5 shrink-0 lg:w-72"><code class="text-[#FFFC00] text-sm font-bold">/thirst</code></div>
-                                        <span class="text-[10px] font-black text-green-400 bg-green-500/10 border border-green-500/20 px-2 py-0.5 rounded-md w-fit uppercase tracking-wider shrink-0">CanSetThirst</span>
-                                        <p class="text-xs text-gray-500 leading-relaxed flex-1">Sets thirst to 100%.</p>
-                                    </div>
-                                </div>
-                                <div class="cmd-row bg-[#0a0a0a] border border-[#222] rounded-xl p-4 hover:border-green-500/30 transition-colors">
-                                    <div class="flex flex-col lg:flex-row lg:items-center gap-3">
-                                        <div class="flex items-center gap-1.5 shrink-0 lg:w-72"><code class="text-[#FFFC00] text-sm font-bold">/stamina</code></div>
-                                        <span class="text-[10px] font-black text-green-400 bg-green-500/10 border border-green-500/20 px-2 py-0.5 rounded-md w-fit uppercase tracking-wider shrink-0">CanSetStamina</span>
-                                        <p class="text-xs text-gray-500 leading-relaxed flex-1">Sets stamina to 100%.</p>
-                                    </div>
-                                </div>
-                                <div class="cmd-row bg-[#0a0a0a] border border-[#222] rounded-xl p-4 hover:border-green-500/30 transition-colors">
-                                    <div class="flex flex-col lg:flex-row lg:items-center gap-3">
-                                        <div class="flex items-center gap-1.5 shrink-0 lg:w-72"><code class="text-[#FFFC00] text-sm font-bold">/blood</code></div>
-                                        <span class="text-[10px] font-black text-green-400 bg-green-500/10 border border-green-500/20 px-2 py-0.5 rounded-md w-fit uppercase tracking-wider shrink-0">CanSetBlood</span>
-                                        <p class="text-xs text-gray-500 leading-relaxed flex-1">Sets blood to 100%.</p>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-
-                        <!-- CATEGORY: World & Garage -->
-                        <div class="cmd-category mb-8" data-category="world">
-                            <div class="flex items-center gap-3 mb-4">
-                                <div class="w-8 h-8 rounded-lg bg-yellow-500/10 border border-yellow-500/30 flex items-center justify-center">
-                                    <i class="fa-solid fa-terminal text-yellow-400 text-sm"></i>
-                                </div>
-                                <h4 class="text-sm font-black text-white uppercase tracking-widest">World &amp; Garage</h4>
-                            </div>
-                            <div class="space-y-2 cmd-list">
-                                <div class="cmd-row bg-[#0a0a0a] border border-[#222] rounded-xl p-4 hover:border-yellow-500/30 transition-colors">
-                                    <div class="flex flex-col lg:flex-row lg:items-center gap-3">
-                                        <div class="flex items-center gap-1.5 shrink-0 lg:w-72"><code class="text-[#FFFC00] text-sm font-bold">/garage</code> <span class="text-[9px] font-black text-gray-500 bg-white/5 border border-white/10 px-1.5 py-0.5 rounded uppercase tracking-widest">alias</span> <code class="text-[#FFFC00]/60 text-sm font-bold">/showgarage</code></div>
-                                        <span class="text-[10px] font-black text-yellow-400 bg-yellow-500/10 border border-yellow-500/20 px-2 py-0.5 rounded-md w-fit uppercase tracking-wider shrink-0">CanShowGarage</span>
-                                        <p class="text-xs text-gray-500 leading-relaxed flex-1">Lists your stored dinosaurs and their indices in chat.</p>
-                                    </div>
-                                </div>
-                                <div class="cmd-row bg-[#0a0a0a] border border-[#222] rounded-xl p-4 hover:border-yellow-500/30 transition-colors">
-                                    <div class="flex flex-col lg:flex-row lg:items-center gap-3">
-                                        <div class="flex items-center gap-1.5 shrink-0 lg:w-72"><code class="text-[#FFFC00] text-sm font-bold">/park</code></div>
-                                        <span class="text-[10px] font-black text-yellow-400 bg-yellow-500/10 border border-yellow-500/20 px-2 py-0.5 rounded-md w-fit uppercase tracking-wider shrink-0">CanPark</span>
-                                        <p class="text-xs text-gray-500 leading-relaxed flex-1">Saves and archives your current active dinosaur to the garage.</p>
-                                    </div>
-                                </div>
-                                <div class="cmd-row bg-[#0a0a0a] border border-[#222] rounded-xl p-4 hover:border-yellow-500/30 transition-colors">
-                                    <div class="flex flex-col lg:flex-row lg:items-center gap-3">
-                                        <div class="flex items-center gap-1.5 shrink-0 lg:w-72"><code class="text-[#FFFC00] text-sm font-bold">/retrieve</code> <span class="text-[10px] font-mono bg-cyan-500/10 text-cyan-400 border border-cyan-500/20 px-1.5 py-0.5 rounded">Index</span></div>
-                                        <span class="text-[10px] font-black text-yellow-400 bg-yellow-500/10 border border-yellow-500/20 px-2 py-0.5 rounded-md w-fit uppercase tracking-wider shrink-0">CanRetrieve</span>
-                                        <p class="text-xs text-gray-500 leading-relaxed flex-1">Spawns a dinosaur from your garage by its stored array index.</p>
-                                    </div>
-                                </div>
-                                <div class="cmd-row bg-[#0a0a0a] border border-[#222] rounded-xl p-4 hover:border-yellow-500/30 transition-colors">
-                                    <div class="flex flex-col lg:flex-row lg:items-center gap-3">
-                                        <div class="flex items-center gap-1.5 shrink-0 lg:w-72"><code class="text-[#FFFC00] text-sm font-bold">/spawn ai</code></div>
-                                        <span class="text-[10px] font-black text-blue-400 bg-blue-500/10 border border-blue-500/20 px-2 py-0.5 rounded-md w-fit uppercase tracking-wider shrink-0">CanSpawnAI</span>
-                                        <p class="text-xs text-gray-500 leading-relaxed flex-1">Spawns an AI-controlled entity into the world.</p>
-                                    </div>
-                                </div>
-                                <div class="cmd-row bg-[#0a0a0a] border border-[#222] rounded-xl p-4 hover:border-yellow-500/30 transition-colors">
-                                    <div class="flex flex-col lg:flex-row lg:items-center gap-3">
-                                        <div class="flex items-center gap-1.5 shrink-0 lg:w-72"><code class="text-[#FFFC00] text-sm font-bold">/wipe ai</code></div>
-                                        <span class="text-[10px] font-black text-red-400 bg-red-500/10 border border-red-500/20 px-2 py-0.5 rounded-md w-fit uppercase tracking-wider shrink-0">CanWipeAI</span>
-                                        <p class="text-xs text-gray-500 leading-relaxed flex-1">Removes all AI-controlled entities from the map.</p>
-                                    </div>
-                                </div>
-                                <div class="cmd-row bg-[#0a0a0a] border border-[#222] rounded-xl p-4 hover:border-yellow-500/30 transition-colors">
-                                    <div class="flex flex-col lg:flex-row lg:items-center gap-3">
-                                        <div class="flex items-center gap-1.5 shrink-0 lg:w-72"><code class="text-[#FFFC00] text-sm font-bold">/wipecorpses</code></div>
-                                        <span class="text-[10px] font-black text-red-400 bg-red-500/10 border border-red-500/20 px-2 py-0.5 rounded-md w-fit uppercase tracking-wider shrink-0">CanWipeCorpses</span>
-                                        <p class="text-xs text-gray-500 leading-relaxed flex-1">Clears all dropped carcasses from the world.</p>
-                                    </div>
-                                </div>
-                                <div class="cmd-row bg-[#0a0a0a] border border-[#222] rounded-xl p-4 hover:border-yellow-500/30 transition-colors">
-                                    <div class="flex flex-col lg:flex-row lg:items-center gap-3">
-                                        <div class="flex items-center gap-1.5 shrink-0 lg:w-72"><code class="text-[#FFFC00] text-sm font-bold">/spawncorpse</code> <span class="text-[10px] font-mono bg-cyan-500/10 text-cyan-400 border border-cyan-500/20 px-1.5 py-0.5 rounded">DinoName</span></div>
-                                        <span class="text-[10px] font-black text-yellow-400 bg-yellow-500/10 border border-yellow-500/20 px-2 py-0.5 rounded-md w-fit uppercase tracking-wider shrink-0">CanSpawnCorpse</span>
-                                        <p class="text-xs text-gray-500 leading-relaxed flex-1">Spawns a food source carcass at your current location.</p>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
+                        <div id="cmd-registry-container"></div>
 
                     </div>
                 </section>
@@ -1626,16 +1458,168 @@ if ($context.Request.IsWebSocketRequest) {
         ];
 
         // ============================
-        // Chat Command Search Function
+        // Command Data & Rendering
         // ============================
+        const cmdCategories = [
+            {
+                name: "Role Management", icon: "fa-user-shield", color: "purple",
+                items: [
+                    { cmd: "/createrole", params: ["Name", "Priority"], perm: "Can Create Roles", permRaw: "CanCreateRoles", desc: "Defines a new role. Priority must be lower than yours.",
+                      detail: { summary: "Creates a new role definition on the server with the given name and priority level.", usage: ["/createrole Moderator 50", "/createrole VIP 10"], notes: "The priority you assign must be strictly less than your own highest role priority. Role names are case-insensitive and must be unique." } },
+                    { cmd: "/deleterole", params: ["Name"], perm: "Can Delete Roles", permRaw: "CanDeleteRoles", desc: "Permanently removes a role definition from the server.", permColor: "red",
+                      detail: { summary: "Destroys a role definition entirely. Any users who held this role will lose it immediately.", usage: ["/deleterole Moderator"], notes: "You can only delete roles with a priority lower than your own. This action is irreversible." } },
+                    { cmd: "/assignrole", params: ["Player", "Role"], perm: "Can Manage Roles · Others", permRaw: "CanManageRolesOthers", desc: "Assigns a role to a target player. Priority checks apply.",
+                      detail: { summary: "Attaches a role to a player, granting them all permissions defined in that role.", usage: ["/assignrole Specimen_Alpha VIP", "/assignrole 7656119xxxxxxxxxx Moderator"], notes: "The Player field accepts either a username (best-match lookup) or an exact SteamID. You cannot assign a role with a priority equal to or higher than your own." } },
+                    { cmd: "/removerole", params: ["Player", "Role"], perm: "Can Manage Roles · Others", permRaw: "CanManageRolesOthers", desc: "Removes a role from a target player.",
+                      detail: { summary: "Detaches a role from a player, revoking any permissions that were exclusively granted by it.", usage: ["/removerole Specimen_Alpha VIP", "/removerole 7656119xxxxxxxxxx Moderator"], notes: "The Player field accepts either a username (best-match lookup) or an exact SteamID. Priority restrictions apply." } }
+                ]
+            },
+            {
+                name: "Dino & Player Stats", icon: "fa-dna", color: "green",
+                items: [
+                    { cmd: "/heal", params: ["Player"], perm: "Can Heal", permRaw: "CanHeal", desc: "Restores all vitals to 100%.",
+                      detail: { summary: "Fully restores Health, Hunger, Thirst, Stamina, and Blood to maximum for the target player.", usage: ["/heal Specimen_Alpha", "/heal 7656119xxxxxxxxxx"], notes: "The Player field accepts a username (best-match) or exact SteamID." } },
+                    { cmd: "/grow", params: ["Player"], perm: "Can Grow", permRaw: "CanGrow", desc: "Sets growth development to 100%.",
+                      detail: { summary: "Instantly matures the target player's dinosaur to full adult growth.", usage: ["/grow Specimen_Alpha", "/grow 7656119xxxxxxxxxx"], notes: "The Player field accepts a username (best-match) or exact SteamID." } },
+                    { cmd: "/vanish", params: ["Player"], perm: "Can Vanish", permRaw: "CanVanish", desc: "Toggles invisibility/ghost state.",
+                      detail: { summary: "Toggles the target player into or out of an invisible ghost state. Other players cannot see or interact with a vanished player.", usage: ["/vanish Specimen_Alpha", "/vanish 7656119xxxxxxxxxx"], notes: "The Player field accepts a username (best-match) or exact SteamID. Running the command again on the same player disables vanish." } },
+                    { cmd: "/slay", params: ["Player"], perm: "Can Slay", permRaw: "CanSlay", desc: "Deals fatal damage to target.", permColor: "red",
+                      detail: { summary: "Applies lethal damage to the target player's dinosaur using standard damage logic.", usage: ["/slay Specimen_Alpha", "/slay 7656119xxxxxxxxxx"], notes: "The Player field accepts a username (best-match) or exact SteamID. Does not bypass invincibility — use the ADMIN_SLAY_DINO API endpoint for that." } },
+                    { cmd: "/tp", params: ["Player | X Y Z"], perm: "Can Teleport", permRaw: "CanTeleport", desc: "Teleports to a player or coordinates.", permColor: "blue",
+                      detail: { summary: "Teleports yourself or a target player to another player's location or to exact world coordinates. Supports multiple syntax forms for flexibility.", usage: ["/tp Specimen_Alpha", "/tp 1200.5 4050.0 100.0", "/tp Specimen_Alpha Specimen_Beta", "/tp Specimen_Alpha 1200.5 4050.0 100.0"], notes: "All player fields accept a username (best-match lookup on the server) or an exact SteamID. When given one player, teleports you to them. When given coordinates alone, teleports you there. When given two players, teleports the first player to the second. When given a player followed by X Y Z, teleports that player to those coordinates." } },
+                    { cmd: "/swap", params: ["Class"], perm: "Can Swap", permRaw: "CanSwap", desc: "Transforms into a different species.", permColor: "blue",
+                      detail: { summary: "Replaces your active dinosaur with a new species. Your current character data is lost.", usage: ["/swap BP_Tyrannosaurus_C", "/swap BP_Pteranodon_C"], notes: "The Class parameter must be the exact Blueprint class name string (e.g. BP_Tyrannosaurus_C). Invalid class names will be rejected." } },
+                    { cmd: "/health", params: ["Player", "0-100"], perm: "Can Set Health", permRaw: "CanSetHealth", desc: "Sets health to the specified percentage.",
+                      detail: { summary: "Sets the target player's health stat to a specific percentage value.", usage: ["/health Specimen_Alpha 100", "/health 7656119xxxxxxxxxx 50"], notes: "Value must be between 0 and 100. The Player field accepts a username (best-match) or exact SteamID." } },
+                    { cmd: "/hunger", params: ["Player", "0-100"], perm: "Can Set Hunger", permRaw: "CanSetHunger", desc: "Sets hunger to the specified percentage.",
+                      detail: { summary: "Sets the target player's hunger stat to a specific percentage value.", usage: ["/hunger Specimen_Alpha 100", "/hunger 7656119xxxxxxxxxx 75"], notes: "Value must be between 0 and 100. The Player field accepts a username (best-match) or exact SteamID." } },
+                    { cmd: "/thirst", params: ["Player", "0-100"], perm: "Can Set Thirst", permRaw: "CanSetThirst", desc: "Sets thirst to the specified percentage.",
+                      detail: { summary: "Sets the target player's thirst stat to a specific percentage value.", usage: ["/thirst Specimen_Alpha 100"], notes: "Value must be between 0 and 100. The Player field accepts a username (best-match) or exact SteamID." } },
+                    { cmd: "/stamina", params: ["Player", "0-100"], perm: "Can Set Stamina", permRaw: "CanSetStamina", desc: "Sets stamina to the specified percentage.",
+                      detail: { summary: "Sets the target player's stamina stat to a specific percentage value.", usage: ["/stamina Specimen_Alpha 100"], notes: "Value must be between 0 and 100. The Player field accepts a username (best-match) or exact SteamID." } },
+                    { cmd: "/blood", params: ["Player", "0-100"], perm: "Can Set Blood", permRaw: "CanSetBlood", desc: "Sets blood to the specified percentage.",
+                      detail: { summary: "Sets the target player's blood stat to a specific percentage value.", usage: ["/blood Specimen_Alpha 100"], notes: "Value must be between 0 and 100. The Player field accepts a username (best-match) or exact SteamID." } },
+                    { cmd: "/set-nutrient", params: ["Type", "0-100"], perm: "Can Set Nutrient", permRaw: "CanSetNutrient", desc: "Sets a specific nutrient stat by type.",
+                      detail: { summary: "Sets one of the three nutrient values (Protein, Lipids, or Carbs) to a specific percentage.", usage: ["/set-nutrient PROTEIN 100", "/set-nutrient LIPIDS 50", "/set-nutrient CARBS 75"], notes: "The Type must be one of: PROTEIN, LIPIDS, or CARBS (case-insensitive). Value must be between 0 and 100." } }
+                ]
+            },
+            {
+                name: "World & Garage", icon: "fa-terminal", color: "yellow",
+                items: [
+                    { cmd: "/garage", alias: "/showgarage", perm: "Can Show Garage", permRaw: "CanShowGarage", desc: "Lists your stored dinosaurs in chat.",
+                      detail: { summary: "Displays all dinosaurs currently stored in your personal garage, along with their array indices.", usage: ["/garage", "/showgarage"], notes: "Use the Index values shown here with the /retrieve command to deploy a stored dinosaur." } },
+                    { cmd: "/park", perm: "Can Park", permRaw: "CanPark", desc: "Archives your current dinosaur to the garage.",
+                      detail: { summary: "Saves your active dinosaur into the garage storage system and removes it from the world. You will need to select a new character or retrieve a stored one.", usage: ["/park"], notes: "Your full character state (growth, stats, skin) is preserved in storage." } },
+                    { cmd: "/retrieve", params: ["Index"], perm: "Can Retrieve", permRaw: "CanRetrieve", desc: "Spawns a stored dinosaur by index.",
+                      detail: { summary: "Deploys a dinosaur from your garage by its stored array index. Your currently active character is automatically archived first.", usage: ["/retrieve 0", "/retrieve 1"], notes: "Use /garage to see available indices. If you have an active character, it will be parked automatically before the retrieval." } },
+                    { cmd: "/spawn ai", perm: "Can Spawn AI", permRaw: "CanSpawnAI", desc: "Spawns an AI-controlled entity.", permColor: "blue",
+                      detail: { summary: "Creates an AI-controlled dinosaur entity in the game world.", usage: ["/spawn ai"], notes: "The AI entity spawns near your current location." } },
+                    { cmd: "/wipe ai", perm: "Can Wipe AI", permRaw: "CanWipeAI", desc: "Removes all AI from the map.", permColor: "red",
+                      detail: { summary: "Instantly destroys every AI-controlled entity currently active on the server.", usage: ["/wipe ai"], notes: "This is a global action — all AI across the entire map is removed." } },
+                    { cmd: "/wipecorpses", perm: "Can Wipe Corpses", permRaw: "CanWipeCorpses", desc: "Clears all carcasses from the world.", permColor: "red",
+                      detail: { summary: "Removes every dropped carcass (food source) from the game world.", usage: ["/wipecorpses"], notes: "This is a global action and cannot be undone." } },
+                    { cmd: "/spawncorpse", params: ["DinoName"], perm: "Can Spawn Corpse", permRaw: "CanSpawnCorpse", desc: "Spawns a food source at your location.",
+                      detail: { summary: "Creates a carcass of the specified dinosaur type at your current world position, usable as a food source.", usage: ["/spawncorpse Tyrannosaurus", "/spawncorpse Pteranodon"], notes: "The DinoName should be the common species name. The carcass spawns directly at your feet." } }
+                ]
+            }
+        ];
+
+        const cmdModal = {
+            open: (catIdx, itemIdx) => {
+                const item = cmdCategories[catIdx].items[itemIdx];
+                const cat = cmdCategories[catIdx];
+                const modal = document.getElementById('cmd-detail-modal');
+                document.getElementById('cmd-modal-title').textContent = item.cmd;
+                const body = document.getElementById('cmd-modal-body');
+                const col = item.permColor || cat.color;
+                const paramHtml = (item.params || []).map(p => `<span class="text-[11px] font-mono bg-cyan-500/10 text-cyan-400 border border-cyan-500/20 px-2 py-1 rounded">${p}</span>`).join('');
+                const aliasHtml = item.alias ? `<div class="flex items-center gap-2 mt-3"><span class="text-[9px] font-black text-gray-500 bg-white/5 border border-white/10 px-1.5 py-0.5 rounded uppercase tracking-widest">alias</span> <code class="text-[#FFFC00]/60 text-sm font-bold">${item.alias}</code></div>` : '';
+
+                body.innerHTML = `
+                    <div>
+                        <p class="text-sm text-gray-300 leading-relaxed">${item.detail.summary}</p>
+                        ${aliasHtml}
+                    </div>
+                    <div class="bg-[#111] border border-[#222] rounded-xl p-4">
+                        <div class="flex items-center gap-2 mb-3">
+                            <span class="text-[10px] font-black text-gray-500 uppercase tracking-widest">Required Permission</span>
+                        </div>
+                        <span class="text-xs font-bold text-${col}-400 bg-${col}-500/10 border border-${col}-500/20 px-3 py-1.5 rounded-lg inline-block">${item.perm}</span>
+                    </div>
+                    ${paramHtml ? `
+                    <div class="bg-[#111] border border-[#222] rounded-xl p-4">
+                        <div class="text-[10px] font-black text-gray-500 uppercase tracking-widest mb-3">Parameters</div>
+                        <div class="flex flex-wrap gap-2">${paramHtml}</div>
+                        <p class="text-[11px] text-gray-600 mt-3 italic"><i class="fa-solid fa-circle-info mr-1"></i> Player fields accept a username (best-match lookup) or an exact SteamID.</p>
+                    </div>` : ''}
+                    <div class="bg-[#111] border border-[#222] rounded-xl p-4">
+                        <div class="text-[10px] font-black text-gray-500 uppercase tracking-widest mb-3">Usage Examples</div>
+                        <div class="space-y-2">
+                            ${item.detail.usage.map(u => `<div class="bg-[#0a0a0a] border border-[#333] rounded-lg px-3 py-2"><code class="text-[#FFFC00] text-xs font-mono">${u}</code></div>`).join('')}
+                        </div>
+                    </div>
+                    <div class="bg-blue-900/10 border border-blue-500/20 rounded-xl p-4">
+                        <div class="text-[10px] font-black text-blue-400 uppercase tracking-widest mb-2"><i class="fa-solid fa-circle-info mr-1"></i> Notes</div>
+                        <p class="text-xs text-gray-400 leading-relaxed">${item.detail.notes}</p>
+                    </div>
+                `;
+                modal.classList.remove('hidden');
+            },
+            close: () => { document.getElementById('cmd-detail-modal').classList.add('hidden'); }
+        };
+
+        function renderCmdRegistry() {
+            const container = document.getElementById('cmd-registry-container');
+            if (!container) return;
+            container.innerHTML = '';
+
+            cmdCategories.forEach((cat, cIdx) => {
+                const catDiv = document.createElement('div');
+                catDiv.className = 'cmd-category mb-8';
+                catDiv.dataset.category = cat.name;
+
+                let rowsHtml = '';
+                cat.items.forEach((item, iIdx) => {
+                    const col = item.permColor || cat.color;
+                    const paramPills = (item.params || []).map(p =>
+                        `<span class="text-[10px] font-mono bg-cyan-500/10 text-cyan-400 border border-cyan-500/20 px-1.5 py-0.5 rounded">${p}</span>`
+                    ).join(' ');
+                    const aliasPill = item.alias
+                        ? ` <span class="text-[9px] font-black text-gray-500 bg-white/5 border border-white/10 px-1.5 py-0.5 rounded uppercase tracking-widest">alias</span> <code class="text-[#FFFC00]/60 text-sm font-bold">${item.alias}</code>`
+                        : '';
+
+                    rowsHtml += `
+                        <div class="cmd-row bg-[#0a0a0a] border border-[#222] rounded-xl p-4 hover:border-${col}-500/30 transition-colors cursor-pointer group" onclick="cmdModal.open(${cIdx},${iIdx})">
+                            <div class="flex flex-col lg:flex-row lg:items-center gap-3">
+                                <div class="flex items-center gap-1.5 shrink-0 lg:w-80 flex-wrap">
+                                    <code class="text-[#FFFC00] text-sm font-bold">${item.cmd}</code>
+                                    ${paramPills}${aliasPill}
+                                </div>
+                                <span class="text-[10px] font-bold text-${col}-400 bg-${col}-500/10 border border-${col}-500/20 px-2 py-0.5 rounded-md w-fit tracking-wide shrink-0">${item.perm}</span>
+                                <p class="text-xs text-gray-500 leading-relaxed flex-1">${item.desc}</p>
+                                <i class="fa-solid fa-chevron-right text-[10px] text-gray-600 group-hover:text-${col}-400 transition-colors shrink-0 hidden lg:block"></i>
+                            </div>
+                        </div>`;
+                });
+
+                catDiv.innerHTML = `
+                    <div class="flex items-center gap-3 mb-4">
+                        <div class="w-8 h-8 rounded-lg bg-${cat.color}-500/10 border border-${cat.color}-500/30 flex items-center justify-center">
+                            <i class="fa-solid ${cat.icon} text-${cat.color}-400 text-sm"></i>
+                        </div>
+                        <h4 class="text-sm font-black text-white uppercase tracking-widest">${cat.name}</h4>
+                    </div>
+                    <div class="space-y-2 cmd-list">${rowsHtml}</div>`;
+                container.appendChild(catDiv);
+            });
+        }
+
         function chatCmdSearch(term) {
             term = term.toLowerCase().trim();
             const categories = document.querySelectorAll('#doc-chat .cmd-category');
-            
             categories.forEach(cat => {
                 const rows = cat.querySelectorAll('.cmd-row');
                 let anyVisible = false;
-                
                 rows.forEach(row => {
                     const text = row.textContent.toLowerCase();
                     if (!term || text.includes(term)) {
@@ -1645,12 +1629,8 @@ if ($context.Request.IsWebSocketRequest) {
                         row.classList.add('search-hidden');
                     }
                 });
-                
-                if (anyVisible || !term) {
-                    cat.classList.remove('search-hidden');
-                } else {
-                    cat.classList.add('search-hidden');
-                }
+                if (anyVisible || !term) { cat.classList.remove('search-hidden'); }
+                else { cat.classList.add('search-hidden'); }
             });
         }
 
@@ -2027,6 +2007,7 @@ if ($context.Request.IsWebSocketRequest) {
             auth.init();
             generator.init();
             renderer.init();
+            renderCmdRegistry();
             
             const search = document.getElementById('search-input');
             search.addEventListener('input', (e) => {
