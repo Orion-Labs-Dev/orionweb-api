@@ -1,0 +1,518 @@
+{
+    "language": "Français",
+    "region": "France",
+    "icon": "fr",
+
+    "auth_title": "Accès Sécurisé",
+    "auth_subtitle": "Protocole de Documentation Interne",
+    "auth_placeholder": "••••",
+    "auth_error": "Accès Non Autorisé",
+
+    "generator_title": "Générateur de Payloads de Rôle",
+    "generator_label_action": "Type d'Action",
+    "generator_action_create": "CREATE_ROLE",
+    "generator_action_update": "UPDATE_ROLE",
+    "generator_label_role_name": "Nom du Rôle",
+    "generator_label_priority": "Priorité (0-100)",
+    "generator_label_executor": "SteamID de l'Exécuteur",
+    "generator_executor_hint": "Requis pour vérifier la priorité d'exécution.",
+    "generator_label_permissions": "Attribuer des Permissions",
+    "generator_perm_count": "{count} sélectionnés",
+    "generator_lang_json": "JSON",
+    "generator_lang_python": "Python",
+    "generator_lang_nodejs": "Node.js",
+    "generator_lang_csharp": "C#",
+
+    "nav_brand": "Athena",
+    "nav_brand_suffix": "Mod",
+    "nav_docs": "Documentation",
+    "nav_api": "Référence WebSocket",
+    "nav_version": "v1.12.0",
+    "nav_lock": "Verrouiller",
+
+    "lang_dropdown_header": "Choisir la Langue",
+
+    "sidebar_filter_placeholder": "Filtrer...",
+
+    "sidebar_docs_heading": "Sujets",
+    "sidebar_docs_architecture": "Architecture Principale",
+    "sidebar_docs_configuration": "Configuration (.ini)",
+    "sidebar_docs_roles": "Rôles & Utilisateurs",
+    "sidebar_docs_registry": "Registre des Permissions",
+    "sidebar_docs_chat": "Commandes du Chat",
+    "sidebar_docs_events": "Flux d'Événements en Direct",
+
+    "sidebar_api_heading": "Démarrage Rapide",
+    "sidebar_api_integration": "Exemples d'Intégration",
+
+    "docs_arch_title": "Architecture Principale",
+    "docs_arch_desc": "Le serveur de jeu Athena utilise une connexion WebSocket bidirectionnelle et persistante pour toute la communication backend. Cette architecture élimine complètement la surcharge des API REST standard et permet au serveur de jeu de transmettre des données instantanément.",
+    "docs_arch_reversal_title": "L'Inversion de Connexion",
+    "docs_arch_reversal_desc_prefix": "Contrairement aux configurations traditionnelles où un tableau de bord interroge le serveur de jeu, le plugin Athena agit en tant que ",
+    "docs_arch_reversal_client": "Client",
+    "docs_arch_reversal_desc_mid": ". Au démarrage, il se connecte à votre nœud backend via ",
+    "docs_arch_reversal_desc_mid2": ". Votre backend doit agir comme Récepteur. Cependant, si vous configurez ",
+    "docs_arch_reversal_desc_suffix": " dans le fichier de configuration, le plugin agira comme un serveur WebSocket standard et écoutera les connexions entrantes.",
+
+    "docs_config_title": "Configuration (AthenaMod.ini)",
+    "docs_config_desc_prefix": "Le serveur génère et maintient automatiquement un fichier ",
+    "docs_config_desc_mid": " dans le répertoire de configuration. Ce système est conçu pour être ",
+    "docs_config_desc_selfhealing": "auto-réparateur",
+    "docs_config_desc_suffix": " : si un propriétaire de serveur supprime une clé spécifique, ou qu'une mise à jour introduit de nouvelles fonctionnalités, le mod injectera automatiquement les clés par défaut manquantes sans écraser le reste de vos paramètres personnalisés.",
+    "docs_config_code_label": "AthenaMod.ini (Par défaut)",
+
+    "docs_roles_title": "Gestion des Utilisateurs & Rôles",
+    "docs_roles_desc_prefix": "Le framework implémente un système de permissions additif basé sur la priorité, fortement inspiré de l'architecture de Discord. Les utilisateurs n'ont pas simplement des « niveaux » ; ils se voient attribuer des ",
+    "docs_roles_desc_mid": " spécifiques qui accordent des tableaux de permissions granulaires.",
+
+    "docs_roles_hierarchy_title": "Hiérarchie Additive",
+    "docs_roles_hierarchy_desc_prefix": "Les pouvoirs totaux d'un utilisateur sont l'union de tous les rôles qui lui sont attribués. Si le Rôle A accorde ",
+    "docs_roles_hierarchy_desc_mid": " et le Rôle B accorde ",
+    "docs_roles_hierarchy_desc_suffix": ", un utilisateur possédant les deux peut faire les deux.",
+
+    "docs_roles_priority_title": "Application de la Priorité",
+    "docs_roles_priority_desc": "Le système valide rigoureusement la priorité d'exécution. Un Modérateur (Priorité 50) est physiquement empêché de modifier, supprimer ou accorder un rôle Administrateur (Priorité 100).",
+
+    "docs_roles_everyone_title": "Le Rôle 'Everyone'",
+    "docs_roles_everyone_desc_prefix": "Le système initialise un rôle de base ",
+    "docs_roles_everyone_desc_mid": ". Toute permission ajoutée à ce rôle (par ex. ",
+    "docs_roles_everyone_desc_suffix": ") s'applique immédiatement à chaque joueur sur le serveur sans nécessiter d'attribution spécifique.",
+
+    "docs_roles_persistence_title": "Persistance des Fichiers",
+    "docs_roles_persistence_desc_prefix": "Les définitions de rôles sont sérialisées directement dans ",
+    "docs_roles_persistence_desc_mid": ", tandis que les attributions d'utilisateurs sont sérialisées dans ",
+    "docs_roles_persistence_desc_suffix": ", assurant une récupération complète au redémarrage.",
+
+    "docs_registry_title": "Registre des Permissions",
+    "docs_registry_btn": "Générateur de Payloads",
+    "docs_registry_desc_prefix": "Utilisez les identifiants entiers ci-dessous lors de la définition du tableau ",
+    "docs_registry_desc_mid": " dans vos payloads JSON ",
+    "docs_registry_desc_mid2": " ou ",
+    "docs_registry_desc_mid3": ". Alternativement, utilisez le ",
+    "docs_registry_desc_bold": "Générateur de Payloads",
+    "docs_registry_desc_suffix": " pour construire facilement des requêtes de permissions standard.",
+
+    "docs_chat_title": "Commandes du Chat en Jeu",
+    "docs_chat_desc": "L'API WebSocket fonctionne en tandem avec le chat global natif du jeu. Les joueurs saisissent des commandes directement dans la fenêtre de chat, qui sont interceptées, analysées et dirigées vers le gestionnaire approprié avant d'apparaître comme message public.",
+
+    "docs_chat_pipeline_title": "Le Pipeline d'Interception",
+    "docs_chat_pipeline_desc_prefix": "Lorsqu'un message commençant par une barre oblique (",
+    "docs_chat_pipeline_desc_mid": ") est détecté dans le chat global du jeu, le système l'intercepte silencieusement, analyse le nom de la commande et tous les arguments suivants, et dirige l'appel vers le gestionnaire de commande désigné. Le message est consommé et n'est jamais diffusé aux autres joueurs.",
+
+    "docs_chat_gatekeeper_title": "Vérification du Gardien",
+    "docs_chat_gatekeeper_desc_prefix": "Chaque commande de chat est liée à un ",
+    "docs_chat_gatekeeper_desc_bold": "Enum de Permission",
+    "docs_chat_gatekeeper_desc_mid": " spécifique du Registre des Permissions. Lorsqu'un joueur exécute une commande, le serveur résout l'union de toutes les permissions accordées par chaque rôle attribué à ce joueur — y compris le rôle de base ",
+    "docs_chat_gatekeeper_desc_mid2": ". Si l'identifiant de permission requis est trouvé dans cette union, l'exécution se poursuit. Sinon, la commande est silencieusement rejetée et le joueur reçoit une notification de refus.",
+
+    "docs_chat_priority_title": "Application de la Priorité & Hiérarchie",
+    "docs_chat_priority_check_title": "Vérification de Priorité",
+    "docs_chat_priority_check_desc_prefix": "Vous ne pouvez pas créer, modifier, supprimer, attribuer ou retirer des rôles ayant une ",
+    "docs_chat_priority_check_desc_bold": "valeur de Priorité égale ou supérieure",
+    "docs_chat_priority_check_desc_suffix": " à la priorité de votre rôle le plus élevé. Un Modérateur à Priorité 50 est physiquement empêché de toucher un rôle Administrateur à Priorité 100.",
+
+    "docs_chat_registry_title": "Registre des Commandes",
+    "docs_chat_registry_search_placeholder": "Rechercher des commandes...",
+
+    "docs_events_title": "Flux d'Événements en Direct",
+    "docs_events_desc": "La connexion WebSocket est entièrement bidirectionnelle. Le serveur de jeu n'accepte pas seulement les commandes entrantes, il envoie également en continu des événements asynchrones en temps réel directement via le WebSocket.",
+
+    "docs_events_mode_title": "Différences de Mode de Connexion",
+    "docs_events_mode_server_label": "Mode Serveur",
+    "docs_events_mode_server_desc": "Votre tableau de bord externe ou bot se connecte au serveur de jeu en tant que client. Il doit simplement établir la connexion et écouter les messages entrants.",
+    "docs_events_mode_client_label": "Mode Client",
+    "docs_events_mode_client_desc": "Le serveur de jeu agit en tant que client et se connecte vers votre backend central (par ex., OrionWeb). Dans ce mode, votre backend central doit être configuré comme récepteur WebSocket Server pour recevoir ces payloads d'événements.",
+
+    "docs_events_parsing_title": "EXIGENCE DE TRAITEMENT",
+    "docs_events_parsing_desc_prefix": "Ces événements sont envoyés automatiquement et n'incluent pas de champ ",
+    "docs_events_parsing_desc_mid": " ni ",
+    "docs_events_parsing_desc_mid2": " comme les réponses API standard. Vérifiez toujours si ",
+    "docs_events_parsing_desc_suffix": " avant de traiter.",
+    "docs_events_code_label": "Payload du Flux d'Événements",
+
+    "docs_events_props_title": "Détail des Propriétés",
+    "docs_events_prop_type_desc_prefix": "Correspond toujours exactement à ",
+    "docs_events_prop_type_desc_suffix": " pour ces événements envoyés. C'est la clé principale que vous utilisez pour filtrer ces payloads des réponses de commandes standard.",
+    "docs_events_prop_stream_desc_prefix": "La catégorie de l'événement. Les deux flux principaux sont ",
+    "docs_events_prop_stream_desc_mid": " (audite quand une commande API externe est reçue) et ",
+    "docs_events_prop_stream_desc_suffix": " (miroirs en direct des messages des joueurs envoyés dans le chat global).",
+    "docs_events_prop_steamid_desc_prefix": "Le SteamID de l'utilisateur qui a déclenché l'événement. S'il a été déclenché par le serveur lui-même, cela affichera ",
+    "docs_events_prop_steamid_desc_suffix": ".",
+    "docs_events_prop_action_desc": "L'action spécifique effectuée (par ex., le nom de la commande exécutée ou le texte brut du message de chat).",
+    "docs_events_prop_details_desc": "Métadonnées contextuelles supplémentaires fournies par le moteur du serveur.",
+
+    "api_integration_title": "Intégration des Payloads",
+    "api_integration_desc_prefix": "Pour interagir avec les endpoints ci-dessous, vous devez établir une connexion WebSocket et transmettre des chaînes JSON. Selon votre configuration ",
+    "api_integration_desc_mid": ", votre application externe agira soit en tant que ",
+    "api_integration_desc_client": "Client",
+    "api_integration_desc_mid2": " (se connectant au serveur de jeu) soit en tant que ",
+    "api_integration_desc_server": "Serveur",
+    "api_integration_desc_suffix": " (attendant que le serveur de jeu s'y connecte).",
+
+    "api_no_http_title": "AUCUN ENDPOINT HTTP",
+    "api_no_http_desc_prefix": "Il n'y a pas de routes URL (comme ",
+    "api_no_http_desc_suffix": "). Vous devez envoyer un payload JSON avec une propriété ",
+    "api_no_http_desc_suffix2": " à l'URL WebSocket principale.",
+
+    "api_mode_title": "Mode de Connexion",
+    "api_mode_client_btn": "App Externe en Client",
+    "api_mode_server_btn": "App Externe en Serveur",
+    "api_mode_client_desc_prefix": "Mode Client :",
+    "api_mode_client_desc": " Le Serveur de Jeu agit en tant qu'hôte ",
+    "api_mode_client_desc_suffix": ". Votre tableau de bord externe, bot Discord ou script doit établir la connexion vers le serveur de jeu.",
+    "api_mode_server_desc_prefix": "Mode Serveur :",
+    "api_mode_server_desc": " Le Serveur de Jeu agit en tant que client ",
+    "api_mode_server_desc_suffix": ". Vous devez héberger un récepteur WebSocket sur votre infrastructure backend pour capter la connexion entrante du serveur de jeu.",
+
+    "api_lang_python": "Python",
+    "api_lang_nodejs": "Node.js",
+    "api_lang_typescript": "TypeScript",
+    "api_lang_java": "Java",
+    "api_lang_rust": "Rust",
+    "api_lang_lua": "Lua",
+    "api_lang_cpp": "C++",
+    "api_lang_csharp": "C#",
+    "api_lang_powershell": "PowerShell",
+
+    "api_footer": "© 2026 Athena Mod • Manuel de Spécification des Payloads",
+
+    "json_label_request": "Payload de Requête Complet",
+    "json_label_response": "Réponse Complète du Serveur",
+    "json_show_full": "Afficher le JSON Complet",
+    "json_collapse": "Réduire le JSON",
+
+    "copy_tooltip": "Copier le code",
+    "copy_json_tooltip": "Copier le JSON",
+
+    "cmd_detail_label_required_perm": "Permission Requise",
+    "cmd_detail_label_params": "Paramètres",
+    "cmd_detail_params_hint": "Les champs Joueur acceptent un nom d'utilisateur (recherche approximative) ou un SteamID exact.",
+    "cmd_detail_label_usage": "Exemples d'Utilisation",
+    "cmd_detail_label_notes": "Notes",
+    "cmd_detail_label_alias": "alias",
+
+    "permissions": [
+        "CanHeal", "CanHealOthers",
+        "CanVanish", "CanVanishOthers",
+        "CanGodMode", "CanGodModeOthers",
+        "CanSlay", "CanSlayOthers",
+        "CanSmite", "CanSmiteOthers",
+        "CanSpawnAI", "CanWipeAI",
+        "CanWipeCorpses", "CanSpawnCorpse",
+        "CanToggleElder", "CanToggleElderOthers",
+        "CanPark", "CanParkOthers",
+        "CanShowGarage", "CanShowGarageOthers",
+        "CanRetrieve", "CanRetrieveOthers",
+        "CanTeleport", "CanTeleportOthers",
+        "CanSwap", "CanSwapOthers",
+        "CanGrow", "CanGrowOthers",
+        "CanSetHealth", "CanSetHealthOthers",
+        "CanSetHunger", "CanSetHungerOthers",
+        "CanSetThirst", "CanSetThirstOthers",
+        "CanSetStamina", "CanSetStaminaOthers",
+        "CanSetBlood", "CanSetBloodOthers",
+        "CanCreateRoles", "CanUpdateRoles",
+        "CanDeleteRoles", "CanManageRolesOthers",
+        "CanBypassRolePriority"
+    ],
+
+    "api_categories": {
+        "diagnostics": "Diagnostics",
+        "physiological_control": "Contrôle Physiologique",
+        "archiving": "Archivage",
+        "lifecycle": "Cycle de Vie & Prime Elder",
+        "movement": "Déplacement & Utilitaires",
+        "permissions": "Permissions",
+        "console": "Autorité de Console",
+        "broadcasting": "Diffusion"
+    },
+
+    "api_items": {
+        "RETRIEVE_PLAYERS_LIST": {
+            "desc": "Récupère le statut et les coordonnées globales de toutes les connexions actives du serveur."
+        },
+        "RETRIEVE_PLAYER_INFO": {
+            "desc": "Acquisition complète de l'état incluant les signes vitaux, nutriments, données phénotypiques de peau et contenu des emplacements de mutation."
+        },
+        "HEAL_DINO": {
+            "desc": "Restauration atomique de la Santé, Faim, Soif, Endurance et Sang aux valeurs maximales."
+        },
+        "GROW_DINO": {
+            "desc": "Développement forcé défini en pourcentage décimal (0,0 à 100,0)."
+        },
+        "SLAY_DINO": {
+            "desc": "Neutralise l'acteur cible en utilisant la logique de dégâts standard."
+        },
+        "ADMIN_SLAY_DINO": {
+            "desc": "Destruction immédiate de l'acteur, contournant les états d'invincibilité ou de verrouillage de combat."
+        },
+        "SET_SKIN": {
+            "desc": "Modifie le genre, l'indice de variation, l'indice de motif et les vecteurs de couleur RGB du spécimen."
+        },
+        "SET_PLAYER_INFO": {
+            "desc": "Mise à jour groupée du spécimen. Cible la Santé, Faim, Soif, Endurance, Sang, Croissance, Nutriments et Position."
+        },
+        "SET_HEALTH": {
+            "desc": "Définit spécifiquement la valeur de santé."
+        },
+        "SET_HUNGER": {
+            "desc": "Définit spécifiquement la valeur de faim."
+        },
+        "SET_THIRST": {
+            "desc": "Définit spécifiquement la valeur de soif."
+        },
+        "SET_STAMINA": {
+            "desc": "Définit spécifiquement la valeur d'endurance."
+        },
+        "SET_BLOOD": {
+            "desc": "Définit spécifiquement la valeur de sang."
+        },
+        "SET_NUTRIENT": {
+            "desc": "Définit un nutriment spécifique (Protéine, Glucides, Lipides)."
+        },
+        "RETRIEVE_PLAYER_GARAGE_DATA": {
+            "desc": "Récupère le tableau des spécimens stockés. L'« Index » du tableau est requis pour utiliser la commande RETRIEVE_DINO_FROM_GARAGE."
+        },
+        "GARAGE_STORE": {
+            "desc": "Archive le spécimen actif dans le fichier de sauvegarde et retire l'acteur de la simulation."
+        },
+        "RETRIEVE_DINO_FROM_GARAGE": {
+            "desc": "Déploie un spécimen archivé par indice du tableau. Archive automatiquement le personnage actif."
+        },
+        "SWAP_DINO": {
+            "desc": "Transformation forcée du personnage actif vers la classe spécifiée."
+        },
+        "GET_PRIME_ELDER": {
+            "desc": "Interroge le statut d'accomplissement de toutes les exigences du cycle de vie Prime Elder."
+        },
+        "SET_PRIME_ELDER": {
+            "desc": "Configure manuellement les exigences Prime Elder ou force le statut d'éligibilité."
+        },
+        "TELEPORT_TO_PLAYER": {
+            "desc": "Transporte le joueur cible aux coordonnées d'un joueur de destination."
+        },
+        "TELEPORT_TO_COORDS": {
+            "desc": "Transporte le joueur cible à des coordonnées X/Y/Z précises du monde."
+        },
+        "RETRIEVE_ROLES": {
+            "desc": "Récupère la liste complète des rôles disponibles sur le serveur."
+        },
+        "CREATE_ROLE": {
+            "desc": "Définit un nouveau rôle de sécurité avec priorité et liste d'identifiants de permissions."
+        },
+        "UPDATE_ROLE": {
+            "desc": "Modifie les attributs du rôle. Validé contre le niveau de priorité de l'exécuteur."
+        },
+        "DELETE_ROLE": {
+            "desc": "Supprime la définition d'un rôle. Validé contre la priorité de l'exécuteur."
+        },
+        "ASSIGN_ROLE_TO_USER": {
+            "desc": "Attribution persistante d'un rôle au SteamID cible."
+        },
+        "REMOVE_ROLE_FROM_USER": {
+            "desc": "Révoque le rôle du SteamID cible et met à jour la base de données d'attributions."
+        },
+        "RETRIEVE_USER_ROLES": {
+            "desc": "Acquiert tous les rôles actuellement liés au SteamID cible."
+        },
+        "CHECK_USER_PERMISSION": {
+            "desc": "Vérifie si le SteamID détient un identifiant de permission spécifique via un rôle attribué."
+        },
+        "CONSOLE_ASSIGN_ROLE": {
+            "desc": "Attribution administrative de rôle, contournant la logique de priorité."
+        },
+        "CONSOLE_UPDATE_ROLE": {
+            "desc": "Modification directe des définitions de rôles, incluant le renommage et la réinitialisation de priorité."
+        },
+        "CONSOLE_DELETE_ROLE": {
+            "desc": "Suppression administrative de la définition du rôle, contournant les vérifications de priorité."
+        },
+        "SEND_GLOBAL_ANNOUNCEMENT": {
+            "desc": "Déclenche une annonce à l'écran pour tous les clients actifs."
+        },
+        "SEND_DIRECT_ANNOUNCEMENT": {
+            "desc": "Notification privée envoyée à un spécimen cible spécifique."
+        },
+        "SEND_NOTIFICATION": {
+            "desc": "Envoie une notification popup discrète à un joueur spécifique."
+        }
+    },
+
+    "cmd_categories": {
+        "role_management": {
+            "name": "Gestion des Rôles",
+            "items": {
+                "createrole": {
+                    "desc": "Définit un nouveau rôle. La priorité doit être inférieure à la vôtre.",
+                    "perm": "Peut Créer des Rôles",
+                    "summary": "Crée une nouvelle définition de rôle sur le serveur avec le nom et le niveau de priorité donnés.",
+                    "notes": "La priorité que vous attribuez doit être strictement inférieure à la priorité de votre rôle le plus élevé. Les noms de rôles ne sont pas sensibles à la casse et doivent être uniques."
+                },
+                "deleterole": {
+                    "desc": "Supprime définitivement une définition de rôle du serveur.",
+                    "perm": "Peut Supprimer des Rôles",
+                    "summary": "Détruit entièrement une définition de rôle. Les utilisateurs qui détenaient ce rôle le perdront immédiatement.",
+                    "notes": "Vous ne pouvez supprimer que des rôles avec une priorité inférieure à la vôtre. Cette action est irréversible."
+                },
+                "assignrole": {
+                    "desc": "Attribue un rôle à un joueur cible. Les vérifications de priorité s'appliquent.",
+                    "perm": "Peut Gérer les Rôles · Autres",
+                    "summary": "Attache un rôle à un joueur, lui accordant toutes les permissions définies dans ce rôle.",
+                    "notes": "Le champ Joueur accepte soit un nom d'utilisateur (recherche approximative) soit un SteamID exact. Vous ne pouvez pas attribuer un rôle avec une priorité égale ou supérieure à la vôtre."
+                },
+                "removerole": {
+                    "desc": "Retire un rôle d'un joueur cible.",
+                    "perm": "Peut Gérer les Rôles · Autres",
+                    "summary": "Détache un rôle d'un joueur, révoquant toute permission qui était exclusivement accordée par celui-ci.",
+                    "notes": "Le champ Joueur accepte soit un nom d'utilisateur (recherche approximative) soit un SteamID exact. Les restrictions de priorité s'appliquent."
+                }
+            }
+        },
+        "dino_stats": {
+            "name": "Dino & Statistiques du Joueur",
+            "items": {
+                "heal": {
+                    "desc": "Restaure tous les signes vitaux à 100%.",
+                    "perm": "Peut Soigner",
+                    "summary": "Restaure complètement la Santé, Faim, Soif, Endurance et Sang au maximum pour le joueur cible.",
+                    "notes": "Le champ Joueur accepte un nom d'utilisateur (recherche approximative) ou un SteamID exact."
+                },
+                "grow": {
+                    "desc": "Définit le développement de croissance à 100%.",
+                    "perm": "Peut Faire Grandir",
+                    "summary": "Fait mûrir instantanément le dinosaure du joueur cible à sa croissance adulte complète.",
+                    "notes": "Le champ Joueur accepte un nom d'utilisateur (recherche approximative) ou un SteamID exact."
+                },
+                "vanish": {
+                    "desc": "Active/désactive l'état d'invisibilité.",
+                    "perm": "Peut Disparaître",
+                    "summary": "Bascule le joueur cible dans ou hors d'un état fantôme invisible. Les autres joueurs ne peuvent ni voir ni interagir avec un joueur disparu.",
+                    "notes": "Le champ Joueur accepte un nom d'utilisateur (recherche approximative) ou un SteamID exact. Exécuter la commande à nouveau sur le même joueur désactive l'invisibilité."
+                },
+                "slay": {
+                    "desc": "Inflige des dégâts mortels à la cible.",
+                    "perm": "Peut Tuer",
+                    "summary": "Applique des dégâts létaux au dinosaure du joueur cible en utilisant la logique de dégâts standard.",
+                    "notes": "Le champ Joueur accepte un nom d'utilisateur (recherche approximative) ou un SteamID exact. Ne contourne pas l'invincibilité — utilisez le endpoint API ADMIN_SLAY_DINO pour cela."
+                },
+                "tp": {
+                    "desc": "Téléporte vers un joueur ou des coordonnées.",
+                    "perm": "Peut Téléporter",
+                    "summary": "Vous téléporte vous-même ou un joueur cible vers l'emplacement d'un autre joueur ou vers des coordonnées mondiales exactes. Supporte plusieurs formes de syntaxe pour plus de flexibilité.",
+                    "notes": "Tous les champs joueur acceptent un nom d'utilisateur (recherche approximative sur le serveur) ou un SteamID exact. Avec un seul joueur, vous téléporte vers lui. Avec des coordonnées seules, vous téléporte là-bas. Avec deux joueurs, téléporte le premier vers le second. Avec un joueur suivi de X Y Z, téléporte ce joueur vers ces coordonnées."
+                },
+                "swap": {
+                    "desc": "Se transforme en une espèce différente.",
+                    "perm": "Peut Échanger",
+                    "summary": "Remplace votre dinosaure actif par une nouvelle espèce. Les données de votre personnage actuel sont perdues.",
+                    "notes": "Le paramètre Classe doit être la chaîne exacte du nom Blueprint (par ex. BP_Tyrannosaurus_C). Les noms de classe invalides seront rejetés."
+                },
+                "health": {
+                    "desc": "Définit la santé au pourcentage spécifié.",
+                    "perm": "Peut Définir la Santé",
+                    "summary": "Définit la valeur de santé du joueur cible à un pourcentage spécifique.",
+                    "notes": "La valeur doit être entre 0 et 100. Le champ Joueur accepte un nom d'utilisateur (recherche approximative) ou un SteamID exact."
+                },
+                "hunger": {
+                    "desc": "Définit la faim au pourcentage spécifié.",
+                    "perm": "Peut Définir la Faim",
+                    "summary": "Définit la valeur de faim du joueur cible à un pourcentage spécifique.",
+                    "notes": "La valeur doit être entre 0 et 100. Le champ Joueur accepte un nom d'utilisateur (recherche approximative) ou un SteamID exact."
+                },
+                "thirst": {
+                    "desc": "Définit la soif au pourcentage spécifié.",
+                    "perm": "Peut Définir la Soif",
+                    "summary": "Définit la valeur de soif du joueur cible à un pourcentage spécifique.",
+                    "notes": "La valeur doit être entre 0 et 100. Le champ Joueur accepte un nom d'utilisateur (recherche approximative) ou un SteamID exact."
+                },
+                "stamina": {
+                    "desc": "Définit l'endurance au pourcentage spécifié.",
+                    "perm": "Peut Définir l'Endurance",
+                    "summary": "Définit la valeur d'endurance du joueur cible à un pourcentage spécifique.",
+                    "notes": "La valeur doit être entre 0 et 100. Le champ Joueur accepte un nom d'utilisateur (recherche approximative) ou un SteamID exact."
+                },
+                "blood": {
+                    "desc": "Définit le sang au pourcentage spécifié.",
+                    "perm": "Peut Définir le Sang",
+                    "summary": "Définit la valeur de sang du joueur cible à un pourcentage spécifique.",
+                    "notes": "La valeur doit être entre 0 et 100. Le champ Joueur accepte un nom d'utilisateur (recherche approximative) ou un SteamID exact."
+                },
+                "set-nutrient": {
+                    "desc": "Définit un nutriment spécifique par type.",
+                    "perm": "Peut Définir un Nutriment",
+                    "summary": "Définit l'une des trois valeurs de nutriments (Protéine, Lipides ou Glucides) à un pourcentage spécifique.",
+                    "notes": "Le Type doit être l'un des suivants : PROTEIN, LIPIDS ou CARBS (insensible à la casse). La valeur doit être entre 0 et 100."
+                }
+            }
+        },
+        "world_garage": {
+            "name": "Monde & Garage",
+            "items": {
+                "garage": {
+                    "desc": "Liste vos dinosaures stockés dans le chat.",
+                    "perm": "Peut Afficher le Garage",
+                    "summary": "Affiche tous les dinosaures actuellement stockés dans votre garage personnel, ainsi que leurs indices de tableau.",
+                    "notes": "Utilisez les valeurs d'Index affichées ici avec la commande /retrieve pour déployer un dinosaure stocké."
+                },
+                "park": {
+                    "desc": "Archive votre dinosaure actuel dans le garage.",
+                    "perm": "Peut Garer",
+                    "summary": "Sauvegarde votre dinosaure actif dans le système de stockage du garage et le retire du monde. Vous devrez sélectionner un nouveau personnage ou en récupérer un stocké.",
+                    "notes": "L'état complet de votre personnage (croissance, statistiques, peau) est préservé dans le stockage."
+                },
+                "retrieve": {
+                    "desc": "Déploie un dinosaure stocké par indice.",
+                    "perm": "Peut Récupérer",
+                    "summary": "Déploie un dinosaure de votre garage par son indice de tableau stocké. Votre personnage actuellement actif est automatiquement archivé en premier.",
+                    "notes": "Utilisez /garage pour voir les indices disponibles. Si vous avez un personnage actif, il sera garé automatiquement avant la récupération."
+                },
+                "spawn_ai": {
+                    "desc": "Génère une entité contrôlée par l'IA.",
+                    "perm": "Peut Générer de l'IA",
+                    "summary": "Crée une entité dinosaure contrôlée par l'IA dans le monde du jeu.",
+                    "notes": "L'entité IA apparaît près de votre position actuelle."
+                },
+                "wipe_ai": {
+                    "desc": "Supprime toute l'IA de la carte.",
+                    "perm": "Peut Supprimer l'IA",
+                    "summary": "Détruit instantanément chaque entité contrôlée par l'IA actuellement active sur le serveur.",
+                    "notes": "C'est une action globale — toute l'IA sur l'ensemble de la carte est supprimée."
+                },
+                "wipecorpses": {
+                    "desc": "Nettoie toutes les carcasses du monde.",
+                    "perm": "Peut Supprimer les Carcasses",
+                    "summary": "Supprime chaque carcasse déposée (source de nourriture) du monde du jeu.",
+                    "notes": "C'est une action globale et elle ne peut pas être annulée."
+                },
+                "spawncorpse": {
+                    "desc": "Génère une source de nourriture à votre position.",
+                    "perm": "Peut Générer une Carcasse",
+                    "summary": "Crée une carcasse du type de dinosaure spécifié à votre position mondiale actuelle, utilisable comme source de nourriture.",
+                    "notes": "Le NomDino doit être le nom commun de l'espèce. La carcasse apparaît directement à vos pieds."
+                }
+            }
+        }
+    },
+
+    "code_comments": {
+        "python_client_comment": "# Envoyer le payload d'action au serveur de jeu",
+        "python_server_connected": "Serveur de Jeu Connecté !",
+        "python_server_comment": "# Envoyer le payload d'action au serveur de jeu",
+        "js_response": "Réponse :",
+        "js_server_connected": "Serveur de Jeu Connecté !",
+        "js_received": "Reçu :",
+        "java_response": "Réponse du serveur : ",
+        "java_server_connected": "Serveur de Jeu Connecté !",
+        "java_received": "Reçu : ",
+        "rust_response": "Réponse du serveur : {}",
+        "rust_server_connected": "Serveur de Jeu Connecté !",
+        "rust_received": "Reçu : {}",
+        "lua_response": "Réponse :",
+        "cpp_server_connected": "Serveur de Jeu Connecté !",
+        "cpp_received": "Reçu : ",
+        "csharp_server_connected": "Serveur de Jeu Connecté !",
+        "csharp_received": "Reçu : ",
+        "ps_listening": "Écoute sur le port 8000...",
+        "ps_server_connected": "Serveur de Jeu Connecté !"
+    }
+}
