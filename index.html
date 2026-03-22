@@ -6,6 +6,7 @@
     <title>Athena Mod | Server Documentation</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/flag-icons/7.2.3/css/flag-icons.min.css">
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;900&family=JetBrains+Mono:wght@400;700&display=swap" rel="stylesheet">
     
     <!-- Prism.js Syntax Highlighting -->
@@ -194,6 +195,127 @@
         /* Command row search highlight */
         .cmd-row.search-hidden { display: none; }
         .cmd-category.search-hidden { display: none; }
+
+        /* Language Dropdown */
+        .lang-dropdown {
+            position: relative;
+        }
+        .lang-dropdown-trigger {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            padding: 5px 10px;
+            background: #111;
+            border: 1px solid #222;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            user-select: none;
+            white-space: nowrap;
+        }
+        .lang-dropdown-trigger:hover {
+            border-color: #444;
+            background: #1a1a1a;
+        }
+        .lang-dropdown-trigger.open {
+            border-color: var(--accent);
+            box-shadow: 0 0 12px rgba(255, 252, 0, 0.08);
+        }
+        .lang-dropdown-trigger .fi {
+            border-radius: 2px;
+            box-shadow: 0 0 0 1px rgba(255,255,255,0.1);
+        }
+        .lang-dropdown-trigger .arrow {
+            font-size: 8px;
+            color: #666;
+            transition: transform 0.2s ease;
+        }
+        .lang-dropdown-trigger.open .arrow {
+            transform: rotate(180deg);
+        }
+        .lang-dropdown-panel {
+            position: absolute;
+            top: calc(100% + 6px);
+            right: 0;
+            min-width: 200px;
+            background: #0a0a0a;
+            border: 1px solid #222;
+            border-radius: 12px;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.6), 0 0 0 1px rgba(255,255,255,0.03);
+            overflow: hidden;
+            z-index: 200;
+            opacity: 0;
+            transform: translateY(-6px) scale(0.97);
+            pointer-events: none;
+            transition: opacity 0.2s ease, transform 0.2s ease;
+        }
+        .lang-dropdown-panel.open {
+            opacity: 1;
+            transform: translateY(0) scale(1);
+            pointer-events: auto;
+        }
+        .lang-dropdown-panel-header {
+            padding: 10px 14px 8px;
+            font-size: 9px;
+            font-weight: 900;
+            color: #555;
+            text-transform: uppercase;
+            letter-spacing: 0.15em;
+            border-bottom: 1px solid #1a1a1a;
+        }
+        .lang-dropdown-item {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            padding: 10px 14px;
+            cursor: pointer;
+            transition: all 0.15s ease;
+            border-left: 2px solid transparent;
+        }
+        .lang-dropdown-item:hover {
+            background: rgba(255, 255, 255, 0.04);
+            border-left-color: #444;
+        }
+        .lang-dropdown-item.active {
+            background: rgba(255, 252, 0, 0.04);
+            border-left-color: var(--accent);
+        }
+        .lang-dropdown-item .fi {
+            border-radius: 2px;
+            box-shadow: 0 0 0 1px rgba(255,255,255,0.08);
+            flex-shrink: 0;
+        }
+        .lang-dropdown-item-text {
+            display: flex;
+            flex-direction: column;
+            gap: 1px;
+            min-width: 0;
+        }
+        .lang-dropdown-item-name {
+            font-size: 12px;
+            font-weight: 700;
+            color: #ddd;
+            white-space: nowrap;
+        }
+        .lang-dropdown-item.active .lang-dropdown-item-name {
+            color: var(--accent);
+        }
+        .lang-dropdown-item-region {
+            font-size: 10px;
+            font-weight: 600;
+            color: #555;
+            font-family: 'JetBrains Mono', monospace;
+        }
+        .lang-dropdown-item-check {
+            margin-left: auto;
+            color: var(--accent);
+            font-size: 11px;
+            opacity: 0;
+            transition: opacity 0.15s ease;
+        }
+        .lang-dropdown-item.active .lang-dropdown-item-check {
+            opacity: 1;
+        }
     </style>
 </head>
 <body class="h-screen flex flex-col overflow-hidden relative">
@@ -312,6 +434,22 @@
         </div>
         <div class="flex items-center gap-4">
             <p class="text-xs text-gray-600 font-mono hidden md:block" data-i18n="nav_version"></p>
+
+            <!-- Language Selector Dropdown -->
+            <div class="lang-dropdown" id="lang-dropdown">
+                <div class="lang-dropdown-trigger" id="lang-dropdown-trigger" onclick="langSwitcher.toggle()">
+                    <span class="fi fi-us" id="lang-current-flag"></span>
+                    <span class="text-xs font-bold text-gray-300" id="lang-current-name">English</span>
+                    <i class="fa-solid fa-chevron-down arrow"></i>
+                </div>
+                <div class="lang-dropdown-panel" id="lang-dropdown-panel">
+                    <div class="lang-dropdown-panel-header" data-i18n="lang_dropdown_header"></div>
+                    <div id="lang-dropdown-items">
+                        <!-- Items injected by JS -->
+                    </div>
+                </div>
+            </div>
+
             <button onclick="auth.logout()" class="text-xs font-bold text-red-500 hover:text-white bg-red-500/10 hover:bg-red-500/20 px-3 py-1.5 rounded transition-colors border border-red-500/20">
                 <i class="fa-solid fa-right-from-bracket mr-1"></i> <span data-i18n="nav_lock"></span>
             </button>
@@ -1886,11 +2024,173 @@ if ($context.Request.IsWebSocketRequest) {
         };
 
         // ============================
+        // Language Switcher
+        // ============================
+        const langSwitcher = {
+            // Registry of available languages. To add a new language, add an entry here.
+            // The locale key must match the filename in lang/ (e.g., 'es_mx' → lang/es_mx.json).
+            available: {
+                'en_us': { name: 'English', region: 'United States', flag: 'us' },
+                'es_mx': { name: 'Español', region: 'México', flag: 'mx' },
+                'fr_fr': { name: 'Français', region: 'France', flag: 'fr' },
+                'de_de': { name: 'Deutsch', region: 'Deutschland', flag: 'de' },
+                'pt_br': { name: 'Português', region: 'Brasil', flag: 'br' },
+                'ja_jp': { name: '日本語', region: '日本', flag: 'jp' },
+                'ko_kr': { name: '한국어', region: '대한민국', flag: 'kr' },
+                'zh_cn': { name: '中文', region: '中国', flag: 'cn' },
+                'ru_ru': { name: 'Русский', region: 'Россия', flag: 'ru' },
+                'tr_tr': { name: 'Türkçe', region: 'Türkiye', flag: 'tr' }
+            },
+
+            current: 'en_us',
+            isOpen: false,
+
+            init: () => {
+                // Restore saved preference
+                const saved = localStorage.getItem('athena_lang');
+                if (saved && langSwitcher.available[saved]) {
+                    langSwitcher.current = saved;
+                }
+
+                langSwitcher.renderItems();
+                langSwitcher.updateTrigger();
+
+                // Close dropdown when clicking outside
+                document.addEventListener('click', (e) => {
+                    const dd = document.getElementById('lang-dropdown');
+                    if (dd && !dd.contains(e.target)) {
+                        langSwitcher.close();
+                    }
+                });
+
+                // Close on Escape
+                document.addEventListener('keydown', (e) => {
+                    if (e.key === 'Escape') langSwitcher.close();
+                });
+            },
+
+            renderItems: () => {
+                const container = document.getElementById('lang-dropdown-items');
+                if (!container) return;
+                container.innerHTML = '';
+
+                Object.entries(langSwitcher.available).forEach(([locale, info]) => {
+                    const item = document.createElement('div');
+                    item.className = 'lang-dropdown-item' + (locale === langSwitcher.current ? ' active' : '');
+                    item.dataset.locale = locale;
+                    item.onclick = (e) => {
+                        e.stopPropagation();
+                        langSwitcher.select(locale);
+                    };
+                    item.innerHTML = `
+                        <span class="fi fi-${info.flag}"></span>
+                        <div class="lang-dropdown-item-text">
+                            <span class="lang-dropdown-item-name">${info.name}</span>
+                            <span class="lang-dropdown-item-region">${info.region}</span>
+                        </div>
+                        <i class="fa-solid fa-check lang-dropdown-item-check"></i>
+                    `;
+                    container.appendChild(item);
+                });
+            },
+
+            updateTrigger: () => {
+                const info = langSwitcher.available[langSwitcher.current];
+                if (!info) return;
+                const flag = document.getElementById('lang-current-flag');
+                const name = document.getElementById('lang-current-name');
+                if (flag) flag.className = 'fi fi-' + info.flag;
+                if (name) name.textContent = info.name;
+            },
+
+            toggle: () => {
+                langSwitcher.isOpen ? langSwitcher.close() : langSwitcher.open();
+            },
+
+            open: () => {
+                langSwitcher.isOpen = true;
+                const trigger = document.getElementById('lang-dropdown-trigger');
+                const panel = document.getElementById('lang-dropdown-panel');
+                if (trigger) trigger.classList.add('open');
+                if (panel) panel.classList.add('open');
+            },
+
+            close: () => {
+                langSwitcher.isOpen = false;
+                const trigger = document.getElementById('lang-dropdown-trigger');
+                const panel = document.getElementById('lang-dropdown-panel');
+                if (trigger) trigger.classList.remove('open');
+                if (panel) panel.classList.remove('open');
+            },
+
+            select: async (locale) => {
+                if (locale === langSwitcher.current) {
+                    langSwitcher.close();
+                    return;
+                }
+
+                langSwitcher.current = locale;
+                localStorage.setItem('athena_lang', locale);
+
+                // Try to load the language file
+                const loaded = await loadLanguage(locale);
+
+                // If the file failed to load (no translations found), fall back to en_us
+                if (!loaded || Object.keys(loaded).length === 0) {
+                    console.warn('i18n: Language file not found for ' + locale + ', falling back to en_us');
+                    await loadLanguage('en_us');
+                    langSwitcher.current = 'en_us';
+                    localStorage.setItem('athena_lang', 'en_us');
+                }
+
+                // Rebuild all data-driven content
+                langSwitcher.rebuildAll();
+
+                // Update dropdown state
+                langSwitcher.updateTrigger();
+                langSwitcher.renderItems();
+                langSwitcher.close();
+            },
+
+            rebuildAll: () => {
+                // Rebuild data arrays from language
+                apiData = buildApiData();
+                permissionsList = getPermissionsList();
+                cmdCategories = buildCmdCategories();
+
+                // Apply simple translations
+                applyTranslations();
+
+                // Re-render dynamic sections
+                // Clear and rebuild endpoints
+                const endpointsContainer = document.getElementById('endpoints-container');
+                if (endpointsContainer) endpointsContainer.innerHTML = '';
+
+                // Clear and rebuild permission registry
+                const registry = document.getElementById('permission-registry');
+                if (registry) registry.innerHTML = '';
+
+                // Clear and rebuild generator perm list
+                const genPermList = document.getElementById('gen-perm-list');
+                if (genPermList) genPermList.innerHTML = '';
+                generator.selectedPerms.clear();
+
+                // Re-init renderer and components
+                renderer.init();
+                renderCmdRegistry();
+                generator.init();
+            }
+        };
+
+        // ============================
         // BOOT: Load language then init
         // ============================
         document.addEventListener('DOMContentLoaded', async () => {
-            // Load language file first
-            await loadLanguage('en_us');
+            // Initialize language switcher (reads saved preference)
+            langSwitcher.init();
+
+            // Load language file (use saved preference or default)
+            await loadLanguage(langSwitcher.current);
 
             // Build data from language
             apiData = buildApiData();
