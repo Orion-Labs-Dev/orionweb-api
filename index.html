@@ -2027,29 +2027,66 @@ if ($context.Request.IsWebSocketRequest) {
         // Language Switcher
         // ============================
         const langSwitcher = {
-            // Registry of available languages. To add a new language, add an entry here.
-            // The locale key must match the filename in lang/ (e.g., 'es_mx' → lang/es_mx.json).
-            available: {
-                'en_us': { name: 'English', region: 'United States', flag: 'us' },
-                'es_mx': { name: 'Español', region: 'México', flag: 'mx' },
-                'fr_fr': { name: 'Français', region: 'France', flag: 'fr' },
-                'de_de': { name: 'Deutsch', region: 'Deutschland', flag: 'de' },
-                'pt_br': { name: 'Português', region: 'Brasil', flag: 'br' },
-                'ja_jp': { name: '日本語', region: '日本', flag: 'jp' },
-                'ko_kr': { name: '한국어', region: '대한민국', flag: 'kr' },
-                'zh_cn': { name: '中文', region: '中国', flag: 'cn' },
-                'ru_ru': { name: 'Русский', region: 'Россия', flag: 'ru' },
-                'tr_tr': { name: 'Türkçe', region: 'Türkiye', flag: 'tr' }
-            },
+            // Dynamically discovered from lang/index.json + each file's metadata.
+            // To add a new language: create lang/xx_yy.json, add "xx_yy" to lang/index.json. Done.
+            available: {},
+
+            // Cache of fully-fetched language data keyed by locale
+            cache: {},
 
             current: 'en_us',
             isOpen: false,
 
+            // Fetches lang/index.json, then each listed file's metadata (language, region, icon).
+            // Caches full file contents so switching is instant.
+            discover: async () => {
+                let locales = [];
+                try {
+                    const resp = await fetch('lang/index.json');
+                    if (!resp.ok) throw new Error(resp.status);
+                    locales = await resp.json();
+                } catch (e) {
+                    console.error('i18n: Could not load lang/index.json, defaulting to en_us only.', e);
+                    locales = ['en_us'];
+                }
+
+                // Fetch every listed file in parallel
+                const results = await Promise.allSettled(
+                    locales.map(async (locale) => {
+                        const resp = await fetch('lang/' + locale + '.json');
+                        if (!resp.ok) throw new Error(resp.status);
+                        const data = await resp.json();
+                        return { locale, data };
+                    })
+                );
+
+                // Build available registry + cache from successful fetches
+                results.forEach((result) => {
+                    if (result.status === 'fulfilled') {
+                        const { locale, data } = result.value;
+                        langSwitcher.available[locale] = {
+                            name: data.language || locale,
+                            region: data.region || '',
+                            flag: data.icon || locale.split('_').pop()
+                        };
+                        langSwitcher.cache[locale] = data;
+                    }
+                });
+
+                // If nothing loaded at all, create a bare-minimum English fallback
+                if (Object.keys(langSwitcher.available).length === 0) {
+                    langSwitcher.available['en_us'] = { name: 'English', region: 'US', flag: 'us' };
+                }
+            },
+
             init: () => {
-                // Restore saved preference
+                // Restore saved preference (only if that locale was actually discovered)
                 const saved = localStorage.getItem('athena_lang');
                 if (saved && langSwitcher.available[saved]) {
                     langSwitcher.current = saved;
+                } else if (!langSwitcher.available[langSwitcher.current]) {
+                    // If current default wasn't found, pick the first available
+                    langSwitcher.current = Object.keys(langSwitcher.available)[0] || 'en_us';
                 }
 
                 langSwitcher.renderItems();
@@ -2129,19 +2166,22 @@ if ($context.Request.IsWebSocketRequest) {
                     return;
                 }
 
+                // Use cached data if available, otherwise fetch
+                if (langSwitcher.cache[locale]) {
+                    LANG = langSwitcher.cache[locale];
+                } else {
+                    const loaded = await loadLanguage(locale);
+                    if (!loaded || Object.keys(loaded).length === 0) {
+                        console.warn('i18n: Language file not found for ' + locale + ', falling back to en_us');
+                        LANG = langSwitcher.cache['en_us'] || {};
+                        locale = 'en_us';
+                    } else {
+                        langSwitcher.cache[locale] = loaded;
+                    }
+                }
+
                 langSwitcher.current = locale;
                 localStorage.setItem('athena_lang', locale);
-
-                // Try to load the language file
-                const loaded = await loadLanguage(locale);
-
-                // If the file failed to load (no translations found), fall back to en_us
-                if (!loaded || Object.keys(loaded).length === 0) {
-                    console.warn('i18n: Language file not found for ' + locale + ', falling back to en_us');
-                    await loadLanguage('en_us');
-                    langSwitcher.current = 'en_us';
-                    localStorage.setItem('athena_lang', 'en_us');
-                }
 
                 // Rebuild all data-driven content
                 langSwitcher.rebuildAll();
@@ -2183,14 +2223,22 @@ if ($context.Request.IsWebSocketRequest) {
         };
 
         // ============================
-        // BOOT: Load language then init
+        // BOOT: Discover languages, then init
         // ============================
         document.addEventListener('DOMContentLoaded', async () => {
-            // Initialize language switcher (reads saved preference)
+            // 1. Discover all available languages from lang/index.json
+            //    This fetches every listed file, caches them, and builds the dropdown registry.
+            await langSwitcher.discover();
+
+            // 2. Initialize switcher (reads saved preference, binds events, renders dropdown)
             langSwitcher.init();
 
-            // Load language file (use saved preference or default)
-            await loadLanguage(langSwitcher.current);
+            // 3. Apply the selected language from cache (already fetched during discover)
+            if (langSwitcher.cache[langSwitcher.current]) {
+                LANG = langSwitcher.cache[langSwitcher.current];
+            } else {
+                await loadLanguage(langSwitcher.current);
+            }
 
             // Build data from language
             apiData = buildApiData();
