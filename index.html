@@ -8,6 +8,7 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/flag-icons/7.2.3/css/flag-icons.min.css">
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;900&family=JetBrains+Mono:wght@400;700&display=swap" rel="stylesheet">
+    
     <!-- Prism.js Syntax Highlighting -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/prism.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-json.min.js"></script>
@@ -1201,7 +1202,7 @@ if ($context.Request.IsWebSocketRequest) {
 
         async function loadLanguage(locale) {
             try {
-                const resp = await fetch('lang/' + locale + '.json');
+                const resp = await fetch('lang/' + locale + '.json?v=' + Date.now());
                 if (!resp.ok) throw new Error('Failed to load language file: ' + resp.status);
                 const data = await resp.json();
                 LANG = data;
@@ -2040,8 +2041,9 @@ if ($context.Request.IsWebSocketRequest) {
             // Caches full file contents so switching is instant.
             discover: async () => {
                 let locales = [];
+                const cacheBust = '?v=' + Date.now();
                 try {
-                    const resp = await fetch('lang/index.json');
+                    const resp = await fetch('lang/index.json' + cacheBust);
                     if (!resp.ok) throw new Error(resp.status);
                     locales = await resp.json();
                 } catch (e) {
@@ -2052,7 +2054,7 @@ if ($context.Request.IsWebSocketRequest) {
                 // Fetch every listed file in parallel
                 const results = await Promise.allSettled(
                     locales.map(async (locale) => {
-                        const resp = await fetch('lang/' + locale + '.json');
+                        const resp = await fetch('lang/' + locale + '.json' + cacheBust);
                         if (!resp.ok) throw new Error(resp.status);
                         const data = await resp.json();
                         return { locale, data };
