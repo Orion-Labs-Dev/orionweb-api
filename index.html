@@ -212,12 +212,12 @@
             <div class="w-24 h-24 bg-[#111] rounded-full flex items-center justify-center mx-auto mb-8 border border-[#222]">
                 <i class="fa-solid fa-key text-5xl text-[#FFFC00]"></i>
             </div>
-            <h1 class="text-4xl font-black mb-2 uppercase tracking-tighter">Security Access</h1>
-            <p class="text-gray-500 mb-10 text-sm font-medium">Internal Documentation Protocol</p>
+            <h1 class="text-4xl font-black mb-2 uppercase tracking-tighter" data-i18n="auth_title"></h1>
+            <p class="text-gray-500 mb-10 text-sm font-medium" data-i18n="auth_subtitle"></p>
             
             <div class="space-y-4">
-                <input type="password" id="key-input" class="access-input" placeholder="••••" autocomplete="off" autofocus>
-                <p id="auth-error" class="text-red-500 text-xs font-bold opacity-0 transition-opacity uppercase tracking-widest">Unauthorized Access</p>
+                <input type="password" id="key-input" class="access-input" data-i18n-placeholder="auth_placeholder" autocomplete="off" autofocus>
+                <p id="auth-error" class="text-red-500 text-xs font-bold opacity-0 transition-opacity uppercase tracking-widest" data-i18n="auth_error"></p>
             </div>
         </div>
     </div>
@@ -227,7 +227,7 @@
         <div class="bg-[#0a0a0a] border border-[#222] w-full max-w-5xl rounded-2xl shadow-2xl flex flex-col max-h-[90vh] fade-in">
             <div class="p-4 border-b border-[#222] flex justify-between items-center bg-[#111] rounded-t-2xl">
                 <h3 class="font-bold text-lg flex items-center gap-2 text-white">
-                    <i class="fa-solid fa-wand-magic-sparkles text-[#FFFC00]"></i> Role Payload Generator
+                    <i class="fa-solid fa-wand-magic-sparkles text-[#FFFC00]"></i> <span data-i18n="generator_title"></span>
                 </h3>
                 <button onclick="generator.close()" class="text-gray-500 hover:text-white transition"><i class="fa-solid fa-xmark text-xl"></i></button>
             </div>
@@ -235,31 +235,31 @@
                 <!-- Left: Form -->
                 <div class="w-full md:w-1/2 p-6 border-r border-[#222] overflow-y-auto bg-[#0a0a0a] space-y-5 custom-scrollbar">
                     <div>
-                        <label class="block text-[10px] font-black text-gray-500 uppercase tracking-widest mb-2">Action Type</label>
+                        <label class="block text-[10px] font-black text-gray-500 uppercase tracking-widest mb-2" data-i18n="generator_label_action"></label>
                         <select id="gen-action" class="tester-input cursor-pointer" onchange="generator.update()">
-                            <option value="CREATE_ROLE">CREATE_ROLE</option>
-                            <option value="UPDATE_ROLE">UPDATE_ROLE</option>
+                            <option value="CREATE_ROLE" data-i18n="generator_action_create"></option>
+                            <option value="UPDATE_ROLE" data-i18n="generator_action_update"></option>
                         </select>
                     </div>
                     <div class="grid grid-cols-2 gap-4">
                         <div>
-                            <label class="block text-[10px] font-black text-gray-500 uppercase tracking-widest mb-2">Role Name</label>
+                            <label class="block text-[10px] font-black text-gray-500 uppercase tracking-widest mb-2" data-i18n="generator_label_role_name"></label>
                             <input type="text" id="gen-role-name" class="tester-input" value="VIP" oninput="generator.update()">
                         </div>
                         <div>
-                            <label class="block text-[10px] font-black text-gray-500 uppercase tracking-widest mb-2">Priority (0-100)</label>
+                            <label class="block text-[10px] font-black text-gray-500 uppercase tracking-widest mb-2" data-i18n="generator_label_priority"></label>
                             <input type="number" id="gen-priority" class="tester-input" value="10" min="0" max="100" oninput="generator.update()">
                         </div>
                     </div>
                     <div id="gen-executor-group" class="hidden">
-                        <label class="block text-[10px] font-black text-gray-500 uppercase tracking-widest mb-2">Executor SteamID</label>
+                        <label class="block text-[10px] font-black text-gray-500 uppercase tracking-widest mb-2" data-i18n="generator_label_executor"></label>
                         <input type="text" id="gen-executor" class="tester-input" value="7656119xxxxxxxxxx" oninput="generator.update()">
-                        <p class="text-xs text-gray-500 mt-2 italic">Required to verify execution priority.</p>
+                        <p class="text-xs text-gray-500 mt-2 italic" data-i18n="generator_executor_hint"></p>
                     </div>
                     <div>
                         <label class="block text-[10px] font-black text-gray-500 uppercase tracking-widest mb-2 flex items-center justify-between">
-                            Assign Permissions 
-                            <span class="bg-[#222] px-2 py-0.5 rounded text-[#FFFC00]" id="gen-perm-count">0 Selected</span>
+                            <span data-i18n="generator_label_permissions"></span>
+                            <span class="bg-[#222] px-2 py-0.5 rounded text-[#FFFC00]" id="gen-perm-count"></span>
                         </label>
                         <div class="flex flex-wrap gap-2 max-h-56 overflow-y-auto custom-scrollbar p-3 bg-[#111] rounded-xl border border-[#222]" id="gen-perm-list">
                             <!-- Perms injected here -->
@@ -269,14 +269,14 @@
                 <!-- Right: Output -->
                 <div class="w-full md:w-1/2 p-6 bg-[#050505] flex flex-col">
                     <div class="flex items-center gap-2 mb-4 bg-[#111] p-1.5 rounded-lg border border-[#222] w-fit">
-                        <button class="gen-lang-btn active px-3 py-1.5 text-xs font-bold rounded-md text-[#FFFC00] bg-[#222] transition-colors" data-lang="json" onclick="generator.setLang('json', this)">JSON</button>
-                        <button class="gen-lang-btn px-3 py-1.5 text-xs font-bold rounded-md text-gray-500 hover:text-white transition-colors" data-lang="python" onclick="generator.setLang('python', this)">Python</button>
-                        <button class="gen-lang-btn px-3 py-1.5 text-xs font-bold rounded-md text-gray-500 hover:text-white transition-colors" data-lang="js" onclick="generator.setLang('js', this)">Node.js</button>
-                        <button class="gen-lang-btn px-3 py-1.5 text-xs font-bold rounded-md text-gray-500 hover:text-white transition-colors" data-lang="csharp" onclick="generator.setLang('csharp', this)">C#</button>
+                        <button class="gen-lang-btn active px-3 py-1.5 text-xs font-bold rounded-md text-[#FFFC00] bg-[#222] transition-colors" data-lang="json" onclick="generator.setLang('json', this)" data-i18n="generator_lang_json"></button>
+                        <button class="gen-lang-btn px-3 py-1.5 text-xs font-bold rounded-md text-gray-500 hover:text-white transition-colors" data-lang="python" onclick="generator.setLang('python', this)" data-i18n="generator_lang_python"></button>
+                        <button class="gen-lang-btn px-3 py-1.5 text-xs font-bold rounded-md text-gray-500 hover:text-white transition-colors" data-lang="js" onclick="generator.setLang('js', this)" data-i18n="generator_lang_nodejs"></button>
+                        <button class="gen-lang-btn px-3 py-1.5 text-xs font-bold rounded-md text-gray-500 hover:text-white transition-colors" data-lang="csharp" onclick="generator.setLang('csharp', this)" data-i18n="generator_lang_csharp"></button>
                     </div>
                     <div class="flex-1 relative group bg-[#0d0d0d] border border-[#222] rounded-xl overflow-hidden flex flex-col">
                          <div class="absolute right-2 top-2 z-10 opacity-0 group-hover:opacity-100 transition">
-                             <button onclick="ui.copyToClipboard(this, 'gen-output-code')" class="bg-[#222] hover:bg-[#333] border border-[#444] text-gray-400 w-8 h-8 flex items-center justify-center rounded-md text-xs transition-colors" title="Copy Code">
+                             <button onclick="ui.copyToClipboard(this, 'gen-output-code')" class="bg-[#222] hover:bg-[#333] border border-[#444] text-gray-400 w-8 h-8 flex items-center justify-center rounded-md text-xs transition-colors" data-i18n-title="copy_tooltip">
                                  <i class="fa-regular fa-copy"></i>
                              </button>
                          </div>
@@ -303,17 +303,17 @@
     <header class="h-16 bg-[#0a0a0a] border-b border-[#222] flex items-center justify-between px-6 shrink-0 z-20">
         <div class="flex items-center gap-8 h-full">
             <h1 class="text-2xl font-black tracking-tight flex items-center gap-2 mr-4">
-                <span class="text-[#FFFC00]">Athena</span> Mod
+                <span class="text-[#FFFC00]" data-i18n="nav_brand"></span> <span data-i18n="nav_brand_suffix"></span>
             </h1>
             <nav class="flex items-center h-full gap-2">
-                <button class="top-nav-btn active" onclick="ui.switchMainTab('docs')"><i class="fa-solid fa-book mr-2"></i> Documentation</button>
-                <button class="top-nav-btn" onclick="ui.switchMainTab('api')"><i class="fa-solid fa-plug mr-2"></i> WebSocket Reference</button>
+                <button class="top-nav-btn active" onclick="ui.switchMainTab('docs')"><i class="fa-solid fa-book mr-2"></i> <span data-i18n="nav_docs"></span></button>
+                <button class="top-nav-btn" onclick="ui.switchMainTab('api')"><i class="fa-solid fa-plug mr-2"></i> <span data-i18n="nav_api"></span></button>
             </nav>
         </div>
         <div class="flex items-center gap-4">
-            <p class="text-xs text-gray-600 font-mono hidden md:block">v1.12.0</p>
+            <p class="text-xs text-gray-600 font-mono hidden md:block" data-i18n="nav_version"></p>
             <button onclick="auth.logout()" class="text-xs font-bold text-red-500 hover:text-white bg-red-500/10 hover:bg-red-500/20 px-3 py-1.5 rounded transition-colors border border-red-500/20">
-                <i class="fa-solid fa-right-from-bracket mr-1"></i> Lock
+                <i class="fa-solid fa-right-from-bracket mr-1"></i> <span data-i18n="nav_lock"></span>
             </button>
         </div>
     </header>
@@ -326,7 +326,7 @@
             <div class="p-4 border-b border-[#222]">
                 <div class="relative">
                     <i class="fa-solid fa-search absolute left-3 top-3 text-gray-600 text-xs"></i>
-                    <input type="text" id="search-input" placeholder="Filter..." class="w-full bg-[#111] border border-[#222] rounded-lg py-2 pl-9 pr-4 text-sm text-white focus:outline-none focus:border-[#FFFC00] transition-colors placeholder-gray-600">
+                    <input type="text" id="search-input" data-i18n-placeholder="sidebar_filter_placeholder" class="w-full bg-[#111] border border-[#222] rounded-lg py-2 pl-9 pr-4 text-sm text-white focus:outline-none focus:border-[#FFFC00] transition-colors placeholder-gray-600">
                 </div>
             </div>
             <nav id="sidebar-nav" class="flex-1 overflow-y-auto p-2 space-y-1 custom-scrollbar"></nav>
@@ -342,29 +342,25 @@
                 
                 <!-- Section: Architecture -->
                 <section id="doc-architecture" class="space-y-6">
-                    <h2 class="text-4xl font-black text-white uppercase tracking-tighter italic border-b border-[#222] pb-4">Core Architecture</h2>
-                    <p class="text-gray-400 leading-relaxed text-lg">
-                        The Athena Game Server utilizes a bidirectional, persistent WebSocket connection for all backend communication. This architecture completely eliminates the overhead of standard REST APIs and allows the game server to push data instantly.
-                    </p>
+                    <h2 class="text-4xl font-black text-white uppercase tracking-tighter italic border-b border-[#222] pb-4" data-i18n="docs_arch_title"></h2>
+                    <p class="text-gray-400 leading-relaxed text-lg" data-i18n="docs_arch_desc"></p>
                     <div class="bg-[#0d0d0d] border border-[#222] p-6 rounded-2xl">
-                        <h3 class="text-[#FFFC00] font-bold mb-2 flex items-center gap-2"><i class="fa-solid fa-network-wired"></i> The Connection Reversal</h3>
-                        <p class="text-sm text-gray-400">Unlike traditional setups where a dashboard queries a game server, the Athena plugin acts as the <strong>Client</strong>. Upon startup, it reaches out to your backend node via <code class="bg-[#222] px-1 rounded text-white">ws://127.0.0.1:8000/gameserver</code>. Your backend must act as the Listener. However, if you configure <code class="text-white">bEnableWebSocketServer=True</code> in the configuration file, the plugin will act as a standard WebSocket server and listen for incoming connections.</p>
+                        <h3 class="text-[#FFFC00] font-bold mb-2 flex items-center gap-2"><i class="fa-solid fa-network-wired"></i> <span data-i18n="docs_arch_reversal_title"></span></h3>
+                        <p class="text-sm text-gray-400" id="docs-arch-reversal-desc"></p>
                     </div>
                 </section>
 
                 <!-- Section: Configuration -->
                 <section id="doc-configuration" class="space-y-6">
-                    <h2 class="text-4xl font-black text-white uppercase tracking-tighter italic border-b border-[#222] pb-4">Configuration (AthenaMod.ini)</h2>
-                    <p class="text-gray-400 leading-relaxed text-lg">
-                        The server automatically generates and maintains an <code class="text-white">AthenaMod.ini</code> file within the configuration directory. This system is designed to be <strong>self-healing</strong>: if a server owner deletes a specific key, or an update introduces new features, the mod will automatically inject the missing default keys without overwriting the rest of your custom settings.
-                    </p>
+                    <h2 class="text-4xl font-black text-white uppercase tracking-tighter italic border-b border-[#222] pb-4" data-i18n="docs_config_title"></h2>
+                    <p class="text-gray-400 leading-relaxed text-lg" id="docs-config-desc"></p>
                     <div class="relative bg-[#0d0d0d] border border-[#222] rounded-xl overflow-hidden shadow-xl mt-6">
                         <div class="flex justify-between items-center px-4 py-2 bg-[#1a1a1a] border-b border-[#222]">
                             <div class="flex items-center gap-2">
                                 <i class="fa-solid fa-gear text-gray-400"></i>
-                                <span class="text-xs font-bold text-gray-400 uppercase tracking-wider">AthenaMod.ini (Default)</span>
+                                <span class="text-xs font-bold text-gray-400 uppercase tracking-wider" data-i18n="docs_config_code_label"></span>
                             </div>
-                            <button onclick="ui.copyToClipboard(this)" class="text-gray-500 hover:text-white transition-colors" title="Copy code"><i class="fa-regular fa-copy"></i></button>
+                            <button onclick="ui.copyToClipboard(this)" class="text-gray-500 hover:text-white transition-colors" data-i18n-title="copy_tooltip"><i class="fa-regular fa-copy"></i></button>
                         </div>
                         <pre class="code-block border-none !rounded-none p-4 custom-scrollbar"><code class="language-ini copy-target">[BodyDropSystem]
 bBodyDropSpawning=False
@@ -384,27 +380,25 @@ SocketWhitelistIP=</code></pre>
 
                 <!-- Section: Role Management -->
                 <section id="doc-roles" class="space-y-6">
-                    <h2 class="text-4xl font-black text-white uppercase tracking-tighter italic border-b border-[#222] pb-4">User & Role Management</h2>
-                    <p class="text-gray-400 leading-relaxed">
-                        The framework implements a priority-based, additive permission system highly inspired by Discord's architecture. Users do not simply have "levels"; they are assigned specific <code class="text-white">RoleMappings</code> which grant arrays of granular permissions.
-                    </p>
+                    <h2 class="text-4xl font-black text-white uppercase tracking-tighter italic border-b border-[#222] pb-4" data-i18n="docs_roles_title"></h2>
+                    <p class="text-gray-400 leading-relaxed" id="docs-roles-desc"></p>
                     
                     <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
                         <div class="bg-[#0a0a0a] border border-[#222] p-6 rounded-2xl shadow-lg">
-                            <h4 class="text-white font-bold mb-3 flex items-center gap-2 uppercase tracking-wider text-xs"><i class="fa-solid fa-layer-group text-blue-400"></i> Additive Hierarchy</h4>
-                            <p class="text-xs text-gray-400 leading-relaxed">A user's total powers are the union of all roles assigned to them. If Role A grants <code class="text-green-400">CanHeal</code> and Role B grants <code class="text-red-400">CanSlay</code>, a user holding both can do both.</p>
+                            <h4 class="text-white font-bold mb-3 flex items-center gap-2 uppercase tracking-wider text-xs"><i class="fa-solid fa-layer-group text-blue-400"></i> <span data-i18n="docs_roles_hierarchy_title"></span></h4>
+                            <p class="text-xs text-gray-400 leading-relaxed" id="docs-roles-hierarchy-desc"></p>
                         </div>
                         <div class="bg-[#0a0a0a] border border-[#222] p-6 rounded-2xl shadow-lg">
-                            <h4 class="text-white font-bold mb-3 flex items-center gap-2 uppercase tracking-wider text-xs"><i class="fa-solid fa-shield-halved text-purple-400"></i> Priority Enforcement</h4>
-                            <p class="text-xs text-gray-400 leading-relaxed">The system rigorously validates execution priority. A Moderator (Priority 50) is physically blocked from editing, deleting, or granting an Admin role (Priority 100).</p>
+                            <h4 class="text-white font-bold mb-3 flex items-center gap-2 uppercase tracking-wider text-xs"><i class="fa-solid fa-shield-halved text-purple-400"></i> <span data-i18n="docs_roles_priority_title"></span></h4>
+                            <p class="text-xs text-gray-400 leading-relaxed" data-i18n="docs_roles_priority_desc"></p>
                         </div>
                         <div class="bg-[#0a0a0a] border border-[#222] p-6 rounded-2xl shadow-lg">
-                            <h4 class="text-white font-bold mb-3 flex items-center gap-2 uppercase tracking-wider text-xs"><i class="fa-solid fa-earth-americas text-green-400"></i> The 'Everyone' Role</h4>
-                            <p class="text-xs text-gray-400 leading-relaxed">The system initializes a baseline <code>EveryoneRole</code>. Any permissions added to this role (e.g. <code>CanUnstuck</code>) immediately apply to every player on the server without needing specific assignment.</p>
+                            <h4 class="text-white font-bold mb-3 flex items-center gap-2 uppercase tracking-wider text-xs"><i class="fa-solid fa-earth-americas text-green-400"></i> <span data-i18n="docs_roles_everyone_title"></span></h4>
+                            <p class="text-xs text-gray-400 leading-relaxed" id="docs-roles-everyone-desc"></p>
                         </div>
                         <div class="bg-[#0a0a0a] border border-[#222] p-6 rounded-2xl shadow-lg">
-                            <h4 class="text-white font-bold mb-3 flex items-center gap-2 uppercase tracking-wider text-xs"><i class="fa-solid fa-hard-drive text-yellow-400"></i> File Persistence</h4>
-                            <p class="text-xs text-gray-400 leading-relaxed">Role definitions serialize directly to <code>roles.json</code>, while user attachments serialize to <code>user_assignments.json</code>, ensuring full recovery on restart.</p>
+                            <h4 class="text-white font-bold mb-3 flex items-center gap-2 uppercase tracking-wider text-xs"><i class="fa-solid fa-hard-drive text-yellow-400"></i> <span data-i18n="docs_roles_persistence_title"></span></h4>
+                            <p class="text-xs text-gray-400 leading-relaxed" id="docs-roles-persistence-desc"></p>
                         </div>
                     </div>
                 </section>
@@ -412,14 +406,12 @@ SocketWhitelistIP=</code></pre>
                 <!-- Section: Permission Registry -->
                 <section id="doc-registry" class="space-y-6 pt-6">
                     <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4 border-b border-[#222] pb-4">
-                        <h2 class="text-4xl font-black text-white uppercase italic tracking-tighter shrink-0">Permission Registry</h2>
+                        <h2 class="text-4xl font-black text-white uppercase italic tracking-tighter shrink-0" data-i18n="docs_registry_title"></h2>
                         <button onclick="generator.open()" class="bg-[#FFFC00] hover:bg-[#e6e300] text-black px-4 py-2 rounded-lg font-bold text-sm flex items-center justify-center gap-2 transition shrink-0 shadow-lg">
-                            <i class="fa-solid fa-wand-magic-sparkles"></i> Payload Generator
+                            <i class="fa-solid fa-wand-magic-sparkles"></i> <span data-i18n="docs_registry_btn"></span>
                         </button>
                     </div>
-                    <p class="text-gray-400 leading-relaxed text-sm">
-                        Use the integer IDs below when defining the <code>permissions</code> array in your <code>CREATE_ROLE</code> or <code>UPDATE_ROLE</code> JSON payloads. Alternatively, use the <strong>Payload Generator</strong> to easily construct standard permission requests.
-                    </p>
+                    <p class="text-gray-400 leading-relaxed text-sm" id="docs-registry-desc"></p>
                     <div class="permission-grid" id="permission-registry"></div>
                 </section>
 
@@ -427,39 +419,37 @@ SocketWhitelistIP=</code></pre>
                 <!-- Section: Chat Commands (OVERHAULED)          -->
                 <!-- ============================================ -->
                 <section id="doc-chat" class="space-y-8">
-                    <h2 class="text-4xl font-black text-white uppercase tracking-tighter italic border-b border-[#222] pb-4">In-Game Chat Commands</h2>
-                    <p class="text-gray-400 leading-relaxed text-lg">
-                        The WebSocket API works in tandem with the native in-game global chat. Players type commands directly into the chat window, which are intercepted, parsed, and routed to the appropriate handler before they ever appear as a public message.
-                    </p>
+                    <h2 class="text-4xl font-black text-white uppercase tracking-tighter italic border-b border-[#222] pb-4" data-i18n="docs_chat_title"></h2>
+                    <p class="text-gray-400 leading-relaxed text-lg" data-i18n="docs_chat_desc"></p>
 
                     <!-- Interception Pipeline + Gatekeeper -->
                     <div class="bg-[#0d0d0d] border border-[#222] rounded-2xl overflow-hidden mt-6 shadow-xl">
                         <div class="p-6 border-b border-[#222]">
-                            <h3 class="text-white font-bold text-lg mb-2 flex items-center gap-2"><i class="fa-solid fa-filter text-[#FFFC00]"></i> The Interception Pipeline</h3>
-                            <p class="text-sm text-gray-400 leading-relaxed">When a message starting with a forward slash (<code class="text-[#FFFC00]">/</code>) is detected in the in-game global chat, the system silently intercepts it, parses the command name and any trailing arguments, and routes the call to the designated command handler. The message is consumed and never broadcast to other players.</p>
+                            <h3 class="text-white font-bold text-lg mb-2 flex items-center gap-2"><i class="fa-solid fa-filter text-[#FFFC00]"></i> <span data-i18n="docs_chat_pipeline_title"></span></h3>
+                            <p class="text-sm text-gray-400 leading-relaxed" id="docs-chat-pipeline-desc"></p>
                         </div>
                         <div class="p-6 bg-[#111]">
-                            <h3 class="text-white font-bold text-lg mb-2 flex items-center gap-2"><i class="fa-solid fa-shield-halved text-purple-400"></i> Gatekeeper Verification</h3>
-                            <p class="text-sm text-gray-400 leading-relaxed">Every chat command is linked to a specific <strong class="text-white">Permission Enum</strong> from the Permission Registry. When a player executes a command, the server resolves the union of all permissions granted by every role assigned to that player &mdash; including the baseline <code class="text-white">Everyone</code> role. If the required permission ID is found within that union, execution proceeds. Otherwise, the command is silently rejected and the player receives a denial notification.</p>
+                            <h3 class="text-white font-bold text-lg mb-2 flex items-center gap-2"><i class="fa-solid fa-shield-halved text-purple-400"></i> <span data-i18n="docs_chat_gatekeeper_title"></span></h3>
+                            <p class="text-sm text-gray-400 leading-relaxed" id="docs-chat-gatekeeper-desc"></p>
                         </div>
                     </div>
 
                     <!-- Priority Enforcement Card -->
                     <div class="bg-[#0a0a0a] border border-[#222] p-6 rounded-2xl shadow-lg mt-6">
-                        <h3 class="text-[#FFFC00] font-bold mb-4 flex items-center gap-2 text-lg"><i class="fa-solid fa-ranking-star"></i> Priority &amp; Hierarchy Enforcement</h3>
+                        <h3 class="text-[#FFFC00] font-bold mb-4 flex items-center gap-2 text-lg"><i class="fa-solid fa-ranking-star"></i> <span data-i18n="docs_chat_priority_title"></span></h3>
                         <div class="bg-[#111] border border-[#333] p-5 rounded-xl">
-                            <h4 class="text-white font-bold mb-2 text-sm flex items-center gap-2"><i class="fa-solid fa-arrow-up-short-wide text-orange-400"></i> Priority Check</h4>
-                            <p class="text-xs text-gray-400 leading-relaxed">You cannot create, edit, delete, assign, or remove roles that have a <strong class="text-white">Priority value equal to or higher</strong> than your own highest role's priority. A Moderator at Priority 50 is physically blocked from touching an Admin role at Priority 100.</p>
+                            <h4 class="text-white font-bold mb-2 text-sm flex items-center gap-2"><i class="fa-solid fa-arrow-up-short-wide text-orange-400"></i> <span data-i18n="docs_chat_priority_check_title"></span></h4>
+                            <p class="text-xs text-gray-400 leading-relaxed" id="docs-chat-priority-check-desc"></p>
                         </div>
                     </div>
 
                     <!-- Command Registry with Search -->
                     <div class="mt-8">
                         <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4 mb-6">
-                            <h3 class="text-2xl font-black text-white uppercase tracking-tighter italic">Command Registry</h3>
+                            <h3 class="text-2xl font-black text-white uppercase tracking-tighter italic" data-i18n="docs_chat_registry_title"></h3>
                             <div class="relative">
                                 <i class="fa-solid fa-search absolute left-3 top-3 text-gray-600 text-xs"></i>
-                                <input type="text" id="cmd-search-input" placeholder="Search commands..." class="bg-[#111] border border-[#222] rounded-lg py-2 pl-9 pr-4 text-sm text-white focus:outline-none focus:border-[#FFFC00] transition-colors placeholder-gray-600 w-full sm:w-64" oninput="chatCmdSearch(this.value)">
+                                <input type="text" id="cmd-search-input" data-i18n-placeholder="docs_chat_registry_search_placeholder" class="bg-[#111] border border-[#222] rounded-lg py-2 pl-9 pr-4 text-sm text-white focus:outline-none focus:border-[#FFFC00] transition-colors placeholder-gray-600 w-full sm:w-64" oninput="chatCmdSearch(this.value)">
                             </div>
                         </div>
 
@@ -470,39 +460,37 @@ SocketWhitelistIP=</code></pre>
 
                 <!-- Section: Live Event Streams -->
                 <section id="doc-events" class="space-y-6 pt-6">
-                    <h2 class="text-4xl font-black text-white uppercase tracking-tighter italic border-b border-[#222] pb-4">Live Event Streams</h2>
-                    <p class="text-gray-400 leading-relaxed text-lg">
-                        The WebSocket connection is fully bidirectional. Not only does the game server accept incoming commands, but it will also continuously push real-time asynchronous events directly through the WebSocket. 
-                    </p>
+                    <h2 class="text-4xl font-black text-white uppercase tracking-tighter italic border-b border-[#222] pb-4" data-i18n="docs_events_title"></h2>
+                    <p class="text-gray-400 leading-relaxed text-lg" data-i18n="docs_events_desc"></p>
 
                     <!-- Mode Differences -->
                     <div class="bg-[#0a0a0a] border border-[#222] p-6 rounded-2xl shadow-lg mt-6">
-                        <h3 class="text-[#FFFC00] font-bold mb-4 flex items-center gap-2"><i class="fa-solid fa-network-wired"></i> Connection Mode Differences</h3>
+                        <h3 class="text-[#FFFC00] font-bold mb-4 flex items-center gap-2"><i class="fa-solid fa-network-wired"></i> <span data-i18n="docs_events_mode_title"></span></h3>
                         <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
                             <div class="bg-[#111] border border-[#333] p-4 rounded-xl">
-                                <h4 class="text-white font-bold mb-2 text-sm"><span class="text-green-400">Server Mode</span> <code class="text-[10px] text-gray-500 font-mono bg-black px-1 rounded">(bEnableWebSocketServer=True)</code></h4>
-                                <p class="text-xs text-gray-400 leading-relaxed">Your external dashboard or bot connects to the game server as a client. It simply needs to establish the connection and listen for incoming messages.</p>
+                                <h4 class="text-white font-bold mb-2 text-sm"><span class="text-green-400" data-i18n="docs_events_mode_server_label"></span> <code class="text-[10px] text-gray-500 font-mono bg-black px-1 rounded">(bEnableWebSocketServer=True)</code></h4>
+                                <p class="text-xs text-gray-400 leading-relaxed" data-i18n="docs_events_mode_server_desc"></p>
                             </div>
                             <div class="bg-[#111] border border-[#333] p-4 rounded-xl">
-                                <h4 class="text-white font-bold mb-2 text-sm"><span class="text-blue-400">Client Mode</span> <code class="text-[10px] text-gray-500 font-mono bg-black px-1 rounded">(bEnableWebSocketServer=False)</code></h4>
-                                <p class="text-xs text-gray-400 leading-relaxed">The game server acts as the client and connects outward to your central backend (e.g., OrionWeb). In this mode, your central backend must be set up as a WebSocket Server listener to receive these pushed event payloads.</p>
+                                <h4 class="text-white font-bold mb-2 text-sm"><span class="text-blue-400" data-i18n="docs_events_mode_client_label"></span> <code class="text-[10px] text-gray-500 font-mono bg-black px-1 rounded">(bEnableWebSocketServer=False)</code></h4>
+                                <p class="text-xs text-gray-400 leading-relaxed" data-i18n="docs_events_mode_client_desc"></p>
                             </div>
                         </div>
                     </div>
 
                     <!-- Warning Box -->
                     <div class="bg-blue-900/20 border border-blue-500/30 p-5 rounded-2xl mt-6">
-                        <h4 class="text-blue-400 font-bold text-sm mb-2 flex items-center gap-2"><i class="fa-solid fa-circle-info"></i> PARSING REQUIREMENT</h4>
-                        <p class="text-xs text-gray-300">These events are pushed automatically and do not include a <code class="text-blue-300">status</code> or <code class="text-blue-300">reason</code> field like standard API responses. Always check if <code class="bg-[#111] px-1.5 py-0.5 rounded border border-[#333] font-mono">type == "log_stream"</code> before parsing.</p>
+                        <h4 class="text-blue-400 font-bold text-sm mb-2 flex items-center gap-2"><i class="fa-solid fa-circle-info"></i> <span data-i18n="docs_events_parsing_title"></span></h4>
+                        <p class="text-xs text-gray-300" id="docs-events-parsing-desc"></p>
                     </div>
 
                     <div class="relative bg-[#0d0d0d] border border-[#222] rounded-xl overflow-hidden shadow-xl mt-6">
                         <div class="flex justify-between items-center px-4 py-2 bg-[#1a1a1a] border-b border-[#222]">
                             <div class="flex items-center gap-2">
                                 <i class="fa-solid fa-satellite-dish text-gray-400"></i>
-                                <span class="text-xs font-bold text-gray-400 uppercase tracking-wider">Event Stream Payload</span>
+                                <span class="text-xs font-bold text-gray-400 uppercase tracking-wider" data-i18n="docs_events_code_label"></span>
                             </div>
-                            <button onclick="ui.copyToClipboard(this)" class="text-gray-500 hover:text-white transition-colors" title="Copy code"><i class="fa-regular fa-copy"></i></button>
+                            <button onclick="ui.copyToClipboard(this)" class="text-gray-500 hover:text-white transition-colors" data-i18n-title="copy_tooltip"><i class="fa-regular fa-copy"></i></button>
                         </div>
                         <pre class="code-block border-none !rounded-none p-4 custom-scrollbar"><code class="language-json copy-target">{
     "type": "log_stream",
@@ -515,27 +503,27 @@ SocketWhitelistIP=</code></pre>
 
                     <!-- Property Breakdown -->
                     <div class="mt-8">
-                        <h3 class="text-xl font-bold text-white mb-4 italic tracking-tight">Property Breakdown</h3>
+                        <h3 class="text-xl font-bold text-white mb-4 italic tracking-tight" data-i18n="docs_events_props_title"></h3>
                         <div class="grid grid-cols-1 gap-3">
                             <div class="bg-[#0a0a0a] border border-[#222] p-4 rounded-2xl flex flex-col md:flex-row md:items-center gap-4">
                                 <code class="text-[#FFFC00] bg-[#111] px-3 py-1 rounded-lg border border-[#333] text-sm w-fit md:w-24 text-center font-bold">type</code>
-                                <p class="text-sm text-gray-400 flex-1">Always perfectly matches <code class="text-white">"log_stream"</code> for these pushed events. This is the primary key you use to filter these payloads from standard command responses.</p>
+                                <p class="text-sm text-gray-400 flex-1" id="docs-events-prop-type-desc"></p>
                             </div>
                             <div class="bg-[#0a0a0a] border border-[#222] p-4 rounded-2xl flex flex-col md:flex-row md:items-center gap-4">
                                 <code class="text-[#FFFC00] bg-[#111] px-3 py-1 rounded-lg border border-[#333] text-sm w-fit md:w-24 text-center font-bold">stream</code>
-                                <p class="text-sm text-gray-400 flex-1">The category of the event. The two primary streams are <code class="text-white">"api_command"</code> (audits when an external API command is received) and <code class="text-white">"ingame_chat"</code> (live mirrors of player messages sent in global chat).</p>
+                                <p class="text-sm text-gray-400 flex-1" id="docs-events-prop-stream-desc"></p>
                             </div>
                             <div class="bg-[#0a0a0a] border border-[#222] p-4 rounded-2xl flex flex-col md:flex-row md:items-center gap-4">
                                 <code class="text-[#FFFC00] bg-[#111] px-3 py-1 rounded-lg border border-[#333] text-sm w-fit md:w-24 text-center font-bold">steamId</code>
-                                <p class="text-sm text-gray-400 flex-1">The SteamID of the user who triggered the event. If it was triggered by the server itself, this will say <code class="text-white">"SYSTEM"</code>.</p>
+                                <p class="text-sm text-gray-400 flex-1" id="docs-events-prop-steamid-desc"></p>
                             </div>
                             <div class="bg-[#0a0a0a] border border-[#222] p-4 rounded-2xl flex flex-col md:flex-row md:items-center gap-4">
                                 <code class="text-[#FFFC00] bg-[#111] px-3 py-1 rounded-lg border border-[#333] text-sm w-fit md:w-24 text-center font-bold">action</code>
-                                <p class="text-sm text-gray-400 flex-1">The specific action taken (e.g., the name of the command executed, or the raw text of the chat message).</p>
+                                <p class="text-sm text-gray-400 flex-1" data-i18n="docs_events_prop_action_desc"></p>
                             </div>
                             <div class="bg-[#0a0a0a] border border-[#222] p-4 rounded-2xl flex flex-col md:flex-row md:items-center gap-4">
                                 <code class="text-[#FFFC00] bg-[#111] px-3 py-1 rounded-lg border border-[#333] text-sm w-fit md:w-24 text-center font-bold">details</code>
-                                <p class="text-sm text-gray-400 flex-1">Additional contextual metadata provided by the server engine.</p>
+                                <p class="text-sm text-gray-400 flex-1" data-i18n="docs_events_prop_details_desc"></p>
                             </div>
                         </div>
                     </div>
@@ -551,35 +539,27 @@ SocketWhitelistIP=</code></pre>
                 
                 <!-- Section: API Usage & Code Tabs -->
                 <section id="api-integration" class="space-y-8 border-b border-[#222] pb-10">
-                    <h2 class="text-4xl font-black text-white uppercase tracking-tighter italic">Payload Integration</h2>
-                    <p class="text-gray-400 leading-relaxed">
-                        To interface with the endpoints below, you must establish a WebSocket connection and transmit JSON strings. Depending on your <code class="text-white">AthenaMod.ini</code> configuration, your external application will either act as a <strong>Client</strong> (connecting to the game server) or a <strong>Server</strong> (listening for the game server to connect to it).
-                    </p>
+                    <h2 class="text-4xl font-black text-white uppercase tracking-tighter italic" data-i18n="api_integration_title"></h2>
+                    <p class="text-gray-400 leading-relaxed" id="api-integration-desc"></p>
                     
                     <div class="bg-red-900/10 border border-red-500/20 p-5 rounded-2xl">
-                        <h4 class="text-red-400 font-bold text-sm mb-2 flex items-center gap-2"><i class="fa-solid fa-triangle-exclamation"></i> NO HTTP ENDPOINTS</h4>
-                        <p class="text-xs text-gray-400">There are no URL routes (like <code>/players</code>). You must send a JSON payload with an <code>action</code> property to the main WebSocket URL.</p>
+                        <h4 class="text-red-400 font-bold text-sm mb-2 flex items-center gap-2"><i class="fa-solid fa-triangle-exclamation"></i> <span data-i18n="api_no_http_title"></span></h4>
+                        <p class="text-xs text-gray-400" id="api-no-http-desc"></p>
                     </div>
 
                     <!-- Connection Mode Toggle -->
                     <div class="bg-[#0a0a0a] p-5 rounded-2xl border border-[#222] mt-8 shadow-xl">
                         <div class="flex flex-col md:flex-row md:items-center justify-between gap-4 border-b border-[#222] pb-4 mb-4">
-                            <h3 class="text-white font-bold text-lg flex items-center gap-2"><i class="fa-solid fa-toggle-on text-[#FFFC00]"></i> Connection Mode</h3>
+                            <h3 class="text-white font-bold text-lg flex items-center gap-2"><i class="fa-solid fa-toggle-on text-[#FFFC00]"></i> <span data-i18n="api_mode_title"></span></h3>
                             <div class="bg-[#111] p-1 rounded-lg border border-[#333] flex items-center shrink-0">
-                                <button class="mode-toggle-btn active px-4 py-2 rounded-md text-xs font-bold transition-colors bg-[#222] text-[#FFFC00]" data-mode="client" onclick="ui.switchCodeMode('client')">
-                                    External App as Client
+                                <button class="mode-toggle-btn active px-4 py-2 rounded-md text-xs font-bold transition-colors bg-[#222] text-[#FFFC00]" data-mode="client" onclick="ui.switchCodeMode('client')" data-i18n="api_mode_client_btn">
                                 </button>
-                                <button class="mode-toggle-btn px-4 py-2 rounded-md text-xs font-bold transition-colors text-gray-500 hover:text-white" data-mode="server" onclick="ui.switchCodeMode('server')">
-                                    External App as Server
+                                <button class="mode-toggle-btn px-4 py-2 rounded-md text-xs font-bold transition-colors text-gray-500 hover:text-white" data-mode="server" onclick="ui.switchCodeMode('server')" data-i18n="api_mode_server_btn">
                                 </button>
                             </div>
                         </div>
-                        <p class="text-sm text-gray-400 leading-relaxed code-mode client-mode block">
-                            <strong>Client Mode:</strong> The Game Server is acting as the host <code class="text-[#FFFC00] text-xs bg-[#222] px-1 rounded">(bEnableWebSocketServer=True)</code>. Your external dashboard, discord bot, or script must establish the connection outward to the game server.
-                        </p>
-                        <p class="text-sm text-gray-400 leading-relaxed code-mode server-mode hidden">
-                            <strong>Server Mode:</strong> The Game Server is acting as the client <code class="text-[#FFFC00] text-xs bg-[#222] px-1 rounded">(bEnableWebSocketServer=False)</code>. You must host a WebSocket Listener on your backend infrastructure to catch the incoming connection from the game server.
-                        </p>
+                        <p class="text-sm text-gray-400 leading-relaxed code-mode client-mode block" id="api-mode-client-desc"></p>
+                        <p class="text-sm text-gray-400 leading-relaxed code-mode server-mode hidden" id="api-mode-server-desc"></p>
                     </div>
 
                     <!-- Language Selection Tabs -->
@@ -602,9 +582,9 @@ SocketWhitelistIP=</code></pre>
                             <div class="flex justify-between items-center px-4 py-2 bg-[#1a1a1a] border-b border-[#222]">
                                 <div class="flex items-center gap-2">
                                     <i class="fa-brands fa-python text-blue-400"></i>
-                                    <span class="text-xs font-bold text-gray-400 uppercase tracking-wider">Python</span>
+                                    <span class="text-xs font-bold text-gray-400 uppercase tracking-wider" data-i18n="api_lang_python"></span>
                                 </div>
-                                <button onclick="ui.copyToClipboard(this)" class="text-gray-500 hover:text-white transition-colors" title="Copy code"><i class="fa-regular fa-copy"></i></button>
+                                <button onclick="ui.copyToClipboard(this)" class="text-gray-500 hover:text-white transition-colors" data-i18n-title="copy_tooltip"><i class="fa-regular fa-copy"></i></button>
                             </div>
                             <pre class="code-block border-none !rounded-none code-mode client-mode block"><code class="language-python copy-target">import asyncio
 import websockets
@@ -651,9 +631,9 @@ asyncio.get_event_loop().run_forever()</code></pre>
                             <div class="flex justify-between items-center px-4 py-2 bg-[#1a1a1a] border-b border-[#222]">
                                 <div class="flex items-center gap-2">
                                     <i class="fa-brands fa-node-js text-yellow-400"></i>
-                                    <span class="text-xs font-bold text-gray-400 uppercase tracking-wider">Node.js</span>
+                                    <span class="text-xs font-bold text-gray-400 uppercase tracking-wider" data-i18n="api_lang_nodejs"></span>
                                 </div>
-                                <button onclick="ui.copyToClipboard(this)" class="text-gray-500 hover:text-white transition-colors" title="Copy code"><i class="fa-regular fa-copy"></i></button>
+                                <button onclick="ui.copyToClipboard(this)" class="text-gray-500 hover:text-white transition-colors" data-i18n-title="copy_tooltip"><i class="fa-regular fa-copy"></i></button>
                             </div>
                             <pre class="code-block border-none !rounded-none code-mode client-mode block"><code class="language-javascript copy-target">const WebSocket = require('ws');
 const ws = new WebSocket('ws://127.0.0.1:8000/gameserver');
@@ -694,9 +674,9 @@ wss.on('connection', function connection(ws) {
                             <div class="flex justify-between items-center px-4 py-2 bg-[#1a1a1a] border-b border-[#222]">
                                 <div class="flex items-center gap-2">
                                     <span class="font-bold border border-blue-500 text-blue-500 px-1 rounded text-[10px] leading-none h-4 flex items-center">TS</span>
-                                    <span class="text-xs font-bold text-gray-400 uppercase tracking-wider">TypeScript</span>
+                                    <span class="text-xs font-bold text-gray-400 uppercase tracking-wider" data-i18n="api_lang_typescript"></span>
                                 </div>
-                                <button onclick="ui.copyToClipboard(this)" class="text-gray-500 hover:text-white transition-colors" title="Copy code"><i class="fa-regular fa-copy"></i></button>
+                                <button onclick="ui.copyToClipboard(this)" class="text-gray-500 hover:text-white transition-colors" data-i18n-title="copy_tooltip"><i class="fa-regular fa-copy"></i></button>
                             </div>
                             <pre class="code-block border-none !rounded-none code-mode client-mode block"><code class="language-typescript copy-target">import WebSocket from 'ws';
 
@@ -741,9 +721,9 @@ wss.on('connection', (ws: WebSocket) => {
                             <div class="flex justify-between items-center px-4 py-2 bg-[#1a1a1a] border-b border-[#222]">
                                 <div class="flex items-center gap-2">
                                     <i class="fa-brands fa-java text-orange-500"></i>
-                                    <span class="text-xs font-bold text-gray-400 uppercase tracking-wider">Java</span>
+                                    <span class="text-xs font-bold text-gray-400 uppercase tracking-wider" data-i18n="api_lang_java"></span>
                                 </div>
-                                <button onclick="ui.copyToClipboard(this)" class="text-gray-500 hover:text-white transition-colors" title="Copy code"><i class="fa-regular fa-copy"></i></button>
+                                <button onclick="ui.copyToClipboard(this)" class="text-gray-500 hover:text-white transition-colors" data-i18n-title="copy_tooltip"><i class="fa-regular fa-copy"></i></button>
                             </div>
                             <pre class="code-block border-none !rounded-none code-mode client-mode block"><code class="language-java copy-target">import java.net.URI;
 import java.net.http.HttpClient;
@@ -804,9 +784,9 @@ public class OrionServer extends WebSocketServer {
                             <div class="flex justify-between items-center px-4 py-2 bg-[#1a1a1a] border-b border-[#222]">
                                 <div class="flex items-center gap-2">
                                     <i class="fa-brands fa-rust text-orange-700"></i>
-                                    <span class="text-xs font-bold text-gray-400 uppercase tracking-wider">Rust</span>
+                                    <span class="text-xs font-bold text-gray-400 uppercase tracking-wider" data-i18n="api_lang_rust"></span>
                                 </div>
-                                <button onclick="ui.copyToClipboard(this)" class="text-gray-500 hover:text-white transition-colors" title="Copy code"><i class="fa-regular fa-copy"></i></button>
+                                <button onclick="ui.copyToClipboard(this)" class="text-gray-500 hover:text-white transition-colors" data-i18n-title="copy_tooltip"><i class="fa-regular fa-copy"></i></button>
                             </div>
                             <pre class="code-block border-none !rounded-none code-mode client-mode block"><code class="language-rust copy-target">use tokio_tungstenite::{connect_async, tungstenite::protocol::Message};
 use futures_util::{StreamExt, SinkExt};
@@ -863,9 +843,9 @@ async fn main() {
                             <div class="flex justify-between items-center px-4 py-2 bg-[#1a1a1a] border-b border-[#222]">
                                 <div class="flex items-center gap-2">
                                     <i class="fa-solid fa-moon text-indigo-400"></i>
-                                    <span class="text-xs font-bold text-gray-400 uppercase tracking-wider">Lua</span>
+                                    <span class="text-xs font-bold text-gray-400 uppercase tracking-wider" data-i18n="api_lang_lua"></span>
                                 </div>
-                                <button onclick="ui.copyToClipboard(this)" class="text-gray-500 hover:text-white transition-colors" title="Copy code"><i class="fa-regular fa-copy"></i></button>
+                                <button onclick="ui.copyToClipboard(this)" class="text-gray-500 hover:text-white transition-colors" data-i18n-title="copy_tooltip"><i class="fa-regular fa-copy"></i></button>
                             </div>
                             <pre class="code-block border-none !rounded-none code-mode client-mode block"><code class="language-lua copy-target">local websocket = require("websocket")
 local client = websocket.client.sync()
@@ -905,9 +885,9 @@ copas.loop()</code></pre>
                             <div class="flex justify-between items-center px-4 py-2 bg-[#1a1a1a] border-b border-[#222]">
                                 <div class="flex items-center gap-2">
                                     <span class="font-bold border border-blue-600 text-blue-600 px-1 rounded text-[10px] leading-none h-4 flex items-center">C++</span>
-                                    <span class="text-xs font-bold text-gray-400 uppercase tracking-wider">C++</span>
+                                    <span class="text-xs font-bold text-gray-400 uppercase tracking-wider" data-i18n="api_lang_cpp"></span>
                                 </div>
-                                <button onclick="ui.copyToClipboard(this)" class="text-gray-500 hover:text-white transition-colors" title="Copy code"><i class="fa-regular fa-copy"></i></button>
+                                <button onclick="ui.copyToClipboard(this)" class="text-gray-500 hover:text-white transition-colors" data-i18n-title="copy_tooltip"><i class="fa-regular fa-copy"></i></button>
                             </div>
                             <pre class="code-block border-none !rounded-none code-mode client-mode block"><code class="language-cpp copy-target">#include &lt;ixwebsocket/IXWebSocket.h&gt;
 #include &lt;nlohmann/json.hpp&gt;
@@ -968,9 +948,9 @@ int main() {
                             <div class="flex justify-between items-center px-4 py-2 bg-[#1a1a1a] border-b border-[#222]">
                                 <div class="flex items-center gap-2">
                                     <span class="font-bold border border-purple-500 text-purple-500 px-1 rounded text-[10px] leading-none h-4 flex items-center">C#</span>
-                                    <span class="text-xs font-bold text-gray-400 uppercase tracking-wider">C#</span>
+                                    <span class="text-xs font-bold text-gray-400 uppercase tracking-wider" data-i18n="api_lang_csharp"></span>
                                 </div>
-                                <button onclick="ui.copyToClipboard(this)" class="text-gray-500 hover:text-white transition-colors" title="Copy code"><i class="fa-regular fa-copy"></i></button>
+                                <button onclick="ui.copyToClipboard(this)" class="text-gray-500 hover:text-white transition-colors" data-i18n-title="copy_tooltip"><i class="fa-regular fa-copy"></i></button>
                             </div>
                             <pre class="code-block border-none !rounded-none code-mode client-mode block"><code class="language-csharp copy-target">using System;
 using System.Net.WebSockets;
@@ -1028,9 +1008,9 @@ class Program {
                             <div class="flex justify-between items-center px-4 py-2 bg-[#1a1a1a] border-b border-[#222]">
                                 <div class="flex items-center gap-2">
                                     <i class="fa-solid fa-terminal text-blue-300"></i>
-                                    <span class="text-xs font-bold text-gray-400 uppercase tracking-wider">PowerShell</span>
+                                    <span class="text-xs font-bold text-gray-400 uppercase tracking-wider" data-i18n="api_lang_powershell"></span>
                                 </div>
-                                <button onclick="ui.copyToClipboard(this)" class="text-gray-500 hover:text-white transition-colors" title="Copy code"><i class="fa-regular fa-copy"></i></button>
+                                <button onclick="ui.copyToClipboard(this)" class="text-gray-500 hover:text-white transition-colors" data-i18n-title="copy_tooltip"><i class="fa-regular fa-copy"></i></button>
                             </div>
                             <pre class="code-block border-none !rounded-none code-mode client-mode block"><code class="language-powershell copy-target">$ws = New-Object System.Net.WebSockets.ClientWebSocket
 $uri = New-Object System.Uri("ws://127.0.0.1:8000/gameserver")
@@ -1065,8 +1045,7 @@ if ($context.Request.IsWebSocketRequest) {
 
                 <div id="endpoints-container" class="space-y-24"></div>
 
-                <footer class="pt-20 pb-10 text-center text-gray-600 text-sm font-medium">
-                    &copy; 2026 Athena Mod &bull; Payload Specification Manual
+                <footer class="pt-20 pb-10 text-center text-gray-600 text-sm font-medium" data-i18n="api_footer">
                 </footer>
             </div>
 
@@ -1074,6 +1053,159 @@ if ($context.Request.IsWebSocketRequest) {
     </main>
 
     <script>
+        // ============================
+        // i18n Language System
+        // ============================
+        let LANG = {};
+
+        function t(key) {
+            return LANG[key] !== undefined ? LANG[key] : key;
+        }
+
+        async function loadLanguage(locale) {
+            try {
+                const resp = await fetch('lang/' + locale + '.json');
+                if (!resp.ok) throw new Error('Failed to load language file: ' + resp.status);
+                const data = await resp.json();
+                LANG = data;
+                return data;
+            } catch (e) {
+                console.error('i18n: Could not load language file, falling back.', e);
+                return {};
+            }
+        }
+
+        function applyTranslations() {
+            // data-i18n → textContent
+            document.querySelectorAll('[data-i18n]').forEach(el => {
+                const key = el.getAttribute('data-i18n');
+                if (LANG[key] !== undefined) {
+                    el.textContent = LANG[key];
+                }
+            });
+            // data-i18n-placeholder → placeholder
+            document.querySelectorAll('[data-i18n-placeholder]').forEach(el => {
+                const key = el.getAttribute('data-i18n-placeholder');
+                if (LANG[key] !== undefined) {
+                    el.placeholder = LANG[key];
+                }
+            });
+            // data-i18n-title → title
+            document.querySelectorAll('[data-i18n-title]').forEach(el => {
+                const key = el.getAttribute('data-i18n-title');
+                if (LANG[key] !== undefined) {
+                    el.title = LANG[key];
+                }
+            });
+
+            // Complex innerHTML sections that mix text + code tags
+            applyComplexTranslations();
+        }
+
+        function applyComplexTranslations() {
+            // Architecture reversal desc
+            const archRev = document.getElementById('docs-arch-reversal-desc');
+            if (archRev) {
+                archRev.innerHTML = t('docs_arch_reversal_desc_prefix') + '<strong>' + t('docs_arch_reversal_client') + '</strong>' + t('docs_arch_reversal_desc_mid') + '<code class="bg-[#222] px-1 rounded text-white">ws://127.0.0.1:8000/gameserver</code>' + t('docs_arch_reversal_desc_mid2') + '<code class="text-white">bEnableWebSocketServer=True</code>' + t('docs_arch_reversal_desc_suffix');
+            }
+
+            // Configuration desc
+            const configDesc = document.getElementById('docs-config-desc');
+            if (configDesc) {
+                configDesc.innerHTML = t('docs_config_desc_prefix') + '<code class="text-white">AthenaMod.ini</code>' + t('docs_config_desc_mid') + '<strong>' + t('docs_config_desc_selfhealing') + '</strong>' + t('docs_config_desc_suffix');
+            }
+
+            // Roles desc
+            const rolesDesc = document.getElementById('docs-roles-desc');
+            if (rolesDesc) {
+                rolesDesc.innerHTML = t('docs_roles_desc_prefix') + '<code class="text-white">RoleMappings</code>' + t('docs_roles_desc_mid');
+            }
+
+            // Roles hierarchy desc
+            const hierarchyDesc = document.getElementById('docs-roles-hierarchy-desc');
+            if (hierarchyDesc) {
+                hierarchyDesc.innerHTML = t('docs_roles_hierarchy_desc_prefix') + '<code class="text-green-400">CanHeal</code>' + t('docs_roles_hierarchy_desc_mid') + '<code class="text-red-400">CanSlay</code>' + t('docs_roles_hierarchy_desc_suffix');
+            }
+
+            // Everyone role desc
+            const everyoneDesc = document.getElementById('docs-roles-everyone-desc');
+            if (everyoneDesc) {
+                everyoneDesc.innerHTML = t('docs_roles_everyone_desc_prefix') + '<code>EveryoneRole</code>' + t('docs_roles_everyone_desc_mid') + '<code>CanUnstuck</code>' + t('docs_roles_everyone_desc_suffix');
+            }
+
+            // Persistence desc
+            const persistDesc = document.getElementById('docs-roles-persistence-desc');
+            if (persistDesc) {
+                persistDesc.innerHTML = t('docs_roles_persistence_desc_prefix') + '<code>roles.json</code>' + t('docs_roles_persistence_desc_mid') + '<code>user_assignments.json</code>' + t('docs_roles_persistence_desc_suffix');
+            }
+
+            // Registry desc
+            const regDesc = document.getElementById('docs-registry-desc');
+            if (regDesc) {
+                regDesc.innerHTML = t('docs_registry_desc_prefix') + '<code>permissions</code>' + t('docs_registry_desc_mid') + '<code>CREATE_ROLE</code>' + t('docs_registry_desc_mid2') + '<code>UPDATE_ROLE</code>' + t('docs_registry_desc_mid3') + '<strong>' + t('docs_registry_desc_bold') + '</strong>' + t('docs_registry_desc_suffix');
+            }
+
+            // Pipeline desc
+            const pipelineDesc = document.getElementById('docs-chat-pipeline-desc');
+            if (pipelineDesc) {
+                pipelineDesc.innerHTML = t('docs_chat_pipeline_desc_prefix') + '<code class="text-[#FFFC00]">/</code>' + t('docs_chat_pipeline_desc_mid');
+            }
+
+            // Gatekeeper desc
+            const gatekeeperDesc = document.getElementById('docs-chat-gatekeeper-desc');
+            if (gatekeeperDesc) {
+                gatekeeperDesc.innerHTML = t('docs_chat_gatekeeper_desc_prefix') + '<strong class="text-white">' + t('docs_chat_gatekeeper_desc_bold') + '</strong>' + t('docs_chat_gatekeeper_desc_mid') + '<code class="text-white">Everyone</code>' + t('docs_chat_gatekeeper_desc_mid2');
+            }
+
+            // Priority check desc
+            const priorityDesc = document.getElementById('docs-chat-priority-check-desc');
+            if (priorityDesc) {
+                priorityDesc.innerHTML = t('docs_chat_priority_check_desc_prefix') + '<strong class="text-white">' + t('docs_chat_priority_check_desc_bold') + '</strong>' + t('docs_chat_priority_check_desc_suffix');
+            }
+
+            // Events parsing desc
+            const parsingDesc = document.getElementById('docs-events-parsing-desc');
+            if (parsingDesc) {
+                parsingDesc.innerHTML = t('docs_events_parsing_desc_prefix') + '<code class="text-blue-300">status</code>' + t('docs_events_parsing_desc_mid') + '<code class="text-blue-300">reason</code>' + t('docs_events_parsing_desc_mid2') + '<code class="bg-[#111] px-1.5 py-0.5 rounded border border-[#333] font-mono">type == "log_stream"</code>' + t('docs_events_parsing_desc_suffix');
+            }
+
+            // Events property descs
+            const propType = document.getElementById('docs-events-prop-type-desc');
+            if (propType) {
+                propType.innerHTML = t('docs_events_prop_type_desc_prefix') + '<code class="text-white">"log_stream"</code>' + t('docs_events_prop_type_desc_suffix');
+            }
+            const propStream = document.getElementById('docs-events-prop-stream-desc');
+            if (propStream) {
+                propStream.innerHTML = t('docs_events_prop_stream_desc_prefix') + '<code class="text-white">"api_command"</code>' + t('docs_events_prop_stream_desc_mid') + '<code class="text-white">"ingame_chat"</code>' + t('docs_events_prop_stream_desc_suffix');
+            }
+            const propSteamId = document.getElementById('docs-events-prop-steamid-desc');
+            if (propSteamId) {
+                propSteamId.innerHTML = t('docs_events_prop_steamid_desc_prefix') + '<code class="text-white">"SYSTEM"</code>' + t('docs_events_prop_steamid_desc_suffix');
+            }
+
+            // API integration desc
+            const apiIntDesc = document.getElementById('api-integration-desc');
+            if (apiIntDesc) {
+                apiIntDesc.innerHTML = t('api_integration_desc_prefix') + '<code class="text-white">AthenaMod.ini</code>' + t('api_integration_desc_mid') + '<strong>' + t('api_integration_desc_client') + '</strong>' + t('api_integration_desc_mid2') + '<strong>' + t('api_integration_desc_server') + '</strong>' + t('api_integration_desc_suffix');
+            }
+
+            // API no http desc
+            const noHttpDesc = document.getElementById('api-no-http-desc');
+            if (noHttpDesc) {
+                noHttpDesc.innerHTML = t('api_no_http_desc_prefix') + '<code>/players</code>' + t('api_no_http_desc_suffix') + '<code>action</code>' + t('api_no_http_desc_suffix2');
+            }
+
+            // API mode client desc
+            const modeClientDesc = document.getElementById('api-mode-client-desc');
+            if (modeClientDesc) {
+                modeClientDesc.innerHTML = '<strong>' + t('api_mode_client_desc_prefix') + '</strong>' + t('api_mode_client_desc') + '<code class="text-[#FFFC00] text-xs bg-[#222] px-1 rounded">(bEnableWebSocketServer=True)</code>' + t('api_mode_client_desc_suffix');
+            }
+            const modeServerDesc = document.getElementById('api-mode-server-desc');
+            if (modeServerDesc) {
+                modeServerDesc.innerHTML = '<strong>' + t('api_mode_server_desc_prefix') + '</strong>' + t('api_mode_server_desc') + '<code class="text-[#FFFC00] text-xs bg-[#222] px-1 rounded">(bEnableWebSocketServer=False)</code>' + t('api_mode_server_desc_suffix');
+            }
+        }
+
         // Data block specific to RETRIEVE_PLAYER_INFO
         const fullPlayerInfo = {
             "type": "player_info",
@@ -1111,418 +1243,171 @@ if ($context.Request.IsWebSocketRequest) {
             ]
         };
 
-        const apiData = [
-            {
-                category: "Diagnostics",
-                items: [
-                    { 
-                        action: "RETRIEVE_PLAYERS_LIST", 
-                        type: "READ", 
-                        desc: "Retrieves status and global coordinates for all active server connections.", 
-                        payload: { "action": "RETRIEVE_PLAYERS_LIST" },
-                        response: { 
-                            "type": "player_list", 
-                            "count": 2, 
-                            "players": [
-                                { "PlayerName": "Specimen_A", "SteamID": "7656119xxxxxxxx01", "Location": "X: 120 Y: -500 Z: 50", "IsDevOrAdmin": "Admin" },
-                                { "PlayerName": "Specimen_B", "SteamID": "7656119xxxxxxxx02", "Location": "X: 5000 Y: 1200 Z: 0", "IsDevOrAdmin": "None" }
-                            ] 
-                        } 
-                    },
-                    { 
-                        action: "RETRIEVE_PLAYER_INFO", 
-                        type: "READ", 
-                        desc: "Full state acquisition including vitals, nutrients, phenotypic skin data, and mutation slot contents.", 
-                        payload: { "action": "RETRIEVE_PLAYER_INFO", "steamId": "7656119xxxxxxxxxx" },
-                        response: fullPlayerInfo 
-                    }
-                ]
-            },
-            {
-                category: "Physiological Control",
-                items: [
-                    { 
-                        action: "HEAL_DINO", 
-                        type: "WRITE", 
-                        desc: "Atomic restoration of Health, Hunger, Thirst, Stamina, and Blood to maximum values.", 
-                        payload: { "action": "HEAL_DINO", "steamId": "7656119xxxxxxxxxx" }, 
-                        response: { "type": "dino_heal_successful", "dinoHeal": { "status": "Success", "reason": "Dino Healed!" } } 
-                    },
-                    { 
-                        action: "GROW_DINO", 
-                        type: "WRITE", 
-                        desc: "Forced development set to a decimal percentage (0.0 to 100.0).", 
-                        payload: { "action": "GROW_DINO", "steamId": "7656119xxxxxxxxxx", "percent": 100.0 }, 
-                        response: { "type": "dino_grow_successful", "dinoGrow": { "status": "Success", "reason": "Dino Grown!" } } 
-                    },
-                    { 
-                        action: "SLAY_DINO", 
-                        type: "DELETE", 
-                        desc: "Neutralizes target actor using standard damage logic.", 
-                        payload: { "action": "SLAY_DINO", "steamId": "7656119xxxxxxxxxx" }, 
-                        response: { "type": "dino_slay_successful", "dinoSlay": { "status": "Success", "reason": "Dino Slayed!" } } 
-                    },
-                    { 
-                        action: "ADMIN_SLAY_DINO", 
-                        type: "DELETE", 
-                        desc: "Immediate actor destruction, bypassing invincibility or combat-lock states.", 
-                        payload: { "action": "ADMIN_SLAY_DINO", "steamId": "7656119xxxxxxxxxx" }, 
-                        response: { "type": "dino_slay_successful", "dinoSlay": { "status": "Success", "reason": "Dino Slayed!" } } 
-                    },
-                    { 
-                        action: "SET_SKIN", 
-                        type: "WRITE", 
-                        desc: "Modifies gender, variation index, pattern index, and RGB color vectors for the specimen.", 
-                        payload: { 
-                            "action": "SET_SKIN", 
-                            "steamId": "7656119xxxxxxxxxx", 
-                            "skinData": { 
-                                "bIsFemale": true, 
-                                "SkinVariation": 0.5, 
-                                "PatternIndex": 3, 
-                                "MaleDisplayColor": {"r": 1.0, "g": 0.0, "b": 0.0, "a": 1.0}, 
-                                "MarkingsColor": {"r": 1.0, "g": 1.0, "b": 1.0, "a": 1.0}, 
-                                "BodyColor": {"r": 0.2, "g": 0.1, "b": 0.1, "a": 1.0}, 
-                                "FlankColor": {"r": 0.2, "g": 0.1, "b": 0.1, "a": 1.0}, 
-                                "UnderbellyColor": {"r": 0.9, "g": 0.9, "b": 0.9, "a": 1.0}, 
-                                "Detail1Color": {"r": 1.0, "g": 1.0, "b": 1.0, "a": 1.0}, 
-                                "EyesColor": {"r": 1.0, "g": 1.0, "b": 0.0, "a": 1.0} 
+        // Build apiData using language keys for descriptions
+        function buildApiData() {
+            const items = LANG.api_items || {};
+            const cats = LANG.api_categories || {};
+            return [
+                {
+                    category: cats.diagnostics || "Diagnostics",
+                    items: [
+                        { 
+                            action: "RETRIEVE_PLAYERS_LIST", 
+                            type: "READ", 
+                            desc: (items.RETRIEVE_PLAYERS_LIST || {}).desc || "", 
+                            payload: { "action": "RETRIEVE_PLAYERS_LIST" },
+                            response: { 
+                                "type": "player_list", 
+                                "count": 2, 
+                                "players": [
+                                    { "PlayerName": "Specimen_A", "SteamID": "7656119xxxxxxxx01", "Location": "X: 120 Y: -500 Z: 50", "IsDevOrAdmin": "Admin" },
+                                    { "PlayerName": "Specimen_B", "SteamID": "7656119xxxxxxxx02", "Location": "X: 5000 Y: 1200 Z: 0", "IsDevOrAdmin": "None" }
+                                ] 
                             } 
-                        }, 
-                        response: { "type": "set_skin_successful", "setSkin": { "status": "Success", "reason": "Skin successfully applied!" } } 
-                    },
-                    { 
-                        action: "SET_PLAYER_INFO", 
-                        type: "WRITE", 
-                        desc: "Bulk specimen update. Targets Health, Hunger, Thirst, Stamina, Blood, Growth, Nutrients, and Location.", 
-                        payload: { 
-                            "action": "SET_PLAYER_INFO", 
-                            "steamId": "7656119xxxxxxxxxx", 
-                            "health": 100.0, 
-                            "hunger": 100.0,
-                            "thirst": 100.0,
-                            "stamina": 100.0,
-                            "blood": 100.0,
-                            "growth": 1.0, 
-                            "location": { "x": 1500.0, "y": -200.0, "z": 100.0 }, 
-                            "nutrients": { "CarbValue": 10000.0, "ProteinValue": 10000.0, "LipidValue": 10000.0 } 
-                        }, 
-                        response: { "type": "set_player_info_successful", "setPlayerInfo": { "status": "Success", "reason": "Player info successfully updated!" } } 
-                    },
-                    { action: "SET_HEALTH", type: "WRITE", desc: "Set health stat specifically.", payload: { "action": "SET_HEALTH", "steamId": "7656119xxxxxxxxxx", "value": 100.0 }, response: { "type": "dino_set_health_successful", "dinoSetHealth": { "status": "Success", "reason": "Health set!" } } },
-                    { action: "SET_HUNGER", type: "WRITE", desc: "Set hunger stat specifically.", payload: { "action": "SET_HUNGER", "steamId": "7656119xxxxxxxxxx", "value": 100.0 }, response: { "type": "dino_set_hunger_successful", "dinoSetHunger": { "status": "Success", "reason": "Hunger set!" } } },
-                    { action: "SET_THIRST", type: "WRITE", desc: "Set thirst stat specifically.", payload: { "action": "SET_THIRST", "steamId": "7656119xxxxxxxxxx", "value": 100.0 }, response: { "type": "dino_set_thirst_successful", "dinoSetThirst": { "status": "Success", "reason": "Thirst set!" } } },
-                    { action: "SET_STAMINA", type: "WRITE", desc: "Set stamina stat specifically.", payload: { "action": "SET_STAMINA", "steamId": "7656119xxxxxxxxxx", "value": 100.0 }, response: { "type": "dino_set_stamina_successful", "dinoSetStamina": { "status": "Success", "reason": "Stamina set!" } } },
-                    { action: "SET_BLOOD", type: "WRITE", desc: "Set blood stat specifically.", payload: { "action": "SET_BLOOD", "steamId": "7656119xxxxxxxxxx", "value": 100.0 }, response: { "type": "dino_set_blood_successful", "dinoSetBlood": { "status": "Success", "reason": "Blood set!" } } },
-                    { action: "SET_NUTRIENT", type: "WRITE", desc: "Set specific nutrient stat (Protein, Carbs, Lipids).", payload: { "action": "SET_NUTRIENT", "steamId": "7656119xxxxxxxxxx", "nutrientType": "Protein", "value": 100.0 }, response: { "type": "dino_set_nutrient_successful", "dinoSetNutrient": { "status": "Success", "reason": "Nutrient set!" } } }
-                ]
-            },
-            {
-                category: "Archiving",
-                items: [
-                    { 
-                        action: "RETRIEVE_PLAYER_GARAGE_DATA", 
-                        type: "READ", 
-                        desc: "Retrieves the array of stored specimens. The array 'Index' is required to use the RETRIEVE_DINO_FROM_GARAGE command.", 
-                        payload: { "action": "RETRIEVE_PLAYER_GARAGE_DATA", "steamId": "7656119xxxxxxxxxx" }, 
-                        response: { 
-                            "type": "garage_data",
-                            "StoredPlayerData": [ 
-                                { "Index": 0, "Class": "Tyrannosaurus", "SteamId": "7656119xxxxxxxxxx", "Growth": 1.0, "Health": 100.0, "Hunger": 100, "Thirst": 100, "Stamina": 100, "Blood": 100.0 }, 
-                                { "Index": 1, "Class": "Pteranodon", "SteamId": "7656119xxxxxxxxxx", "Growth": 0.5, "Health": 80.0, "Hunger": 70, "Thirst": 80, "Stamina": 100, "Blood": 100.0 } 
-                            ] 
-                        } 
-                    },
-                    { 
-                        action: "GARAGE_STORE", 
-                        type: "WRITE", 
-                        desc: "Archives active specimen to save file and removes actor from simulation.", 
-                        payload: { "action": "GARAGE_STORE", "steamId": "7656119xxxxxxxxxx" }, 
-                        response: { "type": "garage_store_successful", "garage_store": { "status": "Success", "reason": "Dino stored to garage!" } } 
-                    },
-                    { 
-                        action: "RETRIEVE_DINO_FROM_GARAGE", 
-                        type: "WRITE", 
-                        desc: "Deploys archived specimen by array index. Automatically archives active character.", 
-                        payload: { "action": "RETRIEVE_DINO_FROM_GARAGE", "steamId": "7656119xxxxxxxxxx", "dinoIdx": 0 }, 
-                        response: { "type": "garage_retrieve_successful", "garage_retrieve": { "status": "Success", "reason": "Dino retrieved from garage!" } } 
-                    },
-                    { 
-                        action: "SWAP_DINO", 
-                        type: "WRITE", 
-                        desc: "Forced transformation of active character to specified class string.", 
-                        payload: { "action": "SWAP_DINO", "steamId": "7656119xxxxxxxxxx", "dinoName": "BP_Tyrannosaurus_C" }, 
-                        response: { "type": "swap_dino_successful", "swapDino": { "status": "Success", "reason": "Dinosaur successfully swapped!" } } 
-                    }
-                ]
-            },
-            {
-                category: "Lifecycle & Prime Elder",
-                items: [
-                    { 
-                        action: "GET_PRIME_ELDER", 
-                        type: "READ", 
-                        desc: "Queries the completion status of all Prime Elder lifecycle requirements.", 
-                        payload: { "action": "GET_PRIME_ELDER", "steamId": "7656119xxxxxxxxxx" }, 
-                        response: { 
-                            "type": "get_prime_successful", 
-                            "primeStatus": { 
-                                "bVisitSanctuaryAsJuvie": true, "bHadPerfectDiet": true, "bNeverInfertile": true, "bNoMuscleSpasms": true,
-                                "bVisitTwoMigrationZones": true, "bVisitFourPatrolZones": true, "bVisitMassMigration": true,
-                                "bHatchedFromEgg": true, "bSuccessfulParent": true, "bVisitLandmarks": true, "bIsEligiblePrime": true 
-                            } 
-                        } 
-                    },
-                    { 
-                        action: "SET_PRIME_ELDER", 
-                        type: "WRITE", 
-                        desc: "Manually configures Prime Elder requirements or forces eligibility status.", 
-                        payload: { 
-                            "action": "SET_PRIME_ELDER", 
-                            "steamId": "7656119xxxxxxxxxx",
-                            "bVisitSanctuaryAsJuvie": true,
-                            "bHadPerfectDiet": true,
-                            "bNeverInfertile": true,
-                            "bNoMuscleSpasms": true,
-                            "bVisitTwoMigrationZones": true,
-                            "bVisitFourPatrolZones": true,
-                            "bVisitMassMigration": true,
-                            "bHatchedFromEgg": true,
-                            "bSuccessfulParent": true,
-                            "bVisitLandmarks": true,
-                            "bIsEligiblePrime": true,
-                            "bForceEligible": true 
-                        }, 
-                        response: { "type": "set_prime_successful", "setPrime": { "status": "Success", "reason": "Prime conditions updated" } } 
-                    }
-                ]
-            },
-            {
-                category: "Movement & Utilities",
-                items: [
-                    { 
-                        action: "TELEPORT_TO_PLAYER", 
-                        type: "WRITE", 
-                        desc: "Transports the target player to the coordinates of a destination player.", 
-                        payload: { "action": "TELEPORT_TO_PLAYER", "steamId": "7656119xxxxxxxxxx", "targetSteamId": "7656119xxxxxxTarget" }, 
-                        response: { "type": "dino_teleport_to_coords_successful", "dinoTeleportToPlayer": { "status": "Success", "reason": "Player teleported to player location!" } } 
-                    },
-                    { 
-                        action: "TELEPORT_TO_COORDS", 
-                        type: "WRITE", 
-                        desc: "Transports the target player to precise X/Y/Z world coordinates.", 
-                        payload: { "action": "TELEPORT_TO_COORDS", "steamId": "7656119xxxxxxxxxx", "x": 100.5, "y": -500.0, "z": 200.0 }, 
-                        response: { "type": "dino_teleport_to_coords_successful", "dinoTeleportToCoords": { "status": "Success", "reason": "Player teleported to new location!" } } 
-                    }
-                ]
-            },
-            {
-                category: "Permissions",
-                items: [
-                    { 
-                        action: "RETRIEVE_ROLES", 
-                        type: "READ", 
-                        desc: "Retrieves the complete list of available server roles.", 
-                        payload: { "action": "RETRIEVE_ROLES" }, 
-                        response: { "type": "roles_list", "roles": [ { "roleName": "Sentinel", "priority": 75, "permissions": [0, 2, 10, 24] } ] } 
-                    },
-                    { 
-                        action: "CREATE_ROLE", 
-                        type: "ADMIN", 
-                        desc: "Defines new security role with priority and permission ID list.", 
-                        payload: { "action": "CREATE_ROLE", "roleName": "Sentinel", "priority": 75, "permissions": [0, 2, 10, 24] }, 
-                        response: { "type": "create_role_success", "roleName": "Sentinel" } 
-                    },
-                    { 
-                        action: "UPDATE_ROLE", 
-                        type: "ADMIN", 
-                        desc: "Modifies role attributes. Validated against executor priority level.", 
-                        payload: { "action": "UPDATE_ROLE", "roleName": "Sentinel", "newPriority": 80, "newPermissions": [0, 1, 2, 10, 11, 24], "executorSteamId": "7656119xxxxxxxxxx" }, 
-                        response: { "type": "update_role_success", "roleName": "Sentinel" } 
-                    },
-                    { 
-                        action: "DELETE_ROLE", 
-                        type: "ADMIN", 
-                        desc: "Removes role definition. Validated against executor priority.", 
-                        payload: { "action": "DELETE_ROLE", "roleName": "Sentinel", "executorSteamId": "7656119xxxxxxxxxx" }, 
-                        response: { "type": "delete_role_success", "roleName": "Sentinel" } 
-                    },
-                    { 
-                        action: "ASSIGN_ROLE_TO_USER", 
-                        type: "ADMIN", 
-                        desc: "Persistent attachment of role to target SteamID.", 
-                        payload: { "action": "ASSIGN_ROLE_TO_USER", "steamId": "7656119xxxxxxxxxx", "roleName": "Sentinel" }, 
-                        response: { "type": "assign_role_success", "steamId": "7656119xxxxxxxxxx", "role": "Sentinel" } 
-                    },
-                    { 
-                        action: "REMOVE_ROLE_FROM_USER", 
-                        type: "ADMIN", 
-                        desc: "Revokes role from target SteamID and updates assignment database.", 
-                        payload: { "action": "REMOVE_ROLE_FROM_USER", "steamId": "7656119xxxxxxxxxx", "roleName": "Sentinel" }, 
-                        response: { "type": "remove_role_success", "steamId": "7656119xxxxxxxxxx", "role": "Sentinel" } 
-                    },
-                    { 
-                        action: "RETRIEVE_USER_ROLES", 
-                        type: "READ", 
-                        desc: "Acquires all roles currently linked to the target SteamID.", 
-                        payload: { "action": "RETRIEVE_USER_ROLES", "steamId": "7656119xxxxxxxxxx" }, 
-                        response: { "type": "user_roles_list", "steamId": "7656119xxxxxxxxxx", "roles": [ { "roleName": "Guardian", "priority": 50 }, { "roleName": "Sentinel", "priority": 80 } ] } 
-                    },
-                    { 
-                        action: "CHECK_USER_PERMISSION", 
-                        type: "READ", 
-                        desc: "Verifies if the SteamID holds a specific permission ID via any assigned role.", 
-                        payload: { "action": "CHECK_USER_PERMISSION", "steamId": "7656119xxxxxxxxxx", "permission": 10 }, 
-                        response: { "type": "permission_check_result", "steamId": "7656119xxxxxxxxxx", "permission": 10, "hasPermission": true } 
-                    }
-                ]
-            },
-            {
-                category: "Console Authority",
-                items: [
-                    { 
-                        action: "CONSOLE_ASSIGN_ROLE", 
-                        type: "ADMIN", 
-                        desc: "Administrative role grant, bypassing priority logic.", 
-                        payload: { "action": "CONSOLE_ASSIGN_ROLE", "steamId": "7656119xxxxxxxxxx", "roleName": "Owner" }, 
-                        response: { "type": "console_assign_success", "steamId": "7656119xxxxxxxxxx", "role": "Owner" } 
-                    },
-                    { 
-                        action: "CONSOLE_UPDATE_ROLE", 
-                        type: "ADMIN", 
-                        desc: "Bypass override of role definitions, including renaming and priority resets.", 
-                        payload: { "action": "CONSOLE_UPDATE_ROLE", "currentName": "Sentinel", "newName": "Protector", "newPriority": 90, "newPermissions": [0, 1, 2, 10, 11, 24] }, 
-                        response: { "type": "console_update_success", "roleName": "Protector" } 
-                    },
-                    { 
-                        action: "CONSOLE_DELETE_ROLE", 
-                        type: "ADMIN", 
-                        desc: "Administrative removal of role definition, bypassing priority checks.", 
-                        payload: { "action": "CONSOLE_DELETE_ROLE", "roleName": "Sentinel" }, 
-                        response: { "type": "console_delete_success", "roleName": "Sentinel" } 
-                    }
-                ]
-            },
-            {
-                category: "Broadcasting",
-                items: [
-                    { 
-                        action: "SEND_GLOBAL_ANNOUNCEMENT", 
-                        type: "WRITE", 
-                        desc: "Triggers on-screen UI announcement for all active clients.", 
-                        payload: { "action": "SEND_GLOBAL_ANNOUNCEMENT", "message": "Server Shutdown in 10m", "announcer": "System", "duration": 10.0 }, 
-                        response: { "type": "global_announcement_sent", "message": "Server Shutdown in 10m" } 
-                    },
-                    { 
-                        action: "SEND_DIRECT_ANNOUNCEMENT", 
-                        type: "WRITE", 
-                        desc: "Private UI notification sent to a specific target specimen.", 
-                        payload: { "action": "SEND_DIRECT_ANNOUNCEMENT", "steamId": "7656119xxxxxxxxxx", "message": "Admin assistance requested.", "announcer": "Staff", "announcerId": "1", "isDirectMessage": true }, 
-                        response: { "type": "announcement_sent", "directAnnouncement": { "status": "Success", "reason": "Direct announcement sent." } } 
-                    },
-                    { 
-                        action: "SEND_NOTIFICATION", 
-                        type: "WRITE", 
-                        desc: "Sends a subtle UI popup notification to a specific player.", 
-                        payload: { "action": "SEND_NOTIFICATION", "steamId": "7656119xxxxxxxxxx", "text": "You have been healed!" }, 
-                        response: { "type": "SEND_NOTIFICATION_successful", "SEND_NOTIFICATION": { "status": "Success", "reason": "Notification successfully sent!" } } 
-                    }
-                ]
-            }
-        ];
+                        },
+                        { 
+                            action: "RETRIEVE_PLAYER_INFO", 
+                            type: "READ", 
+                            desc: (items.RETRIEVE_PLAYER_INFO || {}).desc || "", 
+                            payload: { "action": "RETRIEVE_PLAYER_INFO", "steamId": "7656119xxxxxxxxxx" },
+                            response: fullPlayerInfo 
+                        }
+                    ]
+                },
+                {
+                    category: cats.physiological_control || "Physiological Control",
+                    items: [
+                        { action: "HEAL_DINO", type: "WRITE", desc: (items.HEAL_DINO || {}).desc || "", payload: { "action": "HEAL_DINO", "steamId": "7656119xxxxxxxxxx" }, response: { "type": "dino_heal_successful", "dinoHeal": { "status": "Success", "reason": "Dino Healed!" } } },
+                        { action: "GROW_DINO", type: "WRITE", desc: (items.GROW_DINO || {}).desc || "", payload: { "action": "GROW_DINO", "steamId": "7656119xxxxxxxxxx", "percent": 100.0 }, response: { "type": "dino_grow_successful", "dinoGrow": { "status": "Success", "reason": "Dino Grown!" } } },
+                        { action: "SLAY_DINO", type: "DELETE", desc: (items.SLAY_DINO || {}).desc || "", payload: { "action": "SLAY_DINO", "steamId": "7656119xxxxxxxxxx" }, response: { "type": "dino_slay_successful", "dinoSlay": { "status": "Success", "reason": "Dino Slayed!" } } },
+                        { action: "ADMIN_SLAY_DINO", type: "DELETE", desc: (items.ADMIN_SLAY_DINO || {}).desc || "", payload: { "action": "ADMIN_SLAY_DINO", "steamId": "7656119xxxxxxxxxx" }, response: { "type": "dino_slay_successful", "dinoSlay": { "status": "Success", "reason": "Dino Slayed!" } } },
+                        { action: "SET_SKIN", type: "WRITE", desc: (items.SET_SKIN || {}).desc || "", payload: { "action": "SET_SKIN", "steamId": "7656119xxxxxxxxxx", "skinData": { "bIsFemale": true, "SkinVariation": 0.5, "PatternIndex": 3, "MaleDisplayColor": {"r": 1.0, "g": 0.0, "b": 0.0, "a": 1.0}, "MarkingsColor": {"r": 1.0, "g": 1.0, "b": 1.0, "a": 1.0}, "BodyColor": {"r": 0.2, "g": 0.1, "b": 0.1, "a": 1.0}, "FlankColor": {"r": 0.2, "g": 0.1, "b": 0.1, "a": 1.0}, "UnderbellyColor": {"r": 0.9, "g": 0.9, "b": 0.9, "a": 1.0}, "Detail1Color": {"r": 1.0, "g": 1.0, "b": 1.0, "a": 1.0}, "EyesColor": {"r": 1.0, "g": 1.0, "b": 0.0, "a": 1.0} } }, response: { "type": "set_skin_successful", "setSkin": { "status": "Success", "reason": "Skin successfully applied!" } } },
+                        { action: "SET_PLAYER_INFO", type: "WRITE", desc: (items.SET_PLAYER_INFO || {}).desc || "", payload: { "action": "SET_PLAYER_INFO", "steamId": "7656119xxxxxxxxxx", "health": 100.0, "hunger": 100.0, "thirst": 100.0, "stamina": 100.0, "blood": 100.0, "growth": 1.0, "location": { "x": 1500.0, "y": -200.0, "z": 100.0 }, "nutrients": { "CarbValue": 10000.0, "ProteinValue": 10000.0, "LipidValue": 10000.0 } }, response: { "type": "set_player_info_successful", "setPlayerInfo": { "status": "Success", "reason": "Player info successfully updated!" } } },
+                        { action: "SET_HEALTH", type: "WRITE", desc: (items.SET_HEALTH || {}).desc || "", payload: { "action": "SET_HEALTH", "steamId": "7656119xxxxxxxxxx", "value": 100.0 }, response: { "type": "dino_set_health_successful", "dinoSetHealth": { "status": "Success", "reason": "Health set!" } } },
+                        { action: "SET_HUNGER", type: "WRITE", desc: (items.SET_HUNGER || {}).desc || "", payload: { "action": "SET_HUNGER", "steamId": "7656119xxxxxxxxxx", "value": 100.0 }, response: { "type": "dino_set_hunger_successful", "dinoSetHunger": { "status": "Success", "reason": "Hunger set!" } } },
+                        { action: "SET_THIRST", type: "WRITE", desc: (items.SET_THIRST || {}).desc || "", payload: { "action": "SET_THIRST", "steamId": "7656119xxxxxxxxxx", "value": 100.0 }, response: { "type": "dino_set_thirst_successful", "dinoSetThirst": { "status": "Success", "reason": "Thirst set!" } } },
+                        { action: "SET_STAMINA", type: "WRITE", desc: (items.SET_STAMINA || {}).desc || "", payload: { "action": "SET_STAMINA", "steamId": "7656119xxxxxxxxxx", "value": 100.0 }, response: { "type": "dino_set_stamina_successful", "dinoSetStamina": { "status": "Success", "reason": "Stamina set!" } } },
+                        { action: "SET_BLOOD", type: "WRITE", desc: (items.SET_BLOOD || {}).desc || "", payload: { "action": "SET_BLOOD", "steamId": "7656119xxxxxxxxxx", "value": 100.0 }, response: { "type": "dino_set_blood_successful", "dinoSetBlood": { "status": "Success", "reason": "Blood set!" } } },
+                        { action: "SET_NUTRIENT", type: "WRITE", desc: (items.SET_NUTRIENT || {}).desc || "", payload: { "action": "SET_NUTRIENT", "steamId": "7656119xxxxxxxxxx", "nutrientType": "Protein", "value": 100.0 }, response: { "type": "dino_set_nutrient_successful", "dinoSetNutrient": { "status": "Success", "reason": "Nutrient set!" } } }
+                    ]
+                },
+                {
+                    category: cats.archiving || "Archiving",
+                    items: [
+                        { action: "RETRIEVE_PLAYER_GARAGE_DATA", type: "READ", desc: (items.RETRIEVE_PLAYER_GARAGE_DATA || {}).desc || "", payload: { "action": "RETRIEVE_PLAYER_GARAGE_DATA", "steamId": "7656119xxxxxxxxxx" }, response: { "type": "garage_data", "StoredPlayerData": [ { "Index": 0, "Class": "Tyrannosaurus", "SteamId": "7656119xxxxxxxxxx", "Growth": 1.0, "Health": 100.0, "Hunger": 100, "Thirst": 100, "Stamina": 100, "Blood": 100.0 }, { "Index": 1, "Class": "Pteranodon", "SteamId": "7656119xxxxxxxxxx", "Growth": 0.5, "Health": 80.0, "Hunger": 70, "Thirst": 80, "Stamina": 100, "Blood": 100.0 } ] } },
+                        { action: "GARAGE_STORE", type: "WRITE", desc: (items.GARAGE_STORE || {}).desc || "", payload: { "action": "GARAGE_STORE", "steamId": "7656119xxxxxxxxxx" }, response: { "type": "garage_store_successful", "garage_store": { "status": "Success", "reason": "Dino stored to garage!" } } },
+                        { action: "RETRIEVE_DINO_FROM_GARAGE", type: "WRITE", desc: (items.RETRIEVE_DINO_FROM_GARAGE || {}).desc || "", payload: { "action": "RETRIEVE_DINO_FROM_GARAGE", "steamId": "7656119xxxxxxxxxx", "dinoIdx": 0 }, response: { "type": "garage_retrieve_successful", "garage_retrieve": { "status": "Success", "reason": "Dino retrieved from garage!" } } },
+                        { action: "SWAP_DINO", type: "WRITE", desc: (items.SWAP_DINO || {}).desc || "", payload: { "action": "SWAP_DINO", "steamId": "7656119xxxxxxxxxx", "dinoName": "BP_Tyrannosaurus_C" }, response: { "type": "swap_dino_successful", "swapDino": { "status": "Success", "reason": "Dinosaur successfully swapped!" } } }
+                    ]
+                },
+                {
+                    category: cats.lifecycle || "Lifecycle & Prime Elder",
+                    items: [
+                        { action: "GET_PRIME_ELDER", type: "READ", desc: (items.GET_PRIME_ELDER || {}).desc || "", payload: { "action": "GET_PRIME_ELDER", "steamId": "7656119xxxxxxxxxx" }, response: { "type": "get_prime_successful", "primeStatus": { "bVisitSanctuaryAsJuvie": true, "bHadPerfectDiet": true, "bNeverInfertile": true, "bNoMuscleSpasms": true, "bVisitTwoMigrationZones": true, "bVisitFourPatrolZones": true, "bVisitMassMigration": true, "bHatchedFromEgg": true, "bSuccessfulParent": true, "bVisitLandmarks": true, "bIsEligiblePrime": true } } },
+                        { action: "SET_PRIME_ELDER", type: "WRITE", desc: (items.SET_PRIME_ELDER || {}).desc || "", payload: { "action": "SET_PRIME_ELDER", "steamId": "7656119xxxxxxxxxx", "bVisitSanctuaryAsJuvie": true, "bHadPerfectDiet": true, "bNeverInfertile": true, "bNoMuscleSpasms": true, "bVisitTwoMigrationZones": true, "bVisitFourPatrolZones": true, "bVisitMassMigration": true, "bHatchedFromEgg": true, "bSuccessfulParent": true, "bVisitLandmarks": true, "bIsEligiblePrime": true, "bForceEligible": true }, response: { "type": "set_prime_successful", "setPrime": { "status": "Success", "reason": "Prime conditions updated" } } }
+                    ]
+                },
+                {
+                    category: cats.movement || "Movement & Utilities",
+                    items: [
+                        { action: "TELEPORT_TO_PLAYER", type: "WRITE", desc: (items.TELEPORT_TO_PLAYER || {}).desc || "", payload: { "action": "TELEPORT_TO_PLAYER", "steamId": "7656119xxxxxxxxxx", "targetSteamId": "7656119xxxxxxTarget" }, response: { "type": "dino_teleport_to_coords_successful", "dinoTeleportToPlayer": { "status": "Success", "reason": "Player teleported to player location!" } } },
+                        { action: "TELEPORT_TO_COORDS", type: "WRITE", desc: (items.TELEPORT_TO_COORDS || {}).desc || "", payload: { "action": "TELEPORT_TO_COORDS", "steamId": "7656119xxxxxxxxxx", "x": 100.5, "y": -500.0, "z": 200.0 }, response: { "type": "dino_teleport_to_coords_successful", "dinoTeleportToCoords": { "status": "Success", "reason": "Player teleported to new location!" } } }
+                    ]
+                },
+                {
+                    category: cats.permissions || "Permissions",
+                    items: [
+                        { action: "RETRIEVE_ROLES", type: "READ", desc: (items.RETRIEVE_ROLES || {}).desc || "", payload: { "action": "RETRIEVE_ROLES" }, response: { "type": "roles_list", "roles": [ { "roleName": "Sentinel", "priority": 75, "permissions": [0, 2, 10, 24] } ] } },
+                        { action: "CREATE_ROLE", type: "ADMIN", desc: (items.CREATE_ROLE || {}).desc || "", payload: { "action": "CREATE_ROLE", "roleName": "Sentinel", "priority": 75, "permissions": [0, 2, 10, 24] }, response: { "type": "create_role_success", "roleName": "Sentinel" } },
+                        { action: "UPDATE_ROLE", type: "ADMIN", desc: (items.UPDATE_ROLE || {}).desc || "", payload: { "action": "UPDATE_ROLE", "roleName": "Sentinel", "newPriority": 80, "newPermissions": [0, 1, 2, 10, 11, 24], "executorSteamId": "7656119xxxxxxxxxx" }, response: { "type": "update_role_success", "roleName": "Sentinel" } },
+                        { action: "DELETE_ROLE", type: "ADMIN", desc: (items.DELETE_ROLE || {}).desc || "", payload: { "action": "DELETE_ROLE", "roleName": "Sentinel", "executorSteamId": "7656119xxxxxxxxxx" }, response: { "type": "delete_role_success", "roleName": "Sentinel" } },
+                        { action: "ASSIGN_ROLE_TO_USER", type: "ADMIN", desc: (items.ASSIGN_ROLE_TO_USER || {}).desc || "", payload: { "action": "ASSIGN_ROLE_TO_USER", "steamId": "7656119xxxxxxxxxx", "roleName": "Sentinel" }, response: { "type": "assign_role_success", "steamId": "7656119xxxxxxxxxx", "role": "Sentinel" } },
+                        { action: "REMOVE_ROLE_FROM_USER", type: "ADMIN", desc: (items.REMOVE_ROLE_FROM_USER || {}).desc || "", payload: { "action": "REMOVE_ROLE_FROM_USER", "steamId": "7656119xxxxxxxxxx", "roleName": "Sentinel" }, response: { "type": "remove_role_success", "steamId": "7656119xxxxxxxxxx", "role": "Sentinel" } },
+                        { action: "RETRIEVE_USER_ROLES", type: "READ", desc: (items.RETRIEVE_USER_ROLES || {}).desc || "", payload: { "action": "RETRIEVE_USER_ROLES", "steamId": "7656119xxxxxxxxxx" }, response: { "type": "user_roles_list", "steamId": "7656119xxxxxxxxxx", "roles": [ { "roleName": "Guardian", "priority": 50 }, { "roleName": "Sentinel", "priority": 80 } ] } },
+                        { action: "CHECK_USER_PERMISSION", type: "READ", desc: (items.CHECK_USER_PERMISSION || {}).desc || "", payload: { "action": "CHECK_USER_PERMISSION", "steamId": "7656119xxxxxxxxxx", "permission": 10 }, response: { "type": "permission_check_result", "steamId": "7656119xxxxxxxxxx", "permission": 10, "hasPermission": true } }
+                    ]
+                },
+                {
+                    category: cats.console || "Console Authority",
+                    items: [
+                        { action: "CONSOLE_ASSIGN_ROLE", type: "ADMIN", desc: (items.CONSOLE_ASSIGN_ROLE || {}).desc || "", payload: { "action": "CONSOLE_ASSIGN_ROLE", "steamId": "7656119xxxxxxxxxx", "roleName": "Owner" }, response: { "type": "console_assign_success", "steamId": "7656119xxxxxxxxxx", "role": "Owner" } },
+                        { action: "CONSOLE_UPDATE_ROLE", type: "ADMIN", desc: (items.CONSOLE_UPDATE_ROLE || {}).desc || "", payload: { "action": "CONSOLE_UPDATE_ROLE", "currentName": "Sentinel", "newName": "Protector", "newPriority": 90, "newPermissions": [0, 1, 2, 10, 11, 24] }, response: { "type": "console_update_success", "roleName": "Protector" } },
+                        { action: "CONSOLE_DELETE_ROLE", type: "ADMIN", desc: (items.CONSOLE_DELETE_ROLE || {}).desc || "", payload: { "action": "CONSOLE_DELETE_ROLE", "roleName": "Sentinel" }, response: { "type": "console_delete_success", "roleName": "Sentinel" } }
+                    ]
+                },
+                {
+                    category: cats.broadcasting || "Broadcasting",
+                    items: [
+                        { action: "SEND_GLOBAL_ANNOUNCEMENT", type: "WRITE", desc: (items.SEND_GLOBAL_ANNOUNCEMENT || {}).desc || "", payload: { "action": "SEND_GLOBAL_ANNOUNCEMENT", "message": "Server Shutdown in 10m", "announcer": "System", "duration": 10.0 }, response: { "type": "global_announcement_sent", "message": "Server Shutdown in 10m" } },
+                        { action: "SEND_DIRECT_ANNOUNCEMENT", type: "WRITE", desc: (items.SEND_DIRECT_ANNOUNCEMENT || {}).desc || "", payload: { "action": "SEND_DIRECT_ANNOUNCEMENT", "steamId": "7656119xxxxxxxxxx", "message": "Admin assistance requested.", "announcer": "Staff", "announcerId": "1", "isDirectMessage": true }, response: { "type": "announcement_sent", "directAnnouncement": { "status": "Success", "reason": "Direct announcement sent." } } },
+                        { action: "SEND_NOTIFICATION", type: "WRITE", desc: (items.SEND_NOTIFICATION || {}).desc || "", payload: { "action": "SEND_NOTIFICATION", "steamId": "7656119xxxxxxxxxx", "text": "You have been healed!" }, response: { "type": "SEND_NOTIFICATION_successful", "SEND_NOTIFICATION": { "status": "Success", "reason": "Notification successfully sent!" } } }
+                    ]
+                }
+            ];
+        }
 
-        // Updated dynamically from the C++ enum provided
-        const permissionsList = [
-            "CanHeal", "CanHealOthers",
-            "CanVanish", "CanVanishOthers",
-            "CanGodMode", "CanGodModeOthers",
-            "CanSlay", "CanSlayOthers",
-            "CanSmite", "CanSmiteOthers",
-            "CanSpawnAI", "CanWipeAI",
-            "CanWipeCorpses", "CanSpawnCorpse",
-            "CanToggleElder", "CanToggleElderOthers",
-            "CanPark", "CanParkOthers",
-            "CanShowGarage", "CanShowGarageOthers",
-            "CanRetrieve", "CanRetrieveOthers",
-            "CanTeleport", "CanTeleportOthers",
-            "CanSwap", "CanSwapOthers",
-            "CanGrow", "CanGrowOthers",
-            "CanSetHealth", "CanSetHealthOthers",
-            "CanSetHunger", "CanSetHungerOthers",
-            "CanSetThirst", "CanSetThirstOthers",
-            "CanSetStamina", "CanSetStaminaOthers",
-            "CanSetBlood", "CanSetBloodOthers",
-            "CanCreateRoles", "CanUpdateRoles",
-            "CanDeleteRoles", "CanManageRolesOthers",
-            "CanBypassRolePriority"
-        ];
+        // Permissions list from language file
+        function getPermissionsList() {
+            return LANG.permissions || [];
+        }
 
-        // ============================
-        // Command Data & Rendering
-        // ============================
-        const cmdCategories = [
-            {
-                name: "Role Management", icon: "fa-user-shield", color: "purple",
-                items: [
-                    { cmd: "/createrole", params: ["Name", "Priority"], perm: "Can Create Roles", permRaw: "CanCreateRoles", desc: "Defines a new role. Priority must be lower than yours.",
-                      detail: { summary: "Creates a new role definition on the server with the given name and priority level.", usage: ["/createrole Moderator 50", "/createrole VIP 10"], notes: "The priority you assign must be strictly less than your own highest role priority. Role names are case-insensitive and must be unique." } },
-                    { cmd: "/deleterole", params: ["Name"], perm: "Can Delete Roles", permRaw: "CanDeleteRoles", desc: "Permanently removes a role definition from the server.", permColor: "red",
-                      detail: { summary: "Destroys a role definition entirely. Any users who held this role will lose it immediately.", usage: ["/deleterole Moderator"], notes: "You can only delete roles with a priority lower than your own. This action is irreversible." } },
-                    { cmd: "/assignrole", params: ["Player", "Role"], perm: "Can Manage Roles · Others", permRaw: "CanManageRolesOthers", desc: "Assigns a role to a target player. Priority checks apply.",
-                      detail: { summary: "Attaches a role to a player, granting them all permissions defined in that role.", usage: ["/assignrole Specimen_Alpha VIP", "/assignrole 7656119xxxxxxxxxx Moderator"], notes: "The Player field accepts either a username (best-match lookup) or an exact SteamID. You cannot assign a role with a priority equal to or higher than your own." } },
-                    { cmd: "/removerole", params: ["Player", "Role"], perm: "Can Manage Roles · Others", permRaw: "CanManageRolesOthers", desc: "Removes a role from a target player.",
-                      detail: { summary: "Detaches a role from a player, revoking any permissions that were exclusively granted by it.", usage: ["/removerole Specimen_Alpha VIP", "/removerole 7656119xxxxxxxxxx Moderator"], notes: "The Player field accepts either a username (best-match lookup) or an exact SteamID. Priority restrictions apply." } }
-                ]
-            },
-            {
-                name: "Dino & Player Stats", icon: "fa-dna", color: "green",
-                items: [
-                    { cmd: "/heal", params: ["Player"], perm: "Can Heal", permRaw: "CanHeal", desc: "Restores all vitals to 100%.",
-                      detail: { summary: "Fully restores Health, Hunger, Thirst, Stamina, and Blood to maximum for the target player.", usage: ["/heal Specimen_Alpha", "/heal 7656119xxxxxxxxxx"], notes: "The Player field accepts a username (best-match) or exact SteamID." } },
-                    { cmd: "/grow", params: ["Player"], perm: "Can Grow", permRaw: "CanGrow", desc: "Sets growth development to 100%.",
-                      detail: { summary: "Instantly matures the target player's dinosaur to full adult growth.", usage: ["/grow Specimen_Alpha", "/grow 7656119xxxxxxxxxx"], notes: "The Player field accepts a username (best-match) or exact SteamID." } },
-                    { cmd: "/vanish", params: ["Player"], perm: "Can Vanish", permRaw: "CanVanish", desc: "Toggles invisibility/ghost state.",
-                      detail: { summary: "Toggles the target player into or out of an invisible ghost state. Other players cannot see or interact with a vanished player.", usage: ["/vanish Specimen_Alpha", "/vanish 7656119xxxxxxxxxx"], notes: "The Player field accepts a username (best-match) or exact SteamID. Running the command again on the same player disables vanish." } },
-                    { cmd: "/slay", params: ["Player"], perm: "Can Slay", permRaw: "CanSlay", desc: "Deals fatal damage to target.", permColor: "red",
-                      detail: { summary: "Applies lethal damage to the target player's dinosaur using standard damage logic.", usage: ["/slay Specimen_Alpha", "/slay 7656119xxxxxxxxxx"], notes: "The Player field accepts a username (best-match) or exact SteamID. Does not bypass invincibility — use the ADMIN_SLAY_DINO API endpoint for that." } },
-                    { cmd: "/tp", params: ["Player | X Y Z"], perm: "Can Teleport", permRaw: "CanTeleport", desc: "Teleports to a player or coordinates.", permColor: "blue",
-                      detail: { summary: "Teleports yourself or a target player to another player's location or to exact world coordinates. Supports multiple syntax forms for flexibility.", usage: ["/tp Specimen_Alpha", "/tp 1200.5 4050.0 100.0", "/tp Specimen_Alpha Specimen_Beta", "/tp Specimen_Alpha 1200.5 4050.0 100.0"], notes: "All player fields accept a username (best-match lookup on the server) or an exact SteamID. When given one player, teleports you to them. When given coordinates alone, teleports you there. When given two players, teleports the first player to the second. When given a player followed by X Y Z, teleports that player to those coordinates." } },
-                    { cmd: "/swap", params: ["Class"], perm: "Can Swap", permRaw: "CanSwap", desc: "Transforms into a different species.", permColor: "blue",
-                      detail: { summary: "Replaces your active dinosaur with a new species. Your current character data is lost.", usage: ["/swap BP_Tyrannosaurus_C", "/swap BP_Pteranodon_C"], notes: "The Class parameter must be the exact Blueprint class name string (e.g. BP_Tyrannosaurus_C). Invalid class names will be rejected." } },
-                    { cmd: "/health", params: ["Player", "0-100"], perm: "Can Set Health", permRaw: "CanSetHealth", desc: "Sets health to the specified percentage.",
-                      detail: { summary: "Sets the target player's health stat to a specific percentage value.", usage: ["/health Specimen_Alpha 100", "/health 7656119xxxxxxxxxx 50"], notes: "Value must be between 0 and 100. The Player field accepts a username (best-match) or exact SteamID." } },
-                    { cmd: "/hunger", params: ["Player", "0-100"], perm: "Can Set Hunger", permRaw: "CanSetHunger", desc: "Sets hunger to the specified percentage.",
-                      detail: { summary: "Sets the target player's hunger stat to a specific percentage value.", usage: ["/hunger Specimen_Alpha 100", "/hunger 7656119xxxxxxxxxx 75"], notes: "Value must be between 0 and 100. The Player field accepts a username (best-match) or exact SteamID." } },
-                    { cmd: "/thirst", params: ["Player", "0-100"], perm: "Can Set Thirst", permRaw: "CanSetThirst", desc: "Sets thirst to the specified percentage.",
-                      detail: { summary: "Sets the target player's thirst stat to a specific percentage value.", usage: ["/thirst Specimen_Alpha 100"], notes: "Value must be between 0 and 100. The Player field accepts a username (best-match) or exact SteamID." } },
-                    { cmd: "/stamina", params: ["Player", "0-100"], perm: "Can Set Stamina", permRaw: "CanSetStamina", desc: "Sets stamina to the specified percentage.",
-                      detail: { summary: "Sets the target player's stamina stat to a specific percentage value.", usage: ["/stamina Specimen_Alpha 100"], notes: "Value must be between 0 and 100. The Player field accepts a username (best-match) or exact SteamID." } },
-                    { cmd: "/blood", params: ["Player", "0-100"], perm: "Can Set Blood", permRaw: "CanSetBlood", desc: "Sets blood to the specified percentage.",
-                      detail: { summary: "Sets the target player's blood stat to a specific percentage value.", usage: ["/blood Specimen_Alpha 100"], notes: "Value must be between 0 and 100. The Player field accepts a username (best-match) or exact SteamID." } },
-                    { cmd: "/set-nutrient", params: ["Type", "0-100"], perm: "Can Set Nutrient", permRaw: "CanSetNutrient", desc: "Sets a specific nutrient stat by type.",
-                      detail: { summary: "Sets one of the three nutrient values (Protein, Lipids, or Carbs) to a specific percentage.", usage: ["/set-nutrient PROTEIN 100", "/set-nutrient LIPIDS 50", "/set-nutrient CARBS 75"], notes: "The Type must be one of: PROTEIN, LIPIDS, or CARBS (case-insensitive). Value must be between 0 and 100." } }
-                ]
-            },
-            {
-                name: "World & Garage", icon: "fa-terminal", color: "yellow",
-                items: [
-                    { cmd: "/garage", alias: "/showgarage", perm: "Can Show Garage", permRaw: "CanShowGarage", desc: "Lists your stored dinosaurs in chat.",
-                      detail: { summary: "Displays all dinosaurs currently stored in your personal garage, along with their array indices.", usage: ["/garage", "/showgarage"], notes: "Use the Index values shown here with the /retrieve command to deploy a stored dinosaur." } },
-                    { cmd: "/park", perm: "Can Park", permRaw: "CanPark", desc: "Archives your current dinosaur to the garage.",
-                      detail: { summary: "Saves your active dinosaur into the garage storage system and removes it from the world. You will need to select a new character or retrieve a stored one.", usage: ["/park"], notes: "Your full character state (growth, stats, skin) is preserved in storage." } },
-                    { cmd: "/retrieve", params: ["Index"], perm: "Can Retrieve", permRaw: "CanRetrieve", desc: "Spawns a stored dinosaur by index.",
-                      detail: { summary: "Deploys a dinosaur from your garage by its stored array index. Your currently active character is automatically archived first.", usage: ["/retrieve 0", "/retrieve 1"], notes: "Use /garage to see available indices. If you have an active character, it will be parked automatically before the retrieval." } },
-                    { cmd: "/spawn ai", perm: "Can Spawn AI", permRaw: "CanSpawnAI", desc: "Spawns an AI-controlled entity.", permColor: "blue",
-                      detail: { summary: "Creates an AI-controlled dinosaur entity in the game world.", usage: ["/spawn ai"], notes: "The AI entity spawns near your current location." } },
-                    { cmd: "/wipe ai", perm: "Can Wipe AI", permRaw: "CanWipeAI", desc: "Removes all AI from the map.", permColor: "red",
-                      detail: { summary: "Instantly destroys every AI-controlled entity currently active on the server.", usage: ["/wipe ai"], notes: "This is a global action — all AI across the entire map is removed." } },
-                    { cmd: "/wipecorpses", perm: "Can Wipe Corpses", permRaw: "CanWipeCorpses", desc: "Clears all carcasses from the world.", permColor: "red",
-                      detail: { summary: "Removes every dropped carcass (food source) from the game world.", usage: ["/wipecorpses"], notes: "This is a global action and cannot be undone." } },
-                    { cmd: "/spawncorpse", params: ["DinoName"], perm: "Can Spawn Corpse", permRaw: "CanSpawnCorpse", desc: "Spawns a food source at your location.",
-                      detail: { summary: "Creates a carcass of the specified dinosaur type at your current world position, usable as a food source.", usage: ["/spawncorpse Tyrannosaurus", "/spawncorpse Pteranodon"], notes: "The DinoName should be the common species name. The carcass spawns directly at your feet." } }
-                ]
-            }
-        ];
+        // Build cmdCategories using language keys
+        function buildCmdCategories() {
+            const lc = LANG.cmd_categories || {};
+            const rm = (lc.role_management || {}).items || {};
+            const ds = (lc.dino_stats || {}).items || {};
+            const wg = (lc.world_garage || {}).items || {};
+
+            return [
+                {
+                    name: (lc.role_management || {}).name || "Role Management", icon: "fa-user-shield", color: "purple",
+                    items: [
+                        { cmd: "/createrole", params: ["Name", "Priority"], perm: (rm.createrole || {}).perm || "Can Create Roles", permRaw: "CanCreateRoles", desc: (rm.createrole || {}).desc || "",
+                          detail: { summary: (rm.createrole || {}).summary || "", usage: ["/createrole Moderator 50", "/createrole VIP 10"], notes: (rm.createrole || {}).notes || "" } },
+                        { cmd: "/deleterole", params: ["Name"], perm: (rm.deleterole || {}).perm || "Can Delete Roles", permRaw: "CanDeleteRoles", desc: (rm.deleterole || {}).desc || "", permColor: "red",
+                          detail: { summary: (rm.deleterole || {}).summary || "", usage: ["/deleterole Moderator"], notes: (rm.deleterole || {}).notes || "" } },
+                        { cmd: "/assignrole", params: ["Player", "Role"], perm: (rm.assignrole || {}).perm || "Can Manage Roles · Others", permRaw: "CanManageRolesOthers", desc: (rm.assignrole || {}).desc || "",
+                          detail: { summary: (rm.assignrole || {}).summary || "", usage: ["/assignrole Specimen_Alpha VIP", "/assignrole 7656119xxxxxxxxxx Moderator"], notes: (rm.assignrole || {}).notes || "" } },
+                        { cmd: "/removerole", params: ["Player", "Role"], perm: (rm.removerole || {}).perm || "Can Manage Roles · Others", permRaw: "CanManageRolesOthers", desc: (rm.removerole || {}).desc || "",
+                          detail: { summary: (rm.removerole || {}).summary || "", usage: ["/removerole Specimen_Alpha VIP", "/removerole 7656119xxxxxxxxxx Moderator"], notes: (rm.removerole || {}).notes || "" } }
+                    ]
+                },
+                {
+                    name: (lc.dino_stats || {}).name || "Dino & Player Stats", icon: "fa-dna", color: "green",
+                    items: [
+                        { cmd: "/heal", params: ["Player"], perm: (ds.heal || {}).perm || "Can Heal", permRaw: "CanHeal", desc: (ds.heal || {}).desc || "", detail: { summary: (ds.heal || {}).summary || "", usage: ["/heal Specimen_Alpha", "/heal 7656119xxxxxxxxxx"], notes: (ds.heal || {}).notes || "" } },
+                        { cmd: "/grow", params: ["Player"], perm: (ds.grow || {}).perm || "Can Grow", permRaw: "CanGrow", desc: (ds.grow || {}).desc || "", detail: { summary: (ds.grow || {}).summary || "", usage: ["/grow Specimen_Alpha", "/grow 7656119xxxxxxxxxx"], notes: (ds.grow || {}).notes || "" } },
+                        { cmd: "/vanish", params: ["Player"], perm: (ds.vanish || {}).perm || "Can Vanish", permRaw: "CanVanish", desc: (ds.vanish || {}).desc || "", detail: { summary: (ds.vanish || {}).summary || "", usage: ["/vanish Specimen_Alpha", "/vanish 7656119xxxxxxxxxx"], notes: (ds.vanish || {}).notes || "" } },
+                        { cmd: "/slay", params: ["Player"], perm: (ds.slay || {}).perm || "Can Slay", permRaw: "CanSlay", desc: (ds.slay || {}).desc || "", permColor: "red", detail: { summary: (ds.slay || {}).summary || "", usage: ["/slay Specimen_Alpha", "/slay 7656119xxxxxxxxxx"], notes: (ds.slay || {}).notes || "" } },
+                        { cmd: "/tp", params: ["Player | X Y Z"], perm: (ds.tp || {}).perm || "Can Teleport", permRaw: "CanTeleport", desc: (ds.tp || {}).desc || "", permColor: "blue", detail: { summary: (ds.tp || {}).summary || "", usage: ["/tp Specimen_Alpha", "/tp 1200.5 4050.0 100.0", "/tp Specimen_Alpha Specimen_Beta", "/tp Specimen_Alpha 1200.5 4050.0 100.0"], notes: (ds.tp || {}).notes || "" } },
+                        { cmd: "/swap", params: ["Class"], perm: (ds.swap || {}).perm || "Can Swap", permRaw: "CanSwap", desc: (ds.swap || {}).desc || "", permColor: "blue", detail: { summary: (ds.swap || {}).summary || "", usage: ["/swap BP_Tyrannosaurus_C", "/swap BP_Pteranodon_C"], notes: (ds.swap || {}).notes || "" } },
+                        { cmd: "/health", params: ["Player", "0-100"], perm: (ds.health || {}).perm || "Can Set Health", permRaw: "CanSetHealth", desc: (ds.health || {}).desc || "", detail: { summary: (ds.health || {}).summary || "", usage: ["/health Specimen_Alpha 100", "/health 7656119xxxxxxxxxx 50"], notes: (ds.health || {}).notes || "" } },
+                        { cmd: "/hunger", params: ["Player", "0-100"], perm: (ds.hunger || {}).perm || "Can Set Hunger", permRaw: "CanSetHunger", desc: (ds.hunger || {}).desc || "", detail: { summary: (ds.hunger || {}).summary || "", usage: ["/hunger Specimen_Alpha 100", "/hunger 7656119xxxxxxxxxx 75"], notes: (ds.hunger || {}).notes || "" } },
+                        { cmd: "/thirst", params: ["Player", "0-100"], perm: (ds.thirst || {}).perm || "Can Set Thirst", permRaw: "CanSetThirst", desc: (ds.thirst || {}).desc || "", detail: { summary: (ds.thirst || {}).summary || "", usage: ["/thirst Specimen_Alpha 100"], notes: (ds.thirst || {}).notes || "" } },
+                        { cmd: "/stamina", params: ["Player", "0-100"], perm: (ds.stamina || {}).perm || "Can Set Stamina", permRaw: "CanSetStamina", desc: (ds.stamina || {}).desc || "", detail: { summary: (ds.stamina || {}).summary || "", usage: ["/stamina Specimen_Alpha 100"], notes: (ds.stamina || {}).notes || "" } },
+                        { cmd: "/blood", params: ["Player", "0-100"], perm: (ds.blood || {}).perm || "Can Set Blood", permRaw: "CanSetBlood", desc: (ds.blood || {}).desc || "", detail: { summary: (ds.blood || {}).summary || "", usage: ["/blood Specimen_Alpha 100"], notes: (ds.blood || {}).notes || "" } },
+                        { cmd: "/set-nutrient", params: ["Type", "0-100"], perm: (ds["set-nutrient"] || {}).perm || "Can Set Nutrient", permRaw: "CanSetNutrient", desc: (ds["set-nutrient"] || {}).desc || "", detail: { summary: (ds["set-nutrient"] || {}).summary || "", usage: ["/set-nutrient PROTEIN 100", "/set-nutrient LIPIDS 50", "/set-nutrient CARBS 75"], notes: (ds["set-nutrient"] || {}).notes || "" } }
+                    ]
+                },
+                {
+                    name: (lc.world_garage || {}).name || "World & Garage", icon: "fa-terminal", color: "yellow",
+                    items: [
+                        { cmd: "/garage", alias: "/showgarage", perm: (wg.garage || {}).perm || "Can Show Garage", permRaw: "CanShowGarage", desc: (wg.garage || {}).desc || "", detail: { summary: (wg.garage || {}).summary || "", usage: ["/garage", "/showgarage"], notes: (wg.garage || {}).notes || "" } },
+                        { cmd: "/park", perm: (wg.park || {}).perm || "Can Park", permRaw: "CanPark", desc: (wg.park || {}).desc || "", detail: { summary: (wg.park || {}).summary || "", usage: ["/park"], notes: (wg.park || {}).notes || "" } },
+                        { cmd: "/retrieve", params: ["Index"], perm: (wg.retrieve || {}).perm || "Can Retrieve", permRaw: "CanRetrieve", desc: (wg.retrieve || {}).desc || "", detail: { summary: (wg.retrieve || {}).summary || "", usage: ["/retrieve 0", "/retrieve 1"], notes: (wg.retrieve || {}).notes || "" } },
+                        { cmd: "/spawn ai", perm: (wg.spawn_ai || {}).perm || "Can Spawn AI", permRaw: "CanSpawnAI", desc: (wg.spawn_ai || {}).desc || "", permColor: "blue", detail: { summary: (wg.spawn_ai || {}).summary || "", usage: ["/spawn ai"], notes: (wg.spawn_ai || {}).notes || "" } },
+                        { cmd: "/wipe ai", perm: (wg.wipe_ai || {}).perm || "Can Wipe AI", permRaw: "CanWipeAI", desc: (wg.wipe_ai || {}).desc || "", permColor: "red", detail: { summary: (wg.wipe_ai || {}).summary || "", usage: ["/wipe ai"], notes: (wg.wipe_ai || {}).notes || "" } },
+                        { cmd: "/wipecorpses", perm: (wg.wipecorpses || {}).perm || "Can Wipe Corpses", permRaw: "CanWipeCorpses", desc: (wg.wipecorpses || {}).desc || "", permColor: "red", detail: { summary: (wg.wipecorpses || {}).summary || "", usage: ["/wipecorpses"], notes: (wg.wipecorpses || {}).notes || "" } },
+                        { cmd: "/spawncorpse", params: ["DinoName"], perm: (wg.spawncorpse || {}).perm || "Can Spawn Corpse", permRaw: "CanSpawnCorpse", desc: (wg.spawncorpse || {}).desc || "", detail: { summary: (wg.spawncorpse || {}).summary || "", usage: ["/spawncorpse Tyrannosaurus", "/spawncorpse Pteranodon"], notes: (wg.spawncorpse || {}).notes || "" } }
+                    ]
+                }
+            ];
+        }
+
+        // These will be populated after language loads
+        let apiData = [];
+        let permissionsList = [];
+        let cmdCategories = [];
 
         const cmdModal = {
             open: (catIdx, itemIdx) => {
@@ -1533,7 +1418,7 @@ if ($context.Request.IsWebSocketRequest) {
                 const body = document.getElementById('cmd-modal-body');
                 const col = item.permColor || cat.color;
                 const paramHtml = (item.params || []).map(p => `<span class="text-[11px] font-mono bg-cyan-500/10 text-cyan-400 border border-cyan-500/20 px-2 py-1 rounded">${p}</span>`).join('');
-                const aliasHtml = item.alias ? `<div class="flex items-center gap-2 mt-3"><span class="text-[9px] font-black text-gray-500 bg-white/5 border border-white/10 px-1.5 py-0.5 rounded uppercase tracking-widest">alias</span> <code class="text-[#FFFC00]/60 text-sm font-bold">${item.alias}</code></div>` : '';
+                const aliasHtml = item.alias ? `<div class="flex items-center gap-2 mt-3"><span class="text-[9px] font-black text-gray-500 bg-white/5 border border-white/10 px-1.5 py-0.5 rounded uppercase tracking-widest">${t('cmd_detail_label_alias')}</span> <code class="text-[#FFFC00]/60 text-sm font-bold">${item.alias}</code></div>` : '';
 
                 body.innerHTML = `
                     <div>
@@ -1542,24 +1427,24 @@ if ($context.Request.IsWebSocketRequest) {
                     </div>
                     <div class="bg-[#111] border border-[#222] rounded-xl p-4">
                         <div class="flex items-center gap-2 mb-3">
-                            <span class="text-[10px] font-black text-gray-500 uppercase tracking-widest">Required Permission</span>
+                            <span class="text-[10px] font-black text-gray-500 uppercase tracking-widest">${t('cmd_detail_label_required_perm')}</span>
                         </div>
                         <span class="text-xs font-bold text-${col}-400 bg-${col}-500/10 border border-${col}-500/20 px-3 py-1.5 rounded-lg inline-block">${item.perm}</span>
                     </div>
                     ${paramHtml ? `
                     <div class="bg-[#111] border border-[#222] rounded-xl p-4">
-                        <div class="text-[10px] font-black text-gray-500 uppercase tracking-widest mb-3">Parameters</div>
+                        <div class="text-[10px] font-black text-gray-500 uppercase tracking-widest mb-3">${t('cmd_detail_label_params')}</div>
                         <div class="flex flex-wrap gap-2">${paramHtml}</div>
-                        <p class="text-[11px] text-gray-600 mt-3 italic"><i class="fa-solid fa-circle-info mr-1"></i> Player fields accept a username (best-match lookup) or an exact SteamID.</p>
+                        <p class="text-[11px] text-gray-600 mt-3 italic"><i class="fa-solid fa-circle-info mr-1"></i> ${t('cmd_detail_params_hint')}</p>
                     </div>` : ''}
                     <div class="bg-[#111] border border-[#222] rounded-xl p-4">
-                        <div class="text-[10px] font-black text-gray-500 uppercase tracking-widest mb-3">Usage Examples</div>
+                        <div class="text-[10px] font-black text-gray-500 uppercase tracking-widest mb-3">${t('cmd_detail_label_usage')}</div>
                         <div class="space-y-2">
                             ${item.detail.usage.map(u => `<div class="bg-[#0a0a0a] border border-[#333] rounded-lg px-3 py-2"><code class="text-[#FFFC00] text-xs font-mono">${u}</code></div>`).join('')}
                         </div>
                     </div>
                     <div class="bg-blue-900/10 border border-blue-500/20 rounded-xl p-4">
-                        <div class="text-[10px] font-black text-blue-400 uppercase tracking-widest mb-2"><i class="fa-solid fa-circle-info mr-1"></i> Notes</div>
+                        <div class="text-[10px] font-black text-blue-400 uppercase tracking-widest mb-2"><i class="fa-solid fa-circle-info mr-1"></i> ${t('cmd_detail_label_notes')}</div>
                         <p class="text-xs text-gray-400 leading-relaxed">${item.detail.notes}</p>
                     </div>
                 `;
@@ -1585,7 +1470,7 @@ if ($context.Request.IsWebSocketRequest) {
                         `<span class="text-[10px] font-mono bg-cyan-500/10 text-cyan-400 border border-cyan-500/20 px-1.5 py-0.5 rounded">${p}</span>`
                     ).join(' ');
                     const aliasPill = item.alias
-                        ? ` <span class="text-[9px] font-black text-gray-500 bg-white/5 border border-white/10 px-1.5 py-0.5 rounded uppercase tracking-widest">alias</span> <code class="text-[#FFFC00]/60 text-sm font-bold">${item.alias}</code>`
+                        ? ` <span class="text-[9px] font-black text-gray-500 bg-white/5 border border-white/10 px-1.5 py-0.5 rounded uppercase tracking-widest">${t('cmd_detail_label_alias')}</span> <code class="text-[#FFFC00]/60 text-sm font-bold">${item.alias}</code>`
                         : '';
 
                     rowsHtml += `
@@ -1694,7 +1579,7 @@ if ($context.Request.IsWebSocketRequest) {
                     executorGroup.classList.add('hidden');
                 }
 
-                document.getElementById('gen-perm-count').innerText = `${generator.selectedPerms.size} Selected`;
+                document.getElementById('gen-perm-count').innerText = t('generator_perm_count').replace('{count}', generator.selectedPerms.size);
 
                 let payload = {};
                 if(action === 'CREATE_ROLE') {
@@ -1740,7 +1625,6 @@ if ($context.Request.IsWebSocketRequest) {
 
         const ui = {
             switchCodeMode: (mode) => {
-                // Update toggles
                 document.querySelectorAll('.mode-toggle-btn').forEach(b => {
                     b.classList.remove('active', 'bg-[#222]', 'text-[#FFFC00]');
                     b.classList.add('text-gray-500');
@@ -1749,13 +1633,11 @@ if ($context.Request.IsWebSocketRequest) {
                 activeBtn.classList.add('active', 'bg-[#222]', 'text-[#FFFC00]');
                 activeBtn.classList.remove('text-gray-500');
 
-                // Hide all code modes
                 document.querySelectorAll('.code-mode').forEach(el => {
                     el.classList.add('hidden');
                     el.classList.remove('block');
                 });
                 
-                // Show selected code mode
                 document.querySelectorAll(`.code-mode.${mode}-mode`).forEach(el => {
                     el.classList.remove('hidden');
                     if (el.tagName !== 'SPAN' && el.tagName !== 'CODE') {
@@ -1769,7 +1651,6 @@ if ($context.Request.IsWebSocketRequest) {
                 if (explicitTargetId) {
                     code = document.getElementById(explicitTargetId).textContent;
                 } else {
-                    // Find the visible 'pre' block within the relative container to copy the active mode's code
                     const container = btn.closest('.relative') || btn.closest('.code-view');
                     const visiblePre = Array.from(container.querySelectorAll('pre')).find(p => !p.classList.contains('hidden'));
                     code = visiblePre ? visiblePre.querySelector('.copy-target').textContent : "";
@@ -1798,12 +1679,12 @@ if ($context.Request.IsWebSocketRequest) {
                     pre.classList.remove('max-h-[5000px]');
                     pre.classList.add('max-h-64');
                     overlay.style.opacity = '1';
-                    btn.innerHTML = '<span>Show Full JSON</span> <i class="fa-solid fa-chevron-down"></i>';
+                    btn.innerHTML = '<span>' + t('json_show_full') + '</span> <i class="fa-solid fa-chevron-down"></i>';
                 } else {
                     pre.classList.remove('max-h-64');
                     pre.classList.add('max-h-[5000px]');
                     overlay.style.opacity = '0';
-                    btn.innerHTML = '<span>Collapse JSON</span> <i class="fa-solid fa-chevron-up"></i>';
+                    btn.innerHTML = '<span>' + t('json_collapse') + '</span> <i class="fa-solid fa-chevron-up"></i>';
                 }
             },
 
@@ -1887,7 +1768,8 @@ if ($context.Request.IsWebSocketRequest) {
                 });
 
                 // Helper to build collapsible JSON blocks
-                const buildCodeBlock = (title, dotColorClass, shadowColorClass, data) => {
+                const buildCodeBlock = (titleKey, dotColorClass, shadowColorClass, data) => {
+                    const title = t(titleKey);
                     const jsonStr = JSON.stringify(data, null, 4);
                     const lineCount = jsonStr.split('\n').length;
                     const needsCollapse = lineCount > 15;
@@ -1900,7 +1782,7 @@ if ($context.Request.IsWebSocketRequest) {
                             </div>
                             <div class="relative group bg-[#0d0d0d] border border-[#222] rounded-xl">
                                 <div class="absolute right-2 top-2 opacity-0 group-hover:opacity-100 transition-opacity z-20">
-                                    <button onclick="ui.copyToClipboard(this)" class="bg-[#222] hover:bg-[#333] border border-[#444] text-gray-400 w-7 h-7 flex items-center justify-center rounded text-xs transition-colors" title="Copy JSON">
+                                    <button onclick="ui.copyToClipboard(this)" class="bg-[#222] hover:bg-[#333] border border-[#444] text-gray-400 w-7 h-7 flex items-center justify-center rounded text-xs transition-colors" title="${t('copy_json_tooltip')}">
                                         <i class="fa-regular fa-copy"></i>
                                     </button>
                                 </div>
@@ -1908,7 +1790,7 @@ if ($context.Request.IsWebSocketRequest) {
                                 ${needsCollapse ? `
                                     <div class="fade-overlay absolute bottom-0 left-0 right-0 h-24 bg-gradient-to-t from-[#0d0d0d] to-transparent pointer-events-none transition-opacity duration-300"></div>
                                     <button onclick="ui.toggleCode(this)" class="absolute bottom-4 left-1/2 -translate-x-1/2 bg-[#222] hover:bg-[#333] text-[10px] font-bold px-4 py-1.5 rounded-full text-gray-300 border border-[#444] transition-colors shadow-lg z-10 flex items-center gap-2">
-                                        <span>Show Full JSON</span> <i class="fa-solid fa-chevron-down"></i>
+                                        <span>${t('json_show_full')}</span> <i class="fa-solid fa-chevron-down"></i>
                                     </button>
                                 ` : ''}
                             </div>
@@ -1933,8 +1815,8 @@ if ($context.Request.IsWebSocketRequest) {
                                 <p class="text-gray-400 text-sm leading-relaxed max-w-3xl border-l-2 border-[#FFFC00]/30 pl-6 italic">${item.desc}</p>
 
                                 <div class="grid grid-cols-1 gap-12 mt-10">
-                                    ${item.payload ? buildCodeBlock("Full Request Payload", "bg-blue-500", "shadow-[0_0_10px_rgba(59,130,246,0.5)]", item.payload) : ''}
-                                    ${buildCodeBlock("Full Server Response", "bg-green-500", "shadow-[0_0_10px_rgba(34,197,94,0.5)]", item.response)}
+                                    ${item.payload ? buildCodeBlock("json_label_request", "bg-blue-500", "shadow-[0_0_10px_rgba(59,130,246,0.5)]", item.payload) : ''}
+                                    ${buildCodeBlock("json_label_response", "bg-green-500", "shadow-[0_0_10px_rgba(34,197,94,0.5)]", item.response)}
                                 </div>
                             </section>
                         `;
@@ -1951,30 +1833,30 @@ if ($context.Request.IsWebSocketRequest) {
             renderDocsSidebar: () => {
                 const nav = document.getElementById('sidebar-nav');
                 nav.innerHTML = `
-                    <div class="px-4 pt-6 pb-2 text-[10px] font-black text-gray-600 uppercase tracking-[0.2em]">Topics</div>
+                    <div class="px-4 pt-6 pb-2 text-[10px] font-black text-gray-600 uppercase tracking-[0.2em]">${t('sidebar_docs_heading')}</div>
                     <a href="#doc-architecture" class="sidebar-link flex items-center px-4 py-2 text-sm font-bold text-gray-400 rounded-r-lg group hover:text-white">
                         <i class="fa-solid fa-network-wired w-6 text-center opacity-50 group-hover:opacity-100 group-hover:text-[#FFFC00] transition-all"></i>
-                        <span>Core Architecture</span>
+                        <span>${t('sidebar_docs_architecture')}</span>
                     </a>
                     <a href="#doc-configuration" class="sidebar-link flex items-center px-4 py-2 text-sm font-bold text-gray-400 rounded-r-lg group hover:text-white">
                         <i class="fa-solid fa-gear w-6 text-center opacity-50 group-hover:opacity-100 group-hover:text-[#FFFC00] transition-all"></i>
-                        <span>Configuration (.ini)</span>
+                        <span>${t('sidebar_docs_configuration')}</span>
                     </a>
                     <a href="#doc-roles" class="sidebar-link flex items-center px-4 py-2 text-sm font-bold text-gray-400 rounded-r-lg group hover:text-white">
                         <i class="fa-solid fa-shield-halved w-6 text-center opacity-50 group-hover:opacity-100 group-hover:text-[#FFFC00] transition-all"></i>
-                        <span>Roles & Users</span>
+                        <span>${t('sidebar_docs_roles')}</span>
                     </a>
                     <a href="#doc-registry" class="sidebar-link flex items-center px-4 py-2 text-sm font-bold text-gray-400 rounded-r-lg group hover:text-white">
                         <i class="fa-solid fa-list-check w-6 text-center opacity-50 group-hover:opacity-100 group-hover:text-[#FFFC00] transition-all"></i>
-                        <span>Permission Registry</span>
+                        <span>${t('sidebar_docs_registry')}</span>
                     </a>
                     <a href="#doc-chat" class="sidebar-link flex items-center px-4 py-2 text-sm font-bold text-gray-400 rounded-r-lg group hover:text-white">
                         <i class="fa-solid fa-comment-dots w-6 text-center opacity-50 group-hover:opacity-100 group-hover:text-[#FFFC00] transition-all"></i>
-                        <span>In-Game Commands</span>
+                        <span>${t('sidebar_docs_chat')}</span>
                     </a>
                     <a href="#doc-events" class="sidebar-link flex items-center px-4 py-2 text-sm font-bold text-gray-400 rounded-r-lg group hover:text-white">
                         <i class="fa-solid fa-satellite-dish w-6 text-center opacity-50 group-hover:opacity-100 group-hover:text-[#FFFC00] transition-all"></i>
-                        <span>Live Event Streams</span>
+                        <span>${t('sidebar_docs_events')}</span>
                     </a>
                 `;
             },
@@ -1982,10 +1864,10 @@ if ($context.Request.IsWebSocketRequest) {
             renderApiSidebar: () => {
                 const nav = document.getElementById('sidebar-nav');
                 nav.innerHTML = `
-                    <div class="px-4 pt-6 pb-2 text-[10px] font-black text-gray-600 uppercase tracking-[0.2em]">Quick Start</div>
+                    <div class="px-4 pt-6 pb-2 text-[10px] font-black text-gray-600 uppercase tracking-[0.2em]">${t('sidebar_api_heading')}</div>
                     <a href="#api-integration" class="sidebar-link flex items-center px-4 py-2 text-[11px] font-bold text-gray-400 rounded-r-lg group hover:text-white">
                         <i class="fa-solid fa-code w-6 text-center opacity-50 group-hover:opacity-100 group-hover:text-[#FFFC00] transition-all"></i>
-                        <span>Integration Examples</span>
+                        <span>${t('sidebar_api_integration')}</span>
                     </a>
                 `;
                 
@@ -2003,7 +1885,22 @@ if ($context.Request.IsWebSocketRequest) {
             }
         };
 
-        document.addEventListener('DOMContentLoaded', () => {
+        // ============================
+        // BOOT: Load language then init
+        // ============================
+        document.addEventListener('DOMContentLoaded', async () => {
+            // Load language file first
+            await loadLanguage('en_us');
+
+            // Build data from language
+            apiData = buildApiData();
+            permissionsList = getPermissionsList();
+            cmdCategories = buildCmdCategories();
+
+            // Apply translations to static HTML
+            applyTranslations();
+
+            // Init all systems
             auth.init();
             generator.init();
             renderer.init();
