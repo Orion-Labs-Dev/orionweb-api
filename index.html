@@ -21,6 +21,8 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-java.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-rust.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-powershell.min.js"></script>
+    <!-- Added INI syntax support -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-ini.min.js"></script>
     <link href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism-tomorrow.min.css" rel="stylesheet" />
 
     <style>
@@ -281,7 +283,7 @@
             </h1>
             <nav class="flex items-center h-full gap-2">
                 <button class="top-nav-btn active" onclick="ui.switchMainTab('docs')"><i class="fa-solid fa-book mr-2"></i> Documentation</button>
-                <button class="top-nav-btn" onclick="ui.switchMainTab('api')"><i class="fa-solid fa-code mr-2"></i> API Reference</button>
+                <button class="top-nav-btn" onclick="ui.switchMainTab('api')"><i class="fa-solid fa-plug mr-2"></i> WebSocket Reference</button>
             </nav>
         </div>
         <div class="flex items-center gap-4">
@@ -322,7 +324,37 @@
                     </p>
                     <div class="bg-[#0d0d0d] border border-[#222] p-6 rounded-2xl">
                         <h3 class="text-[#FFFC00] font-bold mb-2 flex items-center gap-2"><i class="fa-solid fa-network-wired"></i> The Connection Reversal</h3>
-                        <p class="text-sm text-gray-400">Unlike traditional setups where a dashboard queries a game server, the Athena plugin acts as the <strong>Client</strong>. Upon startup, it reaches out to your backend node via <code class="bg-[#222] px-1 rounded text-white">ws://127.0.0.1:8000/gameserver</code>. Your backend must act as the Listener.</p>
+                        <p class="text-sm text-gray-400">Unlike traditional setups where a dashboard queries a game server, the Athena plugin acts as the <strong>Client</strong>. Upon startup, it reaches out to your backend node via <code class="bg-[#222] px-1 rounded text-white">ws://127.0.0.1:8000/gameserver</code>. Your backend must act as the Listener. However, if you configure <code class="text-white">bEnableWebSocketServer=True</code> in the configuration file, the plugin will act as a standard WebSocket server and listen for incoming connections.</p>
+                    </div>
+                </section>
+
+                <!-- Section: Configuration -->
+                <section id="doc-configuration" class="space-y-6">
+                    <h2 class="text-4xl font-black text-white uppercase tracking-tighter italic border-b border-[#222] pb-4">Configuration (AthenaMod.ini)</h2>
+                    <p class="text-gray-400 leading-relaxed text-lg">
+                        The server automatically generates and maintains an <code class="text-white">AthenaMod.ini</code> file within the configuration directory. This system is designed to be <strong>self-healing</strong>: if a server owner deletes a specific key, or an update introduces new features, the mod will automatically inject the missing default keys without overwriting the rest of your custom settings.
+                    </p>
+                    <div class="relative bg-[#0d0d0d] border border-[#222] rounded-xl overflow-hidden shadow-xl mt-6">
+                        <div class="flex justify-between items-center px-4 py-2 bg-[#1a1a1a] border-b border-[#222]">
+                            <div class="flex items-center gap-2">
+                                <i class="fa-solid fa-gear text-gray-400"></i>
+                                <span class="text-xs font-bold text-gray-400 uppercase tracking-wider">AthenaMod.ini (Default)</span>
+                            </div>
+                            <button onclick="ui.copyToClipboard(this)" class="text-gray-500 hover:text-white transition-colors" title="Copy code"><i class="fa-regular fa-copy"></i></button>
+                        </div>
+                        <pre class="code-block border-none !rounded-none p-4 custom-scrollbar"><code class="language-ini copy-target">[BodyDropSystem]
+bBodyDropSpawning=False
+
+[Network]
+; If True, the game server listens for incoming connections on WebSocketPort.
+; If False, the game server connects out to 127.0.0.1:WebSocketPort as a client.
+bEnableWebSocketServer=False
+WebSocketPort=8000
+bRequirePassword=True
+Password=CHANG3_TH1S_P4$SW0RD!
+; Comma-separated list of allowed IPs (e.g., 192.168.1.5,10.0.0.1). Server Mode only.
+; If left empty, no whitelist is enforced and all IPs are accepted.
+SocketWhitelistIP=</code></pre>
                     </div>
                 </section>
 
@@ -385,6 +417,79 @@
                         </div>
                     </div>
                 </section>
+
+                <!-- Section: Live Event Streams -->
+                <section id="doc-events" class="space-y-6 pt-6">
+                    <h2 class="text-4xl font-black text-white uppercase tracking-tighter italic border-b border-[#222] pb-4">Live Event Streams</h2>
+                    <p class="text-gray-400 leading-relaxed text-lg">
+                        The WebSocket connection is fully bidirectional. Not only does the game server accept incoming commands, but it will also continuously push real-time asynchronous events directly through the WebSocket. 
+                    </p>
+
+                    <!-- Mode Differences -->
+                    <div class="bg-[#0a0a0a] border border-[#222] p-6 rounded-2xl shadow-lg mt-6">
+                        <h3 class="text-[#FFFC00] font-bold mb-4 flex items-center gap-2"><i class="fa-solid fa-network-wired"></i> Connection Mode Differences</h3>
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                            <div class="bg-[#111] border border-[#333] p-4 rounded-xl">
+                                <h4 class="text-white font-bold mb-2 text-sm"><span class="text-green-400">Server Mode</span> <code class="text-[10px] text-gray-500 font-mono bg-black px-1 rounded">(bEnableWebSocketServer=True)</code></h4>
+                                <p class="text-xs text-gray-400 leading-relaxed">Your external dashboard or bot connects to the game server as a client. It simply needs to establish the connection and listen for incoming messages.</p>
+                            </div>
+                            <div class="bg-[#111] border border-[#333] p-4 rounded-xl">
+                                <h4 class="text-white font-bold mb-2 text-sm"><span class="text-blue-400">Client Mode</span> <code class="text-[10px] text-gray-500 font-mono bg-black px-1 rounded">(bEnableWebSocketServer=False)</code></h4>
+                                <p class="text-xs text-gray-400 leading-relaxed">The game server acts as the client and connects outward to your central backend (e.g., OrionWeb). In this mode, your central backend must be set up as a WebSocket Server listener to receive these pushed event payloads.</p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Warning Box -->
+                    <div class="bg-blue-900/20 border border-blue-500/30 p-5 rounded-2xl mt-6">
+                        <h4 class="text-blue-400 font-bold text-sm mb-2 flex items-center gap-2"><i class="fa-solid fa-circle-info"></i> PARSING REQUIREMENT</h4>
+                        <p class="text-xs text-gray-300">These events are pushed automatically and do not include a <code class="text-blue-300">status</code> or <code class="text-blue-300">reason</code> field like standard API responses. Always check if <code class="bg-[#111] px-1.5 py-0.5 rounded border border-[#333] font-mono">type == "log_stream"</code> before parsing.</p>
+                    </div>
+
+                    <div class="relative bg-[#0d0d0d] border border-[#222] rounded-xl overflow-hidden shadow-xl mt-6">
+                        <div class="flex justify-between items-center px-4 py-2 bg-[#1a1a1a] border-b border-[#222]">
+                            <div class="flex items-center gap-2">
+                                <i class="fa-solid fa-satellite-dish text-gray-400"></i>
+                                <span class="text-xs font-bold text-gray-400 uppercase tracking-wider">Event Stream Payload</span>
+                            </div>
+                            <button onclick="ui.copyToClipboard(this)" class="text-gray-500 hover:text-white transition-colors" title="Copy code"><i class="fa-regular fa-copy"></i></button>
+                        </div>
+                        <pre class="code-block border-none !rounded-none p-4 custom-scrollbar"><code class="language-json copy-target">{
+    "type": "log_stream",
+    "stream": "api_command",
+    "steamId": "7656119xxxxxxxxxx",
+    "action": "CREATE_ROLE",
+    "details": "Received from API"
+}</code></pre>
+                    </div>
+
+                    <!-- Property Breakdown -->
+                    <div class="mt-8">
+                        <h3 class="text-xl font-bold text-white mb-4 italic tracking-tight">Property Breakdown</h3>
+                        <div class="grid grid-cols-1 gap-3">
+                            <div class="bg-[#0a0a0a] border border-[#222] p-4 rounded-2xl flex flex-col md:flex-row md:items-center gap-4">
+                                <code class="text-[#FFFC00] bg-[#111] px-3 py-1 rounded-lg border border-[#333] text-sm w-fit md:w-24 text-center font-bold">type</code>
+                                <p class="text-sm text-gray-400 flex-1">Always perfectly matches <code class="text-white">"log_stream"</code> for these pushed events. This is the primary key you use to filter these payloads from standard command responses.</p>
+                            </div>
+                            <div class="bg-[#0a0a0a] border border-[#222] p-4 rounded-2xl flex flex-col md:flex-row md:items-center gap-4">
+                                <code class="text-[#FFFC00] bg-[#111] px-3 py-1 rounded-lg border border-[#333] text-sm w-fit md:w-24 text-center font-bold">stream</code>
+                                <p class="text-sm text-gray-400 flex-1">The category of the event. The two primary streams are <code class="text-white">"api_command"</code> (audits when an external API command is received) and <code class="text-white">"ingame_chat"</code> (live mirrors of player messages sent in global chat).</p>
+                            </div>
+                            <div class="bg-[#0a0a0a] border border-[#222] p-4 rounded-2xl flex flex-col md:flex-row md:items-center gap-4">
+                                <code class="text-[#FFFC00] bg-[#111] px-3 py-1 rounded-lg border border-[#333] text-sm w-fit md:w-24 text-center font-bold">steamId</code>
+                                <p class="text-sm text-gray-400 flex-1">The SteamID of the user who triggered the event. If it was triggered by the server itself, this will say <code class="text-white">"SYSTEM"</code>.</p>
+                            </div>
+                            <div class="bg-[#0a0a0a] border border-[#222] p-4 rounded-2xl flex flex-col md:flex-row md:items-center gap-4">
+                                <code class="text-[#FFFC00] bg-[#111] px-3 py-1 rounded-lg border border-[#333] text-sm w-fit md:w-24 text-center font-bold">action</code>
+                                <p class="text-sm text-gray-400 flex-1">The specific action taken (e.g., the name of the command executed, or the raw text of the chat message).</p>
+                            </div>
+                            <div class="bg-[#0a0a0a] border border-[#222] p-4 rounded-2xl flex flex-col md:flex-row md:items-center gap-4">
+                                <code class="text-[#FFFC00] bg-[#111] px-3 py-1 rounded-lg border border-[#333] text-sm w-fit md:w-24 text-center font-bold">details</code>
+                                <p class="text-sm text-gray-400 flex-1">Additional contextual metadata provided by the server engine.</p>
+                            </div>
+                        </div>
+                    </div>
+                </section>
                 
                 <div class="pb-20"></div>
             </div>
@@ -398,12 +503,33 @@
                 <section id="api-integration" class="space-y-8 border-b border-[#222] pb-10">
                     <h2 class="text-4xl font-black text-white uppercase tracking-tighter italic">Payload Integration</h2>
                     <p class="text-gray-400 leading-relaxed">
-                        To interface with the endpoints below, connect to the WebSocket listener and transmit JSON strings. The server processes queues sequentially on the main game thread.
+                        To interface with the endpoints below, you must establish a WebSocket connection and transmit JSON strings. Depending on your <code class="text-white">AthenaMod.ini</code> configuration, your external application will either act as a <strong>Client</strong> (connecting to the game server) or a <strong>Server</strong> (listening for the game server to connect to it).
                     </p>
                     
                     <div class="bg-red-900/10 border border-red-500/20 p-5 rounded-2xl">
                         <h4 class="text-red-400 font-bold text-sm mb-2 flex items-center gap-2"><i class="fa-solid fa-triangle-exclamation"></i> NO HTTP ENDPOINTS</h4>
                         <p class="text-xs text-gray-400">There are no URL routes (like <code>/players</code>). You must send a JSON payload with an <code>action</code> property to the main WebSocket URL.</p>
+                    </div>
+
+                    <!-- Connection Mode Toggle -->
+                    <div class="bg-[#0a0a0a] p-5 rounded-2xl border border-[#222] mt-8 shadow-xl">
+                        <div class="flex flex-col md:flex-row md:items-center justify-between gap-4 border-b border-[#222] pb-4 mb-4">
+                            <h3 class="text-white font-bold text-lg flex items-center gap-2"><i class="fa-solid fa-toggle-on text-[#FFFC00]"></i> Connection Mode</h3>
+                            <div class="bg-[#111] p-1 rounded-lg border border-[#333] flex items-center shrink-0">
+                                <button class="mode-toggle-btn active px-4 py-2 rounded-md text-xs font-bold transition-colors bg-[#222] text-[#FFFC00]" data-mode="client" onclick="ui.switchCodeMode('client')">
+                                    External App as Client
+                                </button>
+                                <button class="mode-toggle-btn px-4 py-2 rounded-md text-xs font-bold transition-colors text-gray-500 hover:text-white" data-mode="server" onclick="ui.switchCodeMode('server')">
+                                    External App as Server
+                                </button>
+                            </div>
+                        </div>
+                        <p class="text-sm text-gray-400 leading-relaxed code-mode client-mode block">
+                            <strong>Client Mode:</strong> The Game Server is acting as the host <code class="text-[#FFFC00] text-xs bg-[#222] px-1 rounded">(bEnableWebSocketServer=True)</code>. Your external dashboard, discord bot, or script must establish the connection outward to the game server.
+                        </p>
+                        <p class="text-sm text-gray-400 leading-relaxed code-mode server-mode hidden">
+                            <strong>Server Mode:</strong> The Game Server is acting as the client <code class="text-[#FFFC00] text-xs bg-[#222] px-1 rounded">(bEnableWebSocketServer=False)</code>. You must host a WebSocket Listener on your backend infrastructure to catch the incoming connection from the game server.
+                        </p>
                     </div>
 
                     <!-- Language Selection Tabs -->
@@ -428,19 +554,19 @@
                                     <i class="fa-brands fa-python text-blue-400"></i>
                                     <span class="text-xs font-bold text-gray-400 uppercase tracking-wider">Python</span>
                                 </div>
-                                <button onclick="ui.copyToClipboard(this, 'pre-python')" class="text-gray-500 hover:text-white transition-colors" title="Copy code"><i class="fa-regular fa-copy"></i></button>
+                                <button onclick="ui.copyToClipboard(this)" class="text-gray-500 hover:text-white transition-colors" title="Copy code"><i class="fa-regular fa-copy"></i></button>
                             </div>
-                            <pre id="pre-python" class="code-block border-none !rounded-none"><code class="language-python">import asyncio
+                            <pre class="code-block border-none !rounded-none code-mode client-mode block"><code class="language-python copy-target">import asyncio
 import websockets
 import json
 
 async def connect():
     uri = "ws://127.0.0.1:8000/gameserver"
     async with websockets.connect(uri) as websocket:
-        # Mandatory Action Payload
+        # Send action payload to the game server
         payload = {
             "action": "SEND_GLOBAL_ANNOUNCEMENT",
-            "message": "Hello from Python!",
+            "message": "Hello from Python Client!",
             "duration": 10.0
         }
         await websocket.send(json.dumps(payload))
@@ -448,6 +574,26 @@ async def connect():
         print(f"Response: {response}")
 
 asyncio.run(connect())</code></pre>
+                            <pre class="code-block border-none !rounded-none code-mode server-mode hidden"><code class="language-python copy-target">import asyncio
+import websockets
+import json
+
+async def handler(websocket, path):
+    print("Game Server Connected!")
+    # Send action payload to the game server
+    payload = {
+        "action": "SEND_GLOBAL_ANNOUNCEMENT",
+        "message": "Hello from Python Server!",
+        "duration": 10.0
+    }
+    await websocket.send(json.dumps(payload))
+    
+    async for message in websocket:
+        print(f"Received: {message}")
+
+start_server = websockets.serve(handler, "127.0.0.1", 8000)
+asyncio.get_event_loop().run_until_complete(start_server)
+asyncio.get_event_loop().run_forever()</code></pre>
                         </div>
 
                         <!-- JavaScript -->
@@ -457,15 +603,15 @@ asyncio.run(connect())</code></pre>
                                     <i class="fa-brands fa-node-js text-yellow-400"></i>
                                     <span class="text-xs font-bold text-gray-400 uppercase tracking-wider">Node.js</span>
                                 </div>
-                                <button onclick="ui.copyToClipboard(this, 'pre-js')" class="text-gray-500 hover:text-white transition-colors" title="Copy code"><i class="fa-regular fa-copy"></i></button>
+                                <button onclick="ui.copyToClipboard(this)" class="text-gray-500 hover:text-white transition-colors" title="Copy code"><i class="fa-regular fa-copy"></i></button>
                             </div>
-                            <pre id="pre-js" class="code-block border-none !rounded-none"><code class="language-javascript">const WebSocket = require('ws');
+                            <pre class="code-block border-none !rounded-none code-mode client-mode block"><code class="language-javascript copy-target">const WebSocket = require('ws');
 const ws = new WebSocket('ws://127.0.0.1:8000/gameserver');
 
 ws.on('open', function open() {
     const payload = {
         action: "SEND_GLOBAL_ANNOUNCEMENT",
-        message: "Hello from Node.js!",
+        message: "Hello from Node.js Client!",
         duration: 10.0
     };
     ws.send(JSON.stringify(payload));
@@ -473,6 +619,23 @@ ws.on('open', function open() {
 
 ws.on('message', function incoming(data) {
     console.log('Response:', data.toString());
+});</code></pre>
+                            <pre class="code-block border-none !rounded-none code-mode server-mode hidden"><code class="language-javascript copy-target">const WebSocket = require('ws');
+const wss = new WebSocket.Server({ port: 8000 });
+
+wss.on('connection', function connection(ws) {
+    console.log("Game Server Connected!");
+    
+    const payload = {
+        action: "SEND_GLOBAL_ANNOUNCEMENT",
+        message: "Hello from Node.js Server!",
+        duration: 10.0
+    };
+    ws.send(JSON.stringify(payload));
+
+    ws.on('message', function incoming(message) {
+        console.log('Received:', message.toString());
+    });
 });</code></pre>
                         </div>
 
@@ -483,9 +646,9 @@ ws.on('message', function incoming(data) {
                                     <span class="font-bold border border-blue-500 text-blue-500 px-1 rounded text-[10px] leading-none h-4 flex items-center">TS</span>
                                     <span class="text-xs font-bold text-gray-400 uppercase tracking-wider">TypeScript</span>
                                 </div>
-                                <button onclick="ui.copyToClipboard(this, 'pre-ts')" class="text-gray-500 hover:text-white transition-colors" title="Copy code"><i class="fa-regular fa-copy"></i></button>
+                                <button onclick="ui.copyToClipboard(this)" class="text-gray-500 hover:text-white transition-colors" title="Copy code"><i class="fa-regular fa-copy"></i></button>
                             </div>
-                            <pre id="pre-ts" class="code-block border-none !rounded-none"><code class="language-typescript">import WebSocket from 'ws';
+                            <pre class="code-block border-none !rounded-none code-mode client-mode block"><code class="language-typescript copy-target">import WebSocket from 'ws';
 
 interface Payload { action: string; message: string; duration: number; }
 const ws = new WebSocket('ws://127.0.0.1:8000/gameserver');
@@ -493,7 +656,7 @@ const ws = new WebSocket('ws://127.0.0.1:8000/gameserver');
 ws.on('open', () => {
     const payload: Payload = {
         action: "SEND_GLOBAL_ANNOUNCEMENT",
-        message: "Hello from TypeScript!",
+        message: "Hello from TypeScript Client!",
         duration: 10.0
     };
     ws.send(JSON.stringify(payload));
@@ -501,6 +664,25 @@ ws.on('open', () => {
 
 ws.on('message', (data: WebSocket.Data) => {
     console.log('Response:', data.toString());
+});</code></pre>
+                            <pre class="code-block border-none !rounded-none code-mode server-mode hidden"><code class="language-typescript copy-target">import { WebSocketServer, WebSocket } from 'ws';
+
+interface Payload { action: string; message: string; duration: number; }
+const wss = new WebSocketServer({ port: 8000 });
+
+wss.on('connection', (ws: WebSocket) => {
+    console.log("Game Server Connected!");
+    
+    const payload: Payload = {
+        action: "SEND_GLOBAL_ANNOUNCEMENT",
+        message: "Hello from TypeScript Server!",
+        duration: 10.0
+    };
+    ws.send(JSON.stringify(payload));
+
+    ws.on('message', (data: WebSocket.Data) => {
+        console.log('Received:', data.toString());
+    });
 });</code></pre>
                         </div>
 
@@ -511,9 +693,9 @@ ws.on('message', (data: WebSocket.Data) => {
                                     <i class="fa-brands fa-java text-orange-500"></i>
                                     <span class="text-xs font-bold text-gray-400 uppercase tracking-wider">Java</span>
                                 </div>
-                                <button onclick="ui.copyToClipboard(this, 'pre-java')" class="text-gray-500 hover:text-white transition-colors" title="Copy code"><i class="fa-regular fa-copy"></i></button>
+                                <button onclick="ui.copyToClipboard(this)" class="text-gray-500 hover:text-white transition-colors" title="Copy code"><i class="fa-regular fa-copy"></i></button>
                             </div>
-                            <pre id="pre-java" class="code-block border-none !rounded-none"><code class="language-java">import java.net.URI;
+                            <pre class="code-block border-none !rounded-none code-mode client-mode block"><code class="language-java copy-target">import java.net.URI;
 import java.net.http.HttpClient;
 import java.net.http.WebSocket;
 import java.util.concurrent.CompletionStage;
@@ -532,9 +714,37 @@ public class OrionClient {
                 }
             }).join();
 
-        String payload = "{\"action\":\"SEND_GLOBAL_ANNOUNCEMENT\",\"message\":\"Hello from Java!\",\"duration\":10.0}";
+        String payload = "{\"action\":\"SEND_GLOBAL_ANNOUNCEMENT\",\"message\":\"Hello from Java Client!\",\"duration\":10.0}";
         ws.sendText(payload, true).join();
         latch.await();
+    }
+}</code></pre>
+                            <pre class="code-block border-none !rounded-none code-mode server-mode hidden"><code class="language-java copy-target">import org.java_websocket.server.WebSocketServer;
+import org.java_websocket.WebSocket;
+import org.java_websocket.handshake.ClientHandshake;
+import java.net.InetSocketAddress;
+
+public class OrionServer extends WebSocketServer {
+    public OrionServer(InetSocketAddress address) { super(address); }
+
+    @Override
+    public void onOpen(WebSocket conn, ClientHandshake handshake) {
+        System.out.println("Game Server Connected!");
+        String payload = "{\"action\":\"SEND_GLOBAL_ANNOUNCEMENT\",\"message\":\"Hello from Java Server!\",\"duration\":10.0}";
+        conn.send(payload);
+    }
+
+    @Override
+    public void onMessage(WebSocket conn, String message) {
+        System.out.println("Received: " + message);
+    }
+
+    @Override public void onClose(WebSocket conn, int code, String reason, boolean remote) {}
+    @Override public void onError(WebSocket conn, Exception ex) {}
+    @Override public void onStart() {}
+
+    public static void main(String[] args) {
+        new OrionServer(new InetSocketAddress("127.0.0.1", 8000)).start();
     }
 }</code></pre>
                         </div>
@@ -546,9 +756,9 @@ public class OrionClient {
                                     <i class="fa-brands fa-rust text-orange-700"></i>
                                     <span class="text-xs font-bold text-gray-400 uppercase tracking-wider">Rust</span>
                                 </div>
-                                <button onclick="ui.copyToClipboard(this, 'pre-rust')" class="text-gray-500 hover:text-white transition-colors" title="Copy code"><i class="fa-regular fa-copy"></i></button>
+                                <button onclick="ui.copyToClipboard(this)" class="text-gray-500 hover:text-white transition-colors" title="Copy code"><i class="fa-regular fa-copy"></i></button>
                             </div>
-                            <pre id="pre-rust" class="code-block border-none !rounded-none"><code class="language-rust">use tokio_tungstenite::{connect_async, tungstenite::protocol::Message};
+                            <pre class="code-block border-none !rounded-none code-mode client-mode block"><code class="language-rust copy-target">use tokio_tungstenite::{connect_async, tungstenite::protocol::Message};
 use futures_util::{StreamExt, SinkExt};
 use serde_json::json;
 
@@ -559,7 +769,7 @@ async fn main() {
 
     let payload = json!({
         "action": "SEND_GLOBAL_ANNOUNCEMENT",
-        "message": "Hello from Rust!",
+        "message": "Hello from Rust Client!",
         "duration": 10.0
     });
 
@@ -568,6 +778,32 @@ async fn main() {
     if let Some(msg) = ws_stream.next().await {
         let msg = msg.unwrap();
         println!("Server response: {}", msg.to_text().unwrap());
+    }
+}</code></pre>
+                            <pre class="code-block border-none !rounded-none code-mode server-mode hidden"><code class="language-rust copy-target">use tokio::net::TcpListener;
+use tokio_tungstenite::accept_async;
+use futures_util::{StreamExt, SinkExt};
+use serde_json::json;
+
+#[tokio::main]
+async fn main() {
+    let listener = TcpListener::bind("127.0.0.1:8000").await.expect("Failed to bind");
+    println!("Listening on: 127.0.0.1:8000");
+
+    while let Ok((stream, _)) = listener.accept().await {
+        let mut ws_stream = accept_async(stream).await.expect("Error during handshake");
+        println!("Game Server Connected!");
+
+        let payload = json!({
+            "action": "SEND_GLOBAL_ANNOUNCEMENT",
+            "message": "Hello from Rust Server!",
+            "duration": 10.0
+        });
+        ws_stream.send(tokio_tungstenite::tungstenite::protocol::Message::Text(payload.to_string())).await.unwrap();
+
+        if let Some(msg) = ws_stream.next().await {
+            println!("Received: {}", msg.unwrap().to_text().unwrap());
+        }
     }
 }</code></pre>
                         </div>
@@ -579,20 +815,39 @@ async fn main() {
                                     <i class="fa-solid fa-moon text-indigo-400"></i>
                                     <span class="text-xs font-bold text-gray-400 uppercase tracking-wider">Lua</span>
                                 </div>
-                                <button onclick="ui.copyToClipboard(this, 'pre-lua')" class="text-gray-500 hover:text-white transition-colors" title="Copy code"><i class="fa-regular fa-copy"></i></button>
+                                <button onclick="ui.copyToClipboard(this)" class="text-gray-500 hover:text-white transition-colors" title="Copy code"><i class="fa-regular fa-copy"></i></button>
                             </div>
-                            <pre id="pre-lua" class="code-block border-none !rounded-none"><code class="language-lua">local websocket = require("websocket")
+                            <pre class="code-block border-none !rounded-none code-mode client-mode block"><code class="language-lua copy-target">local websocket = require("websocket")
 local client = websocket.client.sync()
 
 local ok, err = client:connect("ws://127.0.0.1:8000/gameserver")
 if not ok then return end
 
-local payload = '{"action":"SEND_GLOBAL_ANNOUNCEMENT","message":"Lua!","duration":10.0}'
+local payload = '{"action":"SEND_GLOBAL_ANNOUNCEMENT","message":"Hello from Lua Client!","duration":10.0}'
 client:send(payload)
 
 local message, opcode = client:receive()
 print("Response:", message)
 client:close()</code></pre>
+                            <pre class="code-block border-none !rounded-none code-mode server-mode hidden"><code class="language-lua copy-target">local copas = require("copas")
+local websocket = require("websocket")
+
+local server = websocket.server.copas.listen({
+    port = 8000,
+    protocols = {
+        echo = function(ws)
+            print("Game Server Connected!")
+            local payload = '{"action":"SEND_GLOBAL_ANNOUNCEMENT","message":"Hello from Lua Server!","duration":10.0}'
+            ws:send(payload)
+            while true do
+                local message, opcode = ws:receive()
+                if not message then break end
+                print("Received:", message)
+            end
+        end
+    }
+})
+copas.loop()</code></pre>
                         </div>
 
                         <!-- C++ -->
@@ -602,9 +857,9 @@ client:close()</code></pre>
                                     <span class="font-bold border border-blue-600 text-blue-600 px-1 rounded text-[10px] leading-none h-4 flex items-center">C++</span>
                                     <span class="text-xs font-bold text-gray-400 uppercase tracking-wider">C++</span>
                                 </div>
-                                <button onclick="ui.copyToClipboard(this, 'pre-cpp')" class="text-gray-500 hover:text-white transition-colors" title="Copy code"><i class="fa-regular fa-copy"></i></button>
+                                <button onclick="ui.copyToClipboard(this)" class="text-gray-500 hover:text-white transition-colors" title="Copy code"><i class="fa-regular fa-copy"></i></button>
                             </div>
-                            <pre id="pre-cpp" class="code-block border-none !rounded-none"><code class="language-cpp">#include &lt;ixwebsocket/IXWebSocket.h&gt;
+                            <pre class="code-block border-none !rounded-none code-mode client-mode block"><code class="language-cpp copy-target">#include &lt;ixwebsocket/IXWebSocket.h&gt;
 #include &lt;nlohmann/json.hpp&gt;
 #include &lt;iostream&gt;
 
@@ -616,7 +871,7 @@ int main() {
         if (msg->type == ix::WebSocketMessageType::Open) {
             nlohmann::json payload = {
                 {"action", "SEND_GLOBAL_ANNOUNCEMENT"},
-                {"message", "Hello from C++!"},
+                {"message", "Hello from C++ Client!"},
                 {"duration", 10.0}
             };
             webSocket.send(payload.dump());
@@ -625,6 +880,35 @@ int main() {
 
     webSocket.start();
     while (true) { /* Keep thread alive */ }
+    return 0;
+}</code></pre>
+                            <pre class="code-block border-none !rounded-none code-mode server-mode hidden"><code class="language-cpp copy-target">#include &lt;ixwebsocket/IXWebSocketServer.h&gt;
+#include &lt;nlohmann/json.hpp&gt;
+#include &lt;iostream&gt;
+
+int main() {
+    ix::WebSocketServer server(8000, "127.0.0.1");
+
+    server.setOnConnectionCallback([](std::shared_ptr&lt;ix::WebSocket&gt; webSocket, std::shared_ptr&lt;ix::ConnectionState&gt; connectionState) {
+        webSocket-&gt;setOnMessageCallback([webSocket](const ix::WebSocketMessagePtr& msg) {
+            if (msg-&gt;type == ix::WebSocketMessageType::Open) {
+                std::cout &lt;&lt; "Game Server Connected!" &lt;&lt; std::endl;
+                nlohmann::json payload = {
+                    {"action", "SEND_GLOBAL_ANNOUNCEMENT"},
+                    {"message", "Hello from C++ Server!"},
+                    {"duration", 10.0}
+                };
+                webSocket-&gt;send(payload.dump());
+            } else if (msg-&gt;type == ix::WebSocketMessageType::Message) {
+                std::cout &lt;&lt; "Received: " &lt;&lt; msg-&gt;str &lt;&lt; std::endl;
+            }
+        });
+    });
+
+    auto res = server.listen();
+    if (!res.first) return 1;
+    server.start();
+    server.wait();
     return 0;
 }</code></pre>
                         </div>
@@ -636,9 +920,9 @@ int main() {
                                     <span class="font-bold border border-purple-500 text-purple-500 px-1 rounded text-[10px] leading-none h-4 flex items-center">C#</span>
                                     <span class="text-xs font-bold text-gray-400 uppercase tracking-wider">C#</span>
                                 </div>
-                                <button onclick="ui.copyToClipboard(this, 'pre-csharp')" class="text-gray-500 hover:text-white transition-colors" title="Copy code"><i class="fa-regular fa-copy"></i></button>
+                                <button onclick="ui.copyToClipboard(this)" class="text-gray-500 hover:text-white transition-colors" title="Copy code"><i class="fa-regular fa-copy"></i></button>
                             </div>
-                            <pre id="pre-csharp" class="code-block border-none !rounded-none"><code class="language-csharp">using System;
+                            <pre class="code-block border-none !rounded-none code-mode client-mode block"><code class="language-csharp copy-target">using System;
 using System.Net.WebSockets;
 using System.Text;
 using System.Threading;
@@ -649,10 +933,42 @@ class Program {
         using var ws = new ClientWebSocket();
         await ws.ConnectAsync(new Uri("ws://127.0.0.1:8000/gameserver"), CancellationToken.None);
 
-        string payload = "{\"action\":\"SEND_GLOBAL_ANNOUNCEMENT\",\"message\":\"C#!\",\"duration\":10.0}";
+        string payload = "{\"action\":\"SEND_GLOBAL_ANNOUNCEMENT\",\"message\":\"Hello from C# Client!\",\"duration\":10.0}";
         var bytes = Encoding.UTF8.GetBytes(payload);
         
         await ws.SendAsync(new ArraySegment<byte>(bytes), WebSocketMessageType.Text, true, CancellationToken.None);
+    }
+}</code></pre>
+                            <pre class="code-block border-none !rounded-none code-mode server-mode hidden"><code class="language-csharp copy-target">using System;
+using System.Net;
+using System.Net.WebSockets;
+using System.Text;
+using System.Threading;
+using System.Threading.Tasks;
+
+class Program {
+    static async Task Main() {
+        HttpListener listener = new HttpListener();
+        listener.Prefixes.Add("http://127.0.0.1:8000/gameserver/");
+        listener.Start();
+        Console.WriteLine("Listening...");
+
+        HttpListenerContext context = await listener.GetContextAsync();
+        if (context.Request.IsWebSocketRequest) {
+            HttpListenerWebSocketContext wsContext = await context.AcceptWebSocketAsync(null);
+            WebSocket ws = wsContext.WebSocket;
+            Console.WriteLine("Game Server Connected!");
+
+            string payload = "{\"action\":\"SEND_GLOBAL_ANNOUNCEMENT\",\"message\":\"Hello from C# Server!\",\"duration\":10.0}";
+            var bytes = Encoding.UTF8.GetBytes(payload);
+            await ws.SendAsync(new ArraySegment<byte>(bytes), WebSocketMessageType.Text, true, CancellationToken.None);
+            
+            var buffer = new byte[1024 * 4];
+            while (ws.State == WebSocketState.Open) {
+                var result = await ws.ReceiveAsync(new ArraySegment<byte>(buffer), CancellationToken.None);
+                Console.WriteLine("Received: " + Encoding.UTF8.GetString(buffer, 0, result.Count));
+            }
+        }
     }
 }</code></pre>
                         </div>
@@ -664,19 +980,35 @@ class Program {
                                     <i class="fa-solid fa-terminal text-blue-300"></i>
                                     <span class="text-xs font-bold text-gray-400 uppercase tracking-wider">PowerShell</span>
                                 </div>
-                                <button onclick="ui.copyToClipboard(this, 'pre-ps')" class="text-gray-500 hover:text-white transition-colors" title="Copy code"><i class="fa-regular fa-copy"></i></button>
+                                <button onclick="ui.copyToClipboard(this)" class="text-gray-500 hover:text-white transition-colors" title="Copy code"><i class="fa-regular fa-copy"></i></button>
                             </div>
-                            <pre id="pre-ps" class="code-block border-none !rounded-none"><code class="language-powershell">$ws = New-Object System.Net.WebSockets.ClientWebSocket
+                            <pre class="code-block border-none !rounded-none code-mode client-mode block"><code class="language-powershell copy-target">$ws = New-Object System.Net.WebSockets.ClientWebSocket
 $uri = New-Object System.Uri("ws://127.0.0.1:8000/gameserver")
 $ct = [System.Threading.CancellationToken]::None
 
 $ws.ConnectAsync($uri, $ct).Wait()
 
-$payload = '{"action":"SEND_GLOBAL_ANNOUNCEMENT","message":"PowerShell!","duration":10.0}'
+$payload = '{"action":"SEND_GLOBAL_ANNOUNCEMENT","message":"Hello from PowerShell Client!","duration":10.0}'
 $bytes = [System.Text.Encoding]::UTF8.GetBytes($payload)
 $segment = New-Object System.ArraySegment[byte] -ArgumentList @(,$bytes)
 
 $ws.SendAsync($segment, [System.Net.WebSockets.WebSocketMessageType]::Text, $true, $ct).Wait()</code></pre>
+                            <pre class="code-block border-none !rounded-none code-mode server-mode hidden"><code class="language-powershell copy-target">$listener = New-Object System.Net.HttpListener
+$listener.Prefixes.Add("http://127.0.0.1:8000/gameserver/")
+$listener.Start()
+Write-Host "Listening on port 8000..."
+
+$context = $listener.GetContext()
+if ($context.Request.IsWebSocketRequest) {
+    $wsContext = $context.AcceptWebSocketAsync($null).Result
+    $ws = $wsContext.WebSocket
+    Write-Host "Game Server Connected!"
+
+    $payload = '{"action":"SEND_GLOBAL_ANNOUNCEMENT","message":"Hello from PowerShell Server!","duration":10.0}'
+    $bytes = [System.Text.Encoding]::UTF8.GetBytes($payload)
+    $segment = New-Object System.ArraySegment[byte] -ArgumentList @(,$bytes)
+    $ws.SendAsync($segment, [System.Net.WebSockets.WebSocketMessageType]::Text, $true, [System.Threading.CancellationToken]::None).Wait()
+}</code></pre>
                         </div>
                     </div>
                 </section>
@@ -1049,15 +1381,30 @@ $ws.SendAsync($segment, [System.Net.WebSockets.WebSocketMessageType]::Text, $tru
             }
         ];
 
+        // Updated dynamically from the C++ enum provided
         const permissionsList = [
-            "CanHeal", "CanHealOthers", "CanUnstuck", "CanUnstuckOthers", "CanSlay", 
-            "CanSlayOthers", "CanSpawnAI", "CanWipeAI", "CanToggleElder", "CanToggleElderOthers",
-            "CanPark", "CanParkOthers", "CanRetrieve", "CanRetrieveOthers", "CanTeleport",
-            "CanTeleportOthers", "CanSwap", "CanSwapOthers", "CanGrow", "CanGrowOthers",
-            "CanSetHealth", "CanSetHealthOthers", "CanSetHunger", "CanSetHungerOthers",
-            "CanSetThirst", "CanSetThirstOthers", "CanSetStamina", "CanSetStaminaOthers",
-            "CanSetBlood", "CanSetBloodOthers", "CanSetScale", "CanSetScaleOthers",
-            "CanSetWeight", "CanSetWeightOthers"
+            "CanHeal", "CanHealOthers",
+            "CanVanish", "CanVanishOthers",
+            "CanGodMode", "CanGodModeOthers",
+            "CanSlay", "CanSlayOthers",
+            "CanSmite", "CanSmiteOthers",
+            "CanSpawnAI", "CanWipeAI",
+            "CanWipeCorpses", "CanSpawnCorpse",
+            "CanToggleElder", "CanToggleElderOthers",
+            "CanPark", "CanParkOthers",
+            "CanShowGarage", "CanShowGarageOthers",
+            "CanRetrieve", "CanRetrieveOthers",
+            "CanTeleport", "CanTeleportOthers",
+            "CanSwap", "CanSwapOthers",
+            "CanGrow", "CanGrowOthers",
+            "CanSetHealth", "CanSetHealthOthers",
+            "CanSetHunger", "CanSetHungerOthers",
+            "CanSetThirst", "CanSetThirstOthers",
+            "CanSetStamina", "CanSetStaminaOthers",
+            "CanSetBlood", "CanSetBloodOthers",
+            "CanCreateRoles", "CanUpdateRoles",
+            "CanDeleteRoles", "CanManageRolesOthers",
+            "CanBypassRolePriority"
         ];
 
         // Payload Generator Logic
@@ -1165,13 +1512,42 @@ $ws.SendAsync($segment, [System.Net.WebSockets.WebSocketMessageType]::Text, $tru
         };
 
         const ui = {
+            switchCodeMode: (mode) => {
+                // Update toggles
+                document.querySelectorAll('.mode-toggle-btn').forEach(b => {
+                    b.classList.remove('active', 'bg-[#222]', 'text-[#FFFC00]');
+                    b.classList.add('text-gray-500');
+                });
+                const activeBtn = document.querySelector(`.mode-toggle-btn[data-mode="${mode}"]`);
+                activeBtn.classList.add('active', 'bg-[#222]', 'text-[#FFFC00]');
+                activeBtn.classList.remove('text-gray-500');
+
+                // Hide all code modes
+                document.querySelectorAll('.code-mode').forEach(el => {
+                    el.classList.add('hidden');
+                    el.classList.remove('block');
+                });
+                
+                // Show selected code mode
+                document.querySelectorAll(`.code-mode.${mode}-mode`).forEach(el => {
+                    el.classList.remove('hidden');
+                    if (el.tagName !== 'SPAN' && el.tagName !== 'CODE') {
+                        el.classList.add('block');
+                    }
+                });
+            },
+
             copyToClipboard: (btn, explicitTargetId = null) => {
                 let code = "";
                 if (explicitTargetId) {
                     code = document.getElementById(explicitTargetId).textContent;
                 } else {
-                    code = btn.closest('.relative').querySelector('.copy-target').textContent;
+                    // Find the visible 'pre' block within the relative container to copy the active mode's code
+                    const container = btn.closest('.relative') || btn.closest('.code-view');
+                    const visiblePre = Array.from(container.querySelectorAll('pre')).find(p => !p.classList.contains('hidden'));
+                    code = visiblePre ? visiblePre.querySelector('.copy-target').textContent : "";
                 }
+                
                 const textArea = document.createElement("textarea");
                 textArea.value = code;
                 document.body.appendChild(textArea);
@@ -1353,6 +1729,10 @@ $ws.SendAsync($segment, [System.Net.WebSockets.WebSocketMessageType]::Text, $tru
                         <i class="fa-solid fa-network-wired w-6 text-center opacity-50 group-hover:opacity-100 group-hover:text-[#FFFC00] transition-all"></i>
                         <span>Core Architecture</span>
                     </a>
+                    <a href="#doc-configuration" class="sidebar-link flex items-center px-4 py-2 text-sm font-bold text-gray-400 rounded-r-lg group hover:text-white">
+                        <i class="fa-solid fa-gear w-6 text-center opacity-50 group-hover:opacity-100 group-hover:text-[#FFFC00] transition-all"></i>
+                        <span>Configuration (.ini)</span>
+                    </a>
                     <a href="#doc-roles" class="sidebar-link flex items-center px-4 py-2 text-sm font-bold text-gray-400 rounded-r-lg group hover:text-white">
                         <i class="fa-solid fa-shield-halved w-6 text-center opacity-50 group-hover:opacity-100 group-hover:text-[#FFFC00] transition-all"></i>
                         <span>Roles & Users</span>
@@ -1364,6 +1744,10 @@ $ws.SendAsync($segment, [System.Net.WebSockets.WebSocketMessageType]::Text, $tru
                     <a href="#doc-chat" class="sidebar-link flex items-center px-4 py-2 text-sm font-bold text-gray-400 rounded-r-lg group hover:text-white">
                         <i class="fa-solid fa-comment-dots w-6 text-center opacity-50 group-hover:opacity-100 group-hover:text-[#FFFC00] transition-all"></i>
                         <span>In-Game Commands</span>
+                    </a>
+                    <a href="#doc-events" class="sidebar-link flex items-center px-4 py-2 text-sm font-bold text-gray-400 rounded-r-lg group hover:text-white">
+                        <i class="fa-solid fa-satellite-dish w-6 text-center opacity-50 group-hover:opacity-100 group-hover:text-[#FFFC00] transition-all"></i>
+                        <span>Live Event Streams</span>
                     </a>
                 `;
             },
