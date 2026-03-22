@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Orion API</title>
+    <title>Orion API | Technical Documentation</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;900&family=JetBrains+Mono:wght@400;700&display=swap" rel="stylesheet">
@@ -49,16 +49,19 @@
             padding: 0.2rem 0.5rem;
             border-radius: 0.25rem;
             font-weight: 700;
+            text-transform: uppercase;
         }
         .method-GET { background: rgba(59, 130, 246, 0.2); color: #60a5fa; border: 1px solid rgba(59, 130, 246, 0.3); }
         .method-POST { background: rgba(34, 197, 94, 0.2); color: #4ade80; border: 1px solid rgba(34, 197, 94, 0.3); }
+        .method-PUT { background: rgba(168, 85, 247, 0.2); color: #c084fc; border: 1px solid rgba(168, 85, 247, 0.3); }
+        .method-DELETE { background: rgba(239, 68, 68, 0.2); color: #f87171; border: 1px solid rgba(239, 68, 68, 0.3); }
 
         .code-block {
             font-family: 'JetBrains Mono', monospace;
             background: #111 !important;
             border: 1px solid var(--border);
             border-radius: 0.75rem;
-            font-size: 0.85rem;
+            font-size: 0.8rem;
         }
 
         #login-overlay {
@@ -66,244 +69,71 @@
             background-image: radial-gradient(circle at 50% 50%, #1a1a1a 0%, #000000 100%);
         }
         
-        /* Tester Modal Styles */
-        .modal-backdrop {
-            background-color: rgba(0, 0, 0, 0.8);
-            backdrop-filter: blur(5px);
-        }
-        .input-group label {
-            display: block;
-            font-size: 0.75rem;
-            font-weight: bold;
-            color: #888;
-            margin-bottom: 0.25rem;
-            text-transform: uppercase;
-        }
-        .tester-input {
-            width: 100%;
-            background: #111;
-            border: 1px solid #333;
-            padding: 0.5rem;
-            border-radius: 0.5rem;
-            color: white;
-            font-family: 'JetBrains Mono', monospace;
-            font-size: 0.85rem;
-            outline: none;
-            transition: border-color 0.2s;
-        }
-        .tester-input:focus { border-color: var(--accent); }
-
-        /* Custom Select Styles */
-        .custom-select-trigger {
-            background: #111;
-            border: 1px solid #333;
-            padding: 0.75rem;
-            border-radius: 0.5rem;
-            color: white;
-            cursor: pointer;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            font-size: 0.9rem;
-            user-select: none;
-        }
-        .custom-select-trigger:hover { border-color: #555; }
-        
-        .custom-select-options {
-            position: absolute;
-            top: 100%;
-            left: 0;
-            right: 0;
-            background: #111;
-            border: 1px solid #333;
-            border-top: none;
-            border-radius: 0 0 0.5rem 0.5rem;
-            z-index: 50;
-            max-height: 300px;
-            overflow-y: auto;
-            opacity: 0;
-            visibility: hidden;
-            transform: translateY(-10px);
-            transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1);
-            box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.5);
-        }
-        
-        .custom-select.open .custom-select-options {
-            opacity: 1;
-            visibility: visible;
-            transform: translateY(0);
-        }
-        .custom-select.open .custom-select-trigger {
-            border-bottom-color: #111;
-            border-radius: 0.5rem 0.5rem 0 0;
-        }
-
-        .custom-option {
-            padding: 0.75rem;
-            cursor: pointer;
-            transition: background 0.1s;
-            border-bottom: 1px solid #1a1a1a;
-            display: flex;
-            align-items: center;
-            gap: 0.75rem;
-        }
-        .custom-option:last-child { border-bottom: none; }
-        .custom-option:hover { background: #1a1a1a; }
-        .custom-option.selected { background: #222; }
-        
-        .custom-optgroup-label {
-            padding: 0.5rem 0.75rem;
-            font-size: 0.7rem;
-            font-weight: bold;
-            color: #555;
-            text-transform: uppercase;
-            background: #0d0d0d;
-            position: sticky;
-            top: 0;
-        }
-
         .fade-in { animation: fadeIn 0.5s ease-out; }
         @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
+
+        .permission-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+            gap: 10px;
+        }
+        .perm-tag {
+            background: #111;
+            border: 1px solid #222;
+            padding: 8px 12px;
+            border-radius: 8px;
+            font-size: 0.75rem;
+            font-family: 'JetBrains Mono', monospace;
+            color: #ccc;
+            display: flex;
+            align-items: center;
+        }
+        .perm-id {
+            color: var(--accent);
+            font-weight: bold;
+            margin-right: 10px;
+            min-width: 20px;
+        }
+
+        .access-input {
+            background: #111;
+            border: 1px solid #333;
+            color: white;
+            padding: 1.25rem;
+            border-radius: 1rem;
+            width: 100%;
+            text-align: center;
+            font-family: 'JetBrains Mono', monospace;
+            letter-spacing: 0.5rem;
+            transition: all 0.3s ease;
+            outline: none;
+            font-size: 1.5rem;
+        }
+        .access-input:focus {
+            border-color: var(--accent);
+            box-shadow: 0 0 30px rgba(255, 252, 0, 0.15);
+        }
     </style>
 </head>
 <body class="h-screen flex flex-col md:flex-row overflow-hidden relative">
 
-    <!-- TESTER BUTTON (Hidden by default) -->
-    <div id="tester-trigger" class="hidden absolute top-6 right-6 z-50">
-        <button onclick="tester.open()" class="bg-[#1a1a1a] hover:bg-[#222] border border-[#333] hover:border-[#FFFC00] text-white px-4 py-2 rounded-lg flex items-center gap-2 transition-all shadow-lg font-bold text-sm">
-            <i class="fa-solid fa-flask text-[#FFFC00]"></i>
-            Test API
-        </button>
-    </div>
-
-    <!-- API TESTER MODAL -->
-    <div id="tester-modal" class="hidden fixed inset-0 z-[60] modal-backdrop flex items-center justify-center p-4">
-        <div class="bg-[#0a0a0a] border border-[#222] w-full max-w-2xl rounded-2xl shadow-2xl flex flex-col max-h-[90vh] fade-in">
-            
-            <!-- Header -->
-            <div class="p-4 border-b border-[#222] flex justify-between items-center bg-[#111] rounded-t-2xl">
-                <h3 class="font-bold text-lg flex items-center gap-2">
-                    <i class="fa-solid fa-flask text-[#FFFC00]"></i> API Tester
-                </h3>
-                <button onclick="tester.close()" class="text-gray-500 hover:text-white transition"><i class="fa-solid fa-xmark text-xl"></i></button>
-            </div>
-
-            <!-- Body -->
-            <div class="p-6 overflow-y-auto flex-1 space-y-6">
-                
-                <!-- Settings: API URL and Steam ID Header -->
-                <div class="bg-[#111] p-3 rounded-lg border border-[#333] mb-2 space-y-3">
-                    <div class="input-group">
-                        <label>API Base URL</label>
-                        <input type="text" id="tester-base-url" class="tester-input font-mono text-blue-400 border-[#333] focus:border-blue-500" placeholder="e.g., http://localhost:8000">
-                    </div>
-                    <div class="input-group">
-                        <label>Simulated Steam ID (Header)</label>
-                        <input type="text" id="tester-header-steamid" class="tester-input font-mono text-[#FFFC00] border-[#333] focus:border-[#FFFC00]" value="76561198012345678">
-                    </div>
-                </div>
-
-                <!-- Endpoint Selector -->
-                <div class="relative">
-                    <label class="block text-xs font-bold text-gray-500 uppercase mb-2">Select Endpoint</label>
-                    
-                    <!-- Custom Select DOM -->
-                    <div id="custom-select" class="custom-select relative w-full">
-                        <div class="custom-select-trigger" onclick="this.parentElement.classList.toggle('open')">
-                            <span id="custom-select-value" class="text-gray-400">-- Choose an endpoint --</span>
-                            <i class="fa-solid fa-chevron-down text-gray-500 text-xs"></i>
-                        </div>
-                        <div class="custom-select-options custom-scrollbar" id="custom-select-list">
-                            <!-- Populated by JS -->
-                        </div>
-                    </div>
-                </div>
-
-                <!-- Dynamic Params -->
-                <div id="tester-params-container" class="hidden space-y-4">
-                    <div class="flex items-center gap-2 mb-2">
-                        <div class="h-px bg-[#222] flex-1"></div>
-                        <span class="text-xs font-bold text-gray-500 uppercase">Parameters</span>
-                        <div class="h-px bg-[#222] flex-1"></div>
-                    </div>
-                    <div id="tester-inputs-grid" class="grid grid-cols-1 md:grid-cols-2 gap-4">
-                        <!-- Inputs injected here -->
-                    </div>
-                </div>
-
-                <!-- Info Box -->
-                <div id="tester-info" class="bg-[#111] border border-[#222] p-4 rounded-lg text-center text-gray-500 text-sm">
-                    Select an endpoint above to begin testing.
-                </div>
-
-            </div>
-
-            <!-- Footer -->
-            <div class="p-4 border-t border-[#222] bg-[#111] rounded-b-2xl flex justify-between items-center">
-                <button onclick="tester.generateData()" id="btn-gen-data" class="hidden text-gray-400 hover:text-[#FFFC00] text-sm font-bold flex items-center gap-2 transition">
-                    <i class="fa-solid fa-wand-magic-sparkles"></i> Generate Data
-                </button>
-                <div class="flex gap-3 ml-auto">
-                    <button onclick="tester.close()" class="px-4 py-2 text-gray-400 hover:text-white font-bold text-sm">Cancel</button>
-                    <button onclick="tester.send()" id="btn-send-req" disabled class="bg-[#FFFC00] hover:bg-[#e6e300] text-black px-6 py-2 rounded-lg font-bold text-sm flex items-center gap-2 transition disabled:opacity-50 disabled:cursor-not-allowed">
-                        <span>Send Request</span>
-                        <i class="fa-solid fa-paper-plane"></i>
-                    </button>
-                </div>
-            </div>
-        </div>
-    </div>
-
-    <!-- RESPONSE MODAL -->
-    <div id="response-modal" class="hidden fixed inset-0 z-[70] modal-backdrop flex items-center justify-center p-4">
-        <div class="bg-[#0a0a0a] border border-[#222] w-full max-w-2xl rounded-2xl shadow-2xl flex flex-col max-h-[85vh] fade-in transform scale-100 transition-all">
-            <div id="response-header" class="p-4 border-b border-[#222] flex justify-between items-center rounded-t-2xl bg-[#111]">
-                <h3 class="font-bold text-lg flex items-center gap-2" id="response-title">
-                    <!-- Title injected -->
-                </h3>
-                <button onclick="tester.closeResponse()" class="text-gray-500 hover:text-white transition"><i class="fa-solid fa-xmark text-xl"></i></button>
-            </div>
-            <div class="p-0 overflow-hidden flex-1 relative bg-[#050505]">
-                <pre class="w-full h-full p-4 overflow-auto text-xs font-mono language-json" style="margin:0;"><code id="response-code"></code></pre>
-            </div>
-            <div class="p-4 border-t border-[#222] bg-[#111] rounded-b-2xl flex justify-end">
-                <button onclick="tester.closeResponse()" class="bg-[#222] hover:bg-[#333] text-white px-6 py-2 rounded-lg font-bold text-sm transition">
-                    Back to Tester
-                </button>
-            </div>
-        </div>
-    </div>
-
-
+    <!-- AUTH OVERLAY -->
     <div id="login-overlay" class="fixed inset-0 z-[100] flex flex-col items-center justify-center p-4">
-        
-        <div id="step-github" class="max-w-md w-full bg-[#0a0a0a] border border-[#222] p-8 rounded-3xl shadow-2xl text-center fade-in">
-            <div class="w-20 h-20 bg-[#111] rounded-full flex items-center justify-center mx-auto mb-6 border border-[#222]">
-                <i class="fa-solid fa-book-journal-whills text-4xl text-[#FFFC00]"></i>
+        <div id="auth-card" class="max-w-md w-full bg-[#0a0a0a] border border-[#222] p-10 rounded-3xl shadow-2xl text-center fade-in">
+            <div class="w-24 h-24 bg-[#111] rounded-full flex items-center justify-center mx-auto mb-8 border border-[#222]">
+                <i class="fa-solid fa-key text-5xl text-[#FFFC00]"></i>
             </div>
-            <h1 class="text-3xl font-black mb-2">Orion API</h1>
-            <p class="text-gray-500 mb-8 text-sm">Restricted Documentation Access</p>
+            <h1 class="text-4xl font-black mb-2 uppercase tracking-tighter">Security Access</h1>
+            <p class="text-gray-500 mb-10 text-sm font-medium">Internal Documentation Protocol</p>
             
-            <button onclick="auth.loginGithub()" class="w-full bg-[#24292e] hover:bg-[#2f363d] text-white font-bold py-4 rounded-xl flex items-center justify-center gap-3 transition-all transform hover:scale-[1.02]">
-                <i class="fa-brands fa-github text-2xl"></i>
-                <span>Login with GitHub</span>
-            </button>
-            <p class="mt-4 text-xs text-gray-600">Authentication required via GitHub OAuth</p>
-        </div>
-
-        <div id="step-decoy" class="hidden w-full h-full flex flex-col items-center justify-center fade-in">
-            <div class="text-center">
-                <h1 class="text-9xl font-black text-[#222] select-none">404</h1>
-                <h2 class="text-2xl font-bold text-white mt-4 select-none">Page Not Found</h2>
-                <p class="text-gray-500 mt-2 select-none">The requested resource could not be located on this server.</p>
-                <div class="mt-8">
-                     <button onclick="location.href = location.href.split('?')[0]" class="px-6 py-2 bg-[#111] border border-[#222] rounded-lg text-sm text-gray-400 hover:text-white hover:border-white transition">Go Home</button>
-                </div>
+            <div class="space-y-4">
+                <input type="password" id="key-input" class="access-input" placeholder="••••" autocomplete="off" autofocus>
+                <p id="auth-error" class="text-red-500 text-xs font-bold opacity-0 transition-opacity uppercase tracking-widest">Unauthorized Access</p>
             </div>
         </div>
-
     </div>
 
+    <!-- SIDEBAR -->
     <aside class="w-full md:w-80 bg-[#0a0a0a] border-r border-[#222] flex flex-col h-full z-10">
         <div class="p-6 border-b border-[#222]">
             <h1 class="text-2xl font-black tracking-tight flex items-center gap-2">
@@ -311,524 +141,436 @@
             </h1>
             <div class="mt-4 relative">
                 <i class="fa-solid fa-search absolute left-3 top-3 text-gray-600 text-xs"></i>
-                <input type="text" id="search-input" placeholder="Search endpoints..." class="w-full bg-[#111] border border-[#222] rounded-lg py-2 pl-9 pr-4 text-sm text-white focus:outline-none focus:border-[#FFFC00] transition-colors placeholder-gray-600">
+                <input type="text" id="search-input" placeholder="Search Command Codes..." class="w-full bg-[#111] border border-[#222] rounded-lg py-2 pl-9 pr-4 text-sm text-white focus:outline-none focus:border-[#FFFC00] transition-colors placeholder-gray-600">
             </div>
         </div>
-        <nav id="sidebar-nav" class="flex-1 overflow-y-auto p-2 space-y-1">
-        </nav>
+        <nav id="sidebar-nav" class="flex-1 overflow-y-auto p-2 space-y-1"></nav>
         <div class="p-4 border-t border-[#222] text-center">
-            <p class="text-xs text-gray-600 font-mono">v1.0.2 &bull; <a href="#" onclick="auth.logout()" class="text-red-500 hover:text-red-400">Logout</a></p>
+            <p class="text-xs text-gray-600 font-mono">v1.5.0 &bull; <a href="#" onclick="auth.logout()" class="text-red-500 hover:text-red-400">Logout</a></p>
         </div>
     </aside>
 
+    <!-- MAIN CONTENT -->
     <main class="flex-1 overflow-y-auto bg-[#050505] relative scroll-smooth" id="main-content">
         <div class="max-w-4xl mx-auto p-8 md:p-12 space-y-16">
             
-            <section class="space-y-4 border-b border-[#222] pb-8">
-                <h2 class="text-4xl font-black text-white">Introduction</h2>
-                <p class="text-gray-400 leading-relaxed">
-                    Welcome to the Orion Game Server API. All endpoints are prefixed with <code class="bg-[#111] border border-[#222] px-1 py-0.5 rounded text-[#FFFC00] text-sm">/api/v1/command</code>.
-                    Authentication is handled via the <code class="text-blue-400">x-steam-id</code> header or session cookies depending on context.
+            <section id="introduction" class="space-y-4 border-b border-[#222] pb-8">
+                <h2 class="text-4xl font-black text-white uppercase tracking-tighter italic">Technical Specification</h2>
+                <p class="text-gray-400 leading-relaxed text-lg">
+                    This document defines the WebSocket command protocols for the Orion Game Server. Every action corresponds to a specific JSON packet sent to the server listener. Do not use underscores in the documentation titles.
                 </p>
+                <div class="bg-[#111] border border-[#222] p-5 rounded-2xl text-blue-300 text-sm font-mono flex items-center gap-4">
+                    <i class="fa-solid fa-terminal text-blue-500"></i>
+                    <div>
+                        <span class="block text-[10px] text-blue-500 uppercase font-black tracking-widest mb-1">Listener Address</span>
+                        ws://127.0.0.1:8000/gameserver
+                    </div>
+                </div>
             </section>
 
-            <div id="endpoints-container" class="space-y-16">
-            </div>
+            <div id="endpoints-container" class="space-y-24"></div>
 
-            <footer class="pt-20 pb-10 text-center text-gray-600 text-sm">
-                &copy; 2025 Orion Labs. All rights reserved.
+            <!-- APPENDIX SECTION -->
+            <section id="appendix" class="space-y-8 pt-12">
+                <div class="flex items-center gap-4">
+                    <h2 class="text-3xl font-black text-white uppercase italic tracking-tighter">Permission Registry</h2>
+                    <div class="h-px bg-[#222] flex-1"></div>
+                </div>
+                <div class="permission-grid" id="permission-registry"></div>
+            </section>
+
+            <footer class="pt-20 pb-10 text-center text-gray-600 text-sm font-medium">
+                &copy; 2026 Orion Labs &bull; Professional Server Integration Protocols
             </footer>
         </div>
     </main>
 
     <script>
-        // Removed hardcoded const API_BASE_URL
+        // Full Player Model for documentation responses
+        const fullPlayerInfo = {
+            "steamId": "7656119xxxxxxxxxx",
+            "PlayerName": "Specimen_Alpha",
+            "dinoType": "Tyrannosaurus",
+            "growth": 0.88,
+            "health": 100.0,
+            "hunger": 85.0,
+            "thirst": 90.0,
+            "stamina": 100.0,
+            "blood": 100.0,
+            "location": { "x": 1200.5, "y": 4050.0, "z": 100.0 },
+            "nutrients": { 
+                "CarbValue": 50.0, 
+                "ProteinValue": 70.0, 
+                "LipidValue": 30.0, 
+                "bMalnutrition": false 
+            },
+            "skinData": {
+                "bIsFemale": false,
+                "SkinVariation": 0.5,
+                "PatternIndex": 2,
+                "MaleDisplayColor": {"r": 1.0, "g": 1.0, "b": 1.0, "a": 1.0},
+                "MarkingsColor": {"r": 0.0, "g": 0.0, "b": 0.0, "a": 1.0},
+                "BodyColor": {"r": 0.5, "g": 0.1, "b": 0.1, "a": 1.0},
+                "FlankColor": {"r": 0.5, "g": 0.1, "b": 0.1, "a": 1.0},
+                "UnderbellyColor": {"r": 0.8, "g": 0.8, "b": 0.8, "a": 1.0},
+                "Detail1Color": {"r": 1.0, "g": 1.0, "b": 1.0, "a": 1.0},
+                "EyesColor": {"r": 1.0, "g": 0.0, "b": 0.0, "a": 1.0}
+            },
+            "mutations": [
+                {"slot": "MutationSlot1", "name": "Enhanced Senses"},
+                {"slot": "MutationSlot2", "name": "Thick Hide"}
+            ]
+        };
 
         const apiData = [
             {
-                category: "Player Management",
+                category: "Diagnostics",
                 items: [
-                    {
-                        title: "Retrieve Players List",
-                        method: "GET",
-                        route: "/players/list",
-                        desc: "Retrieves a list of all currently connected players.",
-                        response: {
-                            type: "player_list",
-                            count: 2,
-                            players: [
-                                { PlayerName: "DinoSlayer", SteamID: "765611980...", Location: "X: -1500, Y: 3000, Z: 500", IsDevOrAdmin: "Admin" },
-                                { PlayerName: "RaptorBlue", SteamID: "765611981...", Location: "X: 4500, Y: 100, Z: 0", IsDevOrAdmin: "None" }
-                            ]
-                        }
+                    { 
+                        title: "RETRIEVE PLAYERS LIST", 
+                        action: "RETRIEVE_PLAYERS_LIST", 
+                        method: "GET", 
+                        route: "/players", 
+                        desc: "Retrieves status and global coordinates for all active server connections.", 
+                        payload: { "action": "RETRIEVE_PLAYERS_LIST" },
+                        response: { 
+                            "type": "player_list", 
+                            "count": 2, 
+                            "players": [
+                                { "PlayerName": "Specimen_A", "SteamID": "7656119xxxxxxxx01", "Location": "X: 120, Y: -500, Z: 50", "IsDevOrAdmin": "Admin" },
+                                { "PlayerName": "Specimen_B", "SteamID": "7656119xxxxxxxx02", "Location": "X: 5000, Y: 1200, Z: 0", "IsDevOrAdmin": "None" }
+                            ] 
+                        } 
                     },
-                    {
-                        title: "Retrieve Player Info",
-                        method: "GET",
-                        route: "/player/:steamId",
-                        desc: "Get detailed vitals and stats for a specific player.",
-                        response: {
-                            steamId: "765611980...",
-                            PlayerName: "DinoSlayer",
-                            dinoType: "Tyrannosaurus",
-                            growth: 0.75,
-                            health: 85.5,
-                            location: { x: -1500, y: 3000, z: 500 },
-                            nest: { code: "A1B2", eggCount: 3 }
-                        }
+                    { 
+                        title: "RETRIEVE PLAYER INFO", 
+                        action: "RETRIEVE_PLAYER_INFO", 
+                        method: "GET", 
+                        route: "/player/:steamId", 
+                        desc: "Full state acquisition including vitals, nutrients, phenotypic skin data, and mutation slot contents.", 
+                        payload: { "action": "RETRIEVE_PLAYER_INFO", "steamId": "7656119xxxxxxxxxx" },
+                        response: fullPlayerInfo 
                     }
                 ]
             },
             {
-                category: "Dino Actions",
+                category: "Physiological Control",
                 items: [
-                    {
-                        title: "Slay Dino",
-                        method: "POST",
-                        route: "/slay/:steamId",
-                        desc: "Instantly kills the player's character.",
-                        response: { type: "SLAY_DINO_successful", status: "Success" }
+                    { 
+                        title: "HEAL DINO", 
+                        action: "HEAL_DINO", 
+                        method: "POST", 
+                        route: "/heal", 
+                        desc: "Atomic restoration of Health, Hunger, Thirst, Stamina, and Blood to maximum values.", 
+                        payload: { "action": "HEAL_DINO", "steamId": "7656119xxxxxxxxxx" }, 
+                        response: { "type": "dino_heal_successful", "dinoHeal": { "name": "Specimen_Alpha", "steamId": "7656119xxxxxxxxxx", "currentDino": "Tyrannosaurus", "status": "Success", "reason": "Dino Healed!" }, "playerInfo": fullPlayerInfo } 
                     },
-                    {
-                        title: "Heal Dino",
-                        method: "POST",
-                        route: "/heal/:steamId",
-                        desc: "Restores health, hunger, thirst, and stamina to 100%.",
-                        response: { type: "HEAL_DINO_successful", status: "Success" }
+                    { 
+                        title: "GROW DINO", 
+                        action: "GROW_DINO", 
+                        method: "POST", 
+                        route: "/grow", 
+                        desc: "Forced development set to a decimal percentage (0.0 to 100.0).", 
+                        payload: { "action": "GROW_DINO", "steamId": "7656119xxxxxxxxxx", "percent": 100.0 }, 
+                        response: { "type": "dino_grow_successful", "dinoGrow": { "status": "Success", "reason": "Dino Grown!" }, "playerInfo": fullPlayerInfo } 
                     },
-                    {
-                        title: "Grow Dino",
-                        method: "POST",
-                        route: "/grow/:steamId/:percent",
-                        desc: "Sets growth percentage (0.0 to 1.0).",
-                        response: { type: "GROW_DINO_successful", status: "Success", reason: "Set to 1.0" }
+                    { 
+                        title: "SLAY DINO", 
+                        action: "SLAY_DINO", 
+                        method: "DELETE", 
+                        route: "/slay", 
+                        desc: "Neutralizes target actor using standard damage logic.", 
+                        payload: { "action": "SLAY_DINO", "steamId": "7656119xxxxxxxxxx" }, 
+                        response: { "type": "dino_slay_successful", "dinoSlay": { "status": "Success", "reason": "Dino Slayed!" }, "playerInfo": fullPlayerInfo } 
                     },
-                    {
-                        title: "Set Custom Dino",
-                        method: "POST",
-                        route: "/set-custom-dino/:steamId/:class",
-                        desc: "Forces a class change (e.g. BP_Rex_C).",
-                        response: { type: "SET_CUSTOM_DINO_successful", status: "Success" }
+                    { 
+                        title: "ADMIN SLAY DINO", 
+                        action: "ADMIN_SLAY_DINO", 
+                        method: "DELETE", 
+                        route: "/admin/slay", 
+                        desc: "Immediate actor destruction, bypassing invincibility or combat-lock states.", 
+                        payload: { "action": "ADMIN_SLAY_DINO", "steamId": "7656119xxxxxxxxxx" }, 
+                        response: { "type": "dino_slay_successful", "dinoSlay": { "status": "Success", "reason": "Dino Slayed!" }, "playerInfo": fullPlayerInfo } 
+                    },
+                    { 
+                        title: "SET SKIN", 
+                        action: "SET_SKIN", 
+                        method: "PUT", 
+                        route: "/skin", 
+                        desc: "Modifies gender, variation index, pattern index, and RGB color vectors for the specimen.", 
+                        payload: { 
+                            "action": "SET_SKIN", 
+                            "steamId": "7656119xxxxxxxxxx", 
+                            "skinData": { 
+                                "bIsFemale": true, 
+                                "SkinVariation": 0.5, 
+                                "PatternIndex": 3, 
+                                "MaleDisplayColor": {"r": 1.0, "g": 0.0, "b": 0.0, "a": 1.0}, 
+                                "MarkingsColor": {"r": 1.0, "g": 1.0, "b": 1.0, "a": 1.0}, 
+                                "BodyColor": {"r": 0.2, "g": 0.1, "b": 0.1, "a": 1.0}, 
+                                "FlankColor": {"r": 0.2, "g": 0.1, "b": 0.1, "a": 1.0}, 
+                                "UnderbellyColor": {"r": 0.9, "g": 0.9, "b": 0.9, "a": 1.0}, 
+                                "Detail1Color": {"r": 1.0, "g": 1.0, "b": 1.0, "a": 1.0}, 
+                                "EyesColor": {"r": 1.0, "g": 1.0, "b": 0.0, "a": 1.0} 
+                            } 
+                        }, 
+                        response: { "type": "set_skin_successful", "setSkin": { "status": "Success", "reason": "Skin successfully applied!" }, "playerInfo": fullPlayerInfo } 
+                    },
+                    { 
+                        title: "SET PLAYER INFO", 
+                        action: "SET_PLAYER_INFO", 
+                        method: "PUT", 
+                        route: "/update", 
+                        desc: "Bulk specimen update. Targets Health, Hunger, Thirst, Stamina, Blood, Growth, Nutrients, and Location.", 
+                        payload: { 
+                            "action": "SET_PLAYER_INFO", 
+                            "steamId": "7656119xxxxxxxxxx", 
+                            "health": 100.0, 
+                            "hunger": 100.0,
+                            "thirst": 100.0,
+                            "stamina": 100.0,
+                            "blood": 100.0,
+                            "growth": 1.0, 
+                            "location": { "x": 1500.0, "y": -200.0, "z": 100.0 }, 
+                            "nutrients": { "CarbValue": 10000.0, "ProteinValue": 10000.0, "LipidValue": 10000.0 } 
+                        }, 
+                        response: { "type": "set_player_info_successful", "setPlayerInfo": { "status": "Success", "reason": "Player info successfully updated!" }, "playerInfo": fullPlayerInfo } 
                     }
                 ]
             },
             {
-                category: "Stats",
+                category: "Archiving",
                 items: [
-                    {
-                        title: "Set Vitals",
-                        method: "POST",
-                        route: "/set-[stat]/:steamId/:value",
-                        desc: "Generic endpoint for set-health, set-hunger, set-thirst, set-stamina.",
-                        response: { type: "SET_HEALTH_successful", status: "Success" }
+                    { 
+                        title: "RETRIEVE PLAYER GARAGE DATA", 
+                        action: "RETRIEVE_PLAYER_GARAGE_DATA", 
+                        method: "GET", 
+                        route: "/garage", 
+                        desc: "Retrieves the array of stored specimens. The array index is required to use the SPAWN_DINO_FROM_PLAYER_DATA command.", 
+                        payload: { "action": "RETRIEVE_PLAYER_GARAGE_DATA", "steamId": "7656119xxxxxxxxxx" }, 
+                        response: { 
+                            "StoredPlayerData": [ 
+                                { "Class": "Tyrannosaurus", "SteamId": "7656119xxxxxxxxxx", "Growth": 1.0, "Health": 100.0, "Hunger": 100, "Thirst": 100, "Stamina": 100, "Blood": 100.0 }, 
+                                { "Class": "Pteranodon", "SteamId": "7656119xxxxxxxxxx", "Growth": 0.5, "Health": 80.0, "Hunger": 70, "Thirst": 80, "Stamina": 100, "Blood": 100.0 } 
+                            ] 
+                        } 
+                    },
+                    { 
+                        title: "GARAGE STORE", 
+                        action: "GARAGE_STORE", 
+                        method: "POST", 
+                        route: "/garage/store", 
+                        desc: "Archives active specimen to save file and removes actor from simulation.", 
+                        payload: { "action": "GARAGE_STORE", "steamId": "7656119xxxxxxxxxx" }, 
+                        response: { "type": "garage_store_successful", "garage_store": { "status": "Success", "reason": "Dino stored to garage!" }, "playerInfo": fullPlayerInfo } 
+                    },
+                    { 
+                        title: "SPAWN DINO FROM PLAYER DATA", 
+                        action: "SPAWN_DINO_FROM_PLAYER_DATA", 
+                        method: "POST", 
+                        route: "/garage/deploy", 
+                        desc: "Deploys archived specimen by array index. Automatically archives active character.", 
+                        payload: { "action": "SPAWN_DINO_FROM_PLAYER_DATA", "steamId": "7656119xxxxxxxxxx", "dinoIdx": 0 }, 
+                        response: { "type": "garage_retrieve_successful", "garage_retrieve": { "status": "Success", "reason": "Dino retrieved from garage!" }, "playerInfo": fullPlayerInfo } 
+                    },
+                    { 
+                        title: "SWAP DINO", 
+                        action: "SWAP_DINO", 
+                        method: "POST", 
+                        route: "/swap", 
+                        desc: "Forced transformation of active character to specified class string.", 
+                        payload: { "action": "SWAP_DINO", "steamId": "7656119xxxxxxxxxx", "dinoName": "BP_Tyrannosaurus_C" }, 
+                        response: { "type": "swap_dino_successful", "swapDino": { "status": "Success", "reason": "Dinosaur successfully swapped!" }, "playerInfo": fullPlayerInfo } 
                     }
                 ]
             },
             {
-                category: "Teleportation",
+                category: "Permissions",
                 items: [
-                    {
-                        title: "Teleport to Player",
-                        method: "POST",
-                        route: "/teleport-to-player/:steamId/:targetId",
-                        desc: "Teleports source player to target player.",
-                        response: { type: "TELEPORT_TO_PLAYER_successful", status: "Success" }
+                    { 
+                        title: "RETRIEVE ROLES", 
+                        action: "RETRIEVE_ROLES", 
+                        method: "GET", 
+                        route: "/roles", 
+                        desc: "Retrieves the complete list of available server roles.", 
+                        payload: { "action": "RETRIEVE_ROLES" }, 
+                        response: { "type": "roles_list", "roles": [ { "roleName": "Sentinel", "priority": 75, "permissions": [0, 2, 10, 24] } ] } 
                     },
-                    {
-                        title: "Teleport to Coords",
-                        method: "POST",
-                        route: "/teleport-to-coords/:steamId/:x/:y/:z",
-                        desc: "Teleports player to specific coordinates.",
-                        response: { type: "TELEPORT_TO_COORDS_successful", status: "Success" }
+                    { 
+                        title: "CREATE ROLE", 
+                        action: "CREATE_ROLE", 
+                        method: "POST", 
+                        route: "/roles/create", 
+                        desc: "Defines new security role with priority and permission ID list.", 
+                        payload: { "action": "CREATE_ROLE", "roleName": "Sentinel", "priority": 75, "permissions": [0, 2, 10, 24] }, 
+                        response: { "type": "create_role_success", "roleName": "Sentinel" } 
+                    },
+                    { 
+                        title: "UPDATE ROLE", 
+                        action: "UPDATE_ROLE", 
+                        method: "PUT", 
+                        route: "/roles/edit", 
+                        desc: "Modifies role attributes. Validated against executor priority level.", 
+                        payload: { "action": "UPDATE_ROLE", "roleName": "Sentinel", "newPriority": 80, "newPermissions": [0, 1, 2, 10, 11, 24], "executorSteamId": "7656119xxxxxxxxxx" }, 
+                        response: { "type": "update_role_success", "roleName": "Sentinel" } 
+                    },
+                    { 
+                        title: "DELETE ROLE", 
+                        action: "DELETE_ROLE", 
+                        method: "DELETE", 
+                        route: "/roles/delete", 
+                        desc: "Removes role definition. Validated against executor priority.", 
+                        payload: { "action": "DELETE_ROLE", "roleName": "Sentinel", "executorSteamId": "7656119xxxxxxxxxx" }, 
+                        response: { "type": "delete_role_success", "roleName": "Sentinel" } 
+                    },
+                    { 
+                        title: "ASSIGN ROLE TO USER", 
+                        action: "ASSIGN_ROLE_TO_USER", 
+                        method: "POST", 
+                        route: "/roles/grant", 
+                        desc: "Persistent attachment of role to target SteamID.", 
+                        payload: { "action": "ASSIGN_ROLE_TO_USER", "steamId": "7656119xxxxxxxxxx", "roleName": "Sentinel" }, 
+                        response: { "type": "assign_role_success", "steamId": "7656119xxxxxxxxxx", "role": "Sentinel" } 
+                    },
+                    { 
+                        title: "REMOVE ROLE FROM USER", 
+                        action: "REMOVE_ROLE_FROM_USER", 
+                        method: "DELETE", 
+                        route: "/roles/revoke", 
+                        desc: "Revokes role from target SteamID and updates assignment database.", 
+                        payload: { "action": "REMOVE_ROLE_FROM_USER", "steamId": "7656119xxxxxxxxxx", "roleName": "Sentinel" }, 
+                        response: { "type": "remove_role_success", "steamId": "7656119xxxxxxxxxx", "role": "Sentinel" } 
+                    },
+                    { 
+                        title: "RETRIEVE USER ROLES", 
+                        action: "RETRIEVE_USER_ROLES", 
+                        method: "GET", 
+                        route: "/user/roles", 
+                        desc: "Acquires all roles currently linked to the target SteamID.", 
+                        payload: { "action": "RETRIEVE_USER_ROLES", "steamId": "7656119xxxxxxxxxx" }, 
+                        response: { "type": "user_roles_list", "steamId": "7656119xxxxxxxxxx", "roles": [ { "roleName": "Guardian", "priority": 50 }, { "roleName": "Sentinel", "priority": 80 } ] } 
+                    },
+                    { 
+                        title: "CHECK USER PERMISSION", 
+                        action: "CHECK_USER_PERMISSION", 
+                        method: "GET", 
+                        route: "/perms/check", 
+                        desc: "Verifies if the SteamID holds a specific permission ID via any assigned role.", 
+                        payload: { "action": "CHECK_USER_PERMISSION", "steamId": "7656119xxxxxxxxxx", "permission": 10 }, 
+                        response: { "type": "permission_check_result", "steamId": "7656119xxxxxxxxxx", "permission": 10, "hasPermission": true } 
                     }
                 ]
             },
             {
-                category: "Communication",
+                category: "Console Authority",
                 items: [
-                    {
-                        title: "Send Message",
-                        method: "POST",
-                        route: "/message/send",
-                        desc: "Sends a chat message or announcement.",
-                        payload: {
-                            messageType: "Chat",
-                            text: "Server restart in 5m",
-                            chatType: "Global",
-                            senderName: "Admin"
-                        },
-                        response: { type: "SEND_MESSAGE_successful", status: "Sent" }
+                    { 
+                        title: "CONSOLE CREATE ROLE", 
+                        action: "CONSOLE_CREATE_ROLE", 
+                        method: "POST", 
+                        route: "/console/create", 
+                        desc: "Administrative role creation, bypassing priority logic.", 
+                        payload: { "action": "CONSOLE_CREATE_ROLE", "roleName": "Owner", "priority": 100, "permissions": [0, 1, 2] }, 
+                        response: { "type": "console_create_success", "roleName": "Owner" } 
                     },
-                    {
-                        title: "Send Notification",
-                        method: "POST",
-                        route: "/notification/send",
-                        desc: "Sends a UI popup notification to a specific player.",
-                        payload: {
-                            text: "You have been healed!",
-                            targetId: "765611980..."
-                        },
-                        response: { type: "SEND_NOTIFICATION_successful", status: "Sent" }
+                    { 
+                        title: "CONSOLE ASSIGN ROLE", 
+                        action: "CONSOLE_ASSIGN_ROLE", 
+                        method: "POST", 
+                        route: "/console/assign", 
+                        desc: "Administrative role grant, bypassing priority logic.", 
+                        payload: { "action": "CONSOLE_ASSIGN_ROLE", "steamId": "7656119xxxxxxxxxx", "roleName": "Owner" }, 
+                        response: { "type": "console_assign_success", "steamId": "7656119xxxxxxxxxx", "role": "Owner" } 
+                    },
+                    { 
+                        title: "CONSOLE UPDATE ROLE", 
+                        action: "CONSOLE_UPDATE_ROLE", 
+                        method: "PUT", 
+                        route: "/console/role", 
+                        desc: "Bypass override of role definitions, including renaming and priority resets.", 
+                        payload: { "action": "CONSOLE_UPDATE_ROLE", "currentName": "Sentinel", "newName": "Protector", "newPriority": 90, "newPermissions": [0, 1, 2, 10, 11, 24] }, 
+                        response: { "type": "console_update_success", "roleName": "Protector" } 
+                    },
+                    { 
+                        title: "CONSOLE DELETE ROLE", 
+                        action: "CONSOLE_DELETE_ROLE", 
+                        method: "DELETE", 
+                        route: "/console/delete", 
+                        desc: "Administrative removal of role definition, bypassing priority checks.", 
+                        payload: { "action": "CONSOLE_DELETE_ROLE", "roleName": "Sentinel" }, 
+                        response: { "type": "console_delete_success", "roleName": "Sentinel" } 
                     }
                 ]
             },
             {
-                category: "Configuration",
+                category: "Broadcasting",
                 items: [
-                    {
-                        title: "Update Config",
-                        method: "POST",
-                        route: "/config/update",
-                        desc: "Updates server settings dynamically.",
-                        payload: { ConfigServerName: "Orion Server", ConfigMaxPlayers: 100 },
-                        response: { type: "UPDATE_CONFIG_successful", status: "Updated" }
+                    { 
+                        title: "SEND GLOBAL ANNOUNCEMENT", 
+                        action: "SEND_GLOBAL_ANNOUNCEMENT", 
+                        method: "POST", 
+                        route: "/broadcast", 
+                        desc: "Triggers on-screen UI announcement for all active clients.", 
+                        payload: { "action": "SEND_GLOBAL_ANNOUNCEMENT", "message": "Server Shutdown in 10m", "announcer": "System", "duration": 10.0 }, 
+                        response: { "type": "global_announcement_sent", "message": "Server Shutdown in 10m" } 
                     },
-                    {
-                        title: "Get Config",
-                        method: "POST",
-                        route: "/config/get",
-                        desc: "Retrieves current server configuration.",
-                        response: { type: "config_data", gameSession: [], gameState: [] }
+                    { 
+                        title: "SEND DIRECT ANNOUNCEMENT", 
+                        action: "SEND_DIRECT_ANNOUNCEMENT", 
+                        method: "POST", 
+                        route: "/signal", 
+                        desc: "Private UI notification sent to a specific target specimen.", 
+                        payload: { "action": "SEND_DIRECT_ANNOUNCEMENT", "steamId": "7656119xxxxxxxxxx", "message": "Admin assistance requested.", "announcer": "Staff", "announcerId": "1", "isDirectMessage": true }, 
+                        response: { "type": "announcement_sent", "directAnnouncement": { "status": "Success", "reason": "Direct announcement sent." }, "payload": { "action": "SEND_DIRECT_ANNOUNCEMENT", "steamId": "7656119xxxxxxxxxx", "message": "Admin assistance requested.", "announcer": "Staff", "announcerId": "1", "isDirectMessage": true } } 
                     }
                 ]
             }
         ];
 
+        const permissionsList = [
+            "CanHeal", "CanHealOthers", "CanUnstuck", "CanUnstuckOthers", "CanSlay", 
+            "CanSlayOthers", "CanSpawnAI", "CanWipeAI", "CanToggleElder", "CanToggleElderOthers",
+            "CanPark", "CanParkOthers", "CanRetrieve", "CanRetrieveOthers", "CanTeleport",
+            "CanTeleportOthers", "CanSwap", "CanSwapOthers", "CanGrow", "CanGrowOthers",
+            "CanSetHealth", "CanSetHealthOthers", "CanSetHunger", "CanSetHungerOthers",
+            "CanSetThirst", "CanSetThirstOthers", "CanSetStamina", "CanSetStaminaOthers",
+            "CanSetBlood", "CanSetBloodOthers", "CanSetScale", "CanSetScaleOthers",
+            "CanSetWeight", "CanSetWeightOthers"
+        ];
+
         const auth = {
-            clientId: 'Ov23li9jHMqW9mz8Q8LX',
-            buffer: "",
-            timer: null,
-            
+            input: null,
+            error: null,
+            overlay: null,
             init: () => {
-                const overlay = document.getElementById('login-overlay');
-                const stepGithub = document.getElementById('step-github');
-                const stepDecoy = document.getElementById('step-decoy');
-                const params = new URLSearchParams(window.location.search);
+                auth.input = document.getElementById('key-input');
+                auth.error = document.getElementById('auth-error');
+                auth.overlay = document.getElementById('login-overlay');
 
-                if (localStorage.getItem('orion_docs_status') === 'unlocked') {
-                    overlay.classList.add('hidden');
-                    document.getElementById('tester-trigger').classList.remove('hidden');
-                    return;
+                if(localStorage.getItem('orion_auth_key') === 'valid') {
+                    auth.overlay.classList.add('hidden');
                 }
 
-                const code = params.get('code');
-                if (code) {
-                    window.history.replaceState({}, document.title, window.location.pathname);
-                    stepGithub.classList.add('hidden');
-                    stepDecoy.classList.remove('hidden');
-                    auth.startSecretListener();
-                }
-            },
-            
-            loginGithub: () => {
-                const redirectUri = window.location.href.split('?')[0]; 
-                window.location.href = `https://github.com/login/oauth/authorize?client_id=${auth.clientId}&redirect_uri=${redirectUri}&scope=read:user`;
-            },
-
-            startSecretListener: () => {
-                auth.timer = setTimeout(auth.checkTime, 10000);
-                document.addEventListener('keydown', auth.handleKey);
-            },
-
-            checkTime: () => {
-                if (auth.buffer.toUpperCase().startsWith("RAT")) {
-                    auth.timer = setTimeout(() => {
-                        location.reload(); 
-                    }, 10000);
-                } else {
-                    location.reload();
-                }
-            },
-
-            handleKey: (e) => {
-                if (e.key === 'Enter') {
-                    if (auth.buffer.toUpperCase() === 'RATS') {
-                        clearTimeout(auth.timer); 
-                        localStorage.setItem('orion_docs_status', 'unlocked');
-                        const overlay = document.getElementById('login-overlay');
-                        overlay.style.opacity = '0';
-                        setTimeout(() => overlay.classList.add('hidden'), 500);
-                        document.getElementById('tester-trigger').classList.remove('hidden');
-                    } else {
-                        location.reload();
+                auth.input.addEventListener('input', (e) => {
+                    auth.error.style.opacity = '0';
+                    if(e.target.value.toUpperCase() === 'RATS') {
+                        localStorage.setItem('orion_auth_key', 'valid');
+                        auth.overlay.style.opacity = '0';
+                        auth.overlay.style.pointerEvents = 'none';
+                        setTimeout(() => auth.overlay.classList.add('hidden'), 400);
                     }
-                } else if (e.key.length === 1) {
-                    auth.buffer += e.key;
-                }
-            },
+                });
 
+                auth.input.addEventListener('keypress', (e) => {
+                    if(e.key === 'Enter' && auth.input.value.toUpperCase() !== 'RATS') {
+                        auth.error.style.opacity = '1';
+                        auth.input.value = '';
+                    }
+                });
+            },
             logout: () => {
-                localStorage.removeItem('orion_docs_status');
+                localStorage.removeItem('orion_auth_key');
                 location.reload();
-            }
-        };
-
-        // --- TESTER LOGIC ---
-        const tester = {
-            currentEndpoint: null,
-            
-            init: () => {
-                // Initialize Custom Select Dropdown
-                const list = document.getElementById('custom-select-list');
-                const triggerVal = document.getElementById('custom-select-value');
-                const selectContainer = document.getElementById('custom-select');
-                let idx = 0;
-
-                // Close on outside click
-                document.addEventListener('click', (e) => {
-                    if (!selectContainer.contains(e.target)) selectContainer.classList.remove('open');
-                });
-
-                apiData.forEach(cat => {
-                    // Optgroup Header
-                    const groupHeader = document.createElement('div');
-                    groupHeader.className = 'custom-optgroup-label';
-                    groupHeader.textContent = cat.category;
-                    list.appendChild(groupHeader);
-
-                    cat.items.forEach(item => {
-                        const opt = document.createElement('div');
-                        opt.className = 'custom-option';
-                        opt.innerHTML = `
-                            <span class="method-badge ${item.method === 'GET' ? 'method-GET' : 'method-POST'}">${item.method}</span>
-                            <span class="text-sm font-medium text-gray-300">${item.title}</span>
-                        `;
-                        
-                        opt.onclick = () => {
-                            triggerVal.innerHTML = `
-                                <span class="method-badge ${item.method === 'GET' ? 'method-GET' : 'method-POST'} mr-2">${item.method}</span>
-                                ${item.title}
-                            `;
-                            triggerVal.className = "text-white flex items-center";
-                            selectContainer.classList.remove('open');
-                            tester.selectEndpoint(item._flatIndex);
-                        };
-
-                        list.appendChild(opt);
-                        item._flatIndex = idx;
-                        idx++;
-                    });
-                });
-            },
-
-            open: () => {
-                document.getElementById('tester-modal').classList.remove('hidden');
-                // Generate random default steam ID if empty
-                if(!document.getElementById('tester-header-steamid').value) {
-                    document.getElementById('tester-header-steamid').value = "7656119" + Math.floor(Math.random() * 10000000000);
-                }
-                
-                // Initialize base URL from local storage if available
-                const storedBaseUrl = localStorage.getItem('orion_tester_url');
-                if (storedBaseUrl) {
-                    document.getElementById('tester-base-url').value = storedBaseUrl;
-                }
-            },
-
-            close: () => {
-                document.getElementById('tester-modal').classList.add('hidden');
-            },
-
-            getFlatItem: (index) => {
-                let found = null;
-                apiData.forEach(cat => {
-                    cat.items.forEach(item => {
-                        if (item._flatIndex == index) found = item;
-                    });
-                });
-                return found;
-            },
-
-            selectEndpoint: (index) => {
-                const container = document.getElementById('tester-params-container');
-                const grid = document.getElementById('tester-inputs-grid');
-                const info = document.getElementById('tester-info');
-                const btnSend = document.getElementById('btn-send-req');
-                const btnGen = document.getElementById('btn-gen-data');
-
-                const item = tester.getFlatItem(index);
-                if (!item) return;
-
-                tester.currentEndpoint = item;
-                
-                info.classList.add('hidden');
-                container.classList.remove('hidden');
-                btnSend.disabled = false;
-                btnGen.classList.remove('hidden');
-                grid.innerHTML = '';
-
-                // Extract URL Params (:param)
-                const urlParams = item.route.match(/:[a-zA-Z]+/g) || [];
-                urlParams.forEach(p => {
-                    const name = p.substring(1);
-                    tester.createInput(grid, name, 'URL Parameter');
-                });
-
-                // Body Params
-                if (item.payload) {
-                    Object.keys(item.payload).forEach(key => {
-                        tester.createInput(grid, key, 'Body Parameter');
-                    });
-                } else if (urlParams.length === 0) {
-                     grid.innerHTML = '<div class="col-span-full text-center text-gray-600 text-sm italic py-2">No parameters required.</div>';
-                }
-            },
-
-            createInput: (container, name, type) => {
-                const div = document.createElement('div');
-                div.className = 'input-group';
-                div.innerHTML = `
-                    <label>${name} <span class="text-[10px] bg-[#222] px-1 rounded ml-1 text-gray-500">${type}</span></label>
-                    <input type="text" class="tester-input" data-key="${name}" placeholder="...">
-                `;
-                container.appendChild(div);
-            },
-
-            generateData: () => {
-                const inputs = document.querySelectorAll('.tester-input');
-                inputs.forEach(input => {
-                    if(input.id === 'tester-header-steamid' || input.id === 'tester-base-url') return; // Don't regen auth header or url
-
-                    const k = input.getAttribute('data-key').toLowerCase();
-                    let val = "TestValue";
-                    
-                    if (k.includes('steamid') || k.includes('id')) val = "7656119" + Math.floor(Math.random() * 10000000000);
-                    else if (k.includes('amount') || k.includes('count') || k.includes('value')) val = Math.floor(Math.random() * 100);
-                    else if (k.includes('percent')) val = "1.0";
-                    else if (k.includes('coord') || k === 'x' || k === 'y' || k === 'z') val = Math.floor(Math.random() * 10000);
-                    else if (k.includes('class')) val = "BP_Rex_C";
-                    else if (k.includes('name')) val = "OrionTester";
-                    
-                    input.value = val;
-                });
-            },
-
-            send: async () => {
-                const item = tester.currentEndpoint;
-                if (!item) return;
-
-                const headerSteamId = document.getElementById('tester-header-steamid').value.trim();
-                const baseUrl = document.getElementById('tester-base-url').value.trim().replace(/\/$/, ''); // Trim trailing slash
-
-                if(!headerSteamId) {
-                    alert("Simulated Steam ID (Header) is required for server authentication.");
-                    return;
-                }
-                
-                if(!baseUrl) {
-                    alert("Please enter a valid API Base URL.");
-                    return;
-                }
-                
-                // Save base URL preference
-                localStorage.setItem('orion_tester_url', baseUrl);
-
-                // Build Route
-                let finalPath = '/api/v1/command' + item.route;
-                const body = {};
-                const inputs = document.querySelectorAll('.tester-input');
-                
-                inputs.forEach(input => {
-                    if(input.id === 'tester-header-steamid' || input.id === 'tester-base-url') return;
-
-                    const key = input.getAttribute('data-key');
-                    const val = input.value.trim();
-                    
-                    if (finalPath.includes(`:${key}`)) {
-                        finalPath = finalPath.replace(`:${key}`, val);
-                    } else {
-                        // Body param logic
-                        if (val === 'true') body[key] = true;
-                        else if (val === 'false') body[key] = false;
-                        else if (!isNaN(val) && val !== '') body[key] = Number(val);
-                        else body[key] = val;
-                    }
-                });
-
-                // UI Loading State
-                const btn = document.getElementById('btn-send-req');
-                const icon = btn.querySelector('i');
-                const origIcon = icon.className;
-                
-                btn.disabled = true;
-                icon.className = "fa-solid fa-circle-notch fa-spin";
-
-                const fullUrl = baseUrl + finalPath;
-
-                try {
-                    const options = {
-                        method: item.method,
-                        headers: {
-                            'Content-Type': 'application/json',
-                            'x-steam-id': headerSteamId
-                        }
-                    };
-
-                    if (item.method !== 'GET') {
-                        options.body = JSON.stringify(body);
-                    }
-
-                    const res = await fetch(fullUrl, options);
-                    
-                    let data;
-                    const text = await res.text();
-                    try {
-                        data = JSON.parse(text);
-                    } catch {
-                        data = { raw: text };
-                    }
-
-                    tester.showResponse(res.ok, res.status, data);
-
-                } catch (e) {
-                    // Detect Mixed Content / CORS Errors generally result in TypeError with no status
-                    let errorDetails = e.message;
-                    let hint = "Ensure server is running at " + baseUrl;
-
-                    if (window.location.protocol === 'https:' && baseUrl.startsWith('http:')) {
-                        errorDetails = "Mixed Content Error (Blocked by Browser)";
-                        hint = "You are trying to access a non-secure (HTTP) API from a secure (HTTPS) site. <br>Browsers block this for security. <br><b>Solution:</b> Use localhost for both, or enable SSL on your API.";
-                    } else if (e.name === 'TypeError' && e.message === 'Failed to fetch') {
-                        errorDetails = "CORS Policy Block or Network Error";
-                        hint = "The server at " + baseUrl + " did not accept the request.<br>1. Check if the server is running.<br>2. Ensure the server sends 'Access-Control-Allow-Origin: *' headers.<br>3. Check if your browser is blocking local requests.";
-                    }
-
-                    tester.showResponse(false, 0, { 
-                        error: "Request Failed", 
-                        details: errorDetails,
-                        hint: hint
-                    });
-                } finally {
-                    btn.disabled = false;
-                    icon.className = origIcon;
-                }
-            },
-
-            showResponse: (success, status, data) => {
-                const modal = document.getElementById('response-modal');
-                const header = document.getElementById('response-header');
-                const title = document.getElementById('response-title');
-                const code = document.getElementById('response-code');
-
-                modal.classList.remove('hidden');
-                
-                // Color Logic
-                if (success) {
-                    header.className = "p-4 border-b border-[#222] flex justify-between items-center rounded-t-2xl bg-green-900/20 border-green-500/30";
-                    title.className = "font-bold text-lg flex items-center gap-2 text-green-400";
-                    title.innerHTML = `<i class="fa-solid fa-check-circle"></i> Success (${status})`;
-                } else {
-                    header.className = "p-4 border-b border-[#222] flex justify-between items-center rounded-t-2xl bg-red-900/20 border-red-500/30";
-                    title.className = "font-bold text-lg flex items-center gap-2 text-red-400";
-                    title.innerHTML = `<i class="fa-solid fa-triangle-exclamation"></i> Error (${status})`;
-                }
-
-                code.innerHTML = JSON.stringify(data, null, 2); // Use innerHTML to allow basic tags in hints
-                Prism.highlightElement(code);
-            },
-
-            closeResponse: () => {
-                document.getElementById('response-modal').classList.add('hidden');
             }
         };
 
@@ -836,44 +578,50 @@
             init: () => {
                 const nav = document.getElementById('sidebar-nav');
                 const container = document.getElementById('endpoints-container');
-                
-                let navHtml = '';
-                let mainHtml = '';
+                const registry = document.getElementById('permission-registry');
 
-                apiData.forEach((cat, catIndex) => {
-                    navHtml += `<div class="px-3 pt-5 pb-2 text-xs font-bold text-gray-500 uppercase tracking-wider">${cat.category}</div>`;
-                    
-                    cat.items.forEach((item, itemIndex) => {
-                        const id = `ep-${catIndex}-${itemIndex}`;
-                        
-                        navHtml += `
-                            <a href="#${id}" class="sidebar-link block px-3 py-2 text-sm text-gray-400 rounded-r-lg">
-                                <span class="mr-2 text-[10px] uppercase font-bold ${item.method === 'GET' ? 'text-blue-400' : 'text-green-400'}">${item.method}</span>
-                                ${item.title}
+                apiData.forEach((cat, cIdx) => {
+                    nav.innerHTML += `<div class="px-4 pt-6 pb-2 text-[10px] font-black text-gray-600 uppercase tracking-[0.2em]">${cat.category}</div>`;
+                    cat.items.forEach((item, iIdx) => {
+                        const id = `cmd-${cIdx}-${iIdx}`;
+                        nav.innerHTML += `
+                            <a href="#${id}" class="sidebar-link flex items-center px-4 py-2 text-[11px] font-bold text-gray-500 rounded-r-lg group">
+                                <span class="method-badge text-[8px] px-1 py-0.5 mr-2 opacity-50 group-hover:opacity-100 transition-opacity method-${item.method}">${item.method}</span>
+                                <span class="truncate group-hover:text-white transition-colors">${item.title}</span>
                             </a>`;
-
-                        mainHtml += `
-                            <section id="${id}" class="scroll-mt-24 endpoint-card">
-                                <div class="flex items-start justify-between mb-4">
+                        
+                        container.innerHTML += `
+                            <section id="${id}" class="scroll-mt-24 space-y-8 fade-in group">
+                                <div class="flex flex-col md:flex-row md:items-center justify-between gap-4 border-b border-white/5 pb-6">
                                     <div>
-                                        <h3 class="text-2xl font-bold text-white mb-2">${item.title}</h3>
-                                        <div class="flex items-center gap-3">
-                                            <span class="method-badge ${item.method === 'GET' ? 'method-GET' : 'method-POST'}">${item.method}</span>
-                                            <code class="text-sm text-gray-400 font-mono bg-[#111] px-2 py-1 rounded border border-[#222]">${item.route}</code>
+                                        <div class="flex items-center gap-3 mb-2">
+                                            <span class="method-badge method-${item.method}">${item.method}</span>
+                                            <code class="text-xs text-gray-600 font-mono tracking-tighter">${item.route}</code>
                                         </div>
+                                        <h3 class="text-3xl font-black text-white tracking-tighter italic group-hover:text-[#FFFC00] transition-colors">${item.title}</h3>
+                                    </div>
+                                    <div class="bg-[#111] px-4 py-2 rounded-xl border border-white/5">
+                                        <span class="text-[9px] font-black text-gray-600 uppercase block mb-1">JSON Action Code</span>
+                                        <span class="text-xs font-mono text-[#FFFC00] font-bold">"${item.action}"</span>
                                     </div>
                                 </div>
-                                <p class="text-gray-400 mb-6 text-sm leading-relaxed border-l-2 border-[#333] pl-4">${item.desc}</p>
-                                
-                                <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
-                                    ${item.payload ? `
-                                    <div>
-                                        <p class="text-xs font-bold text-gray-500 uppercase mb-2 ml-1">Payload Body</p>
+
+                                <p class="text-gray-400 text-sm leading-relaxed max-w-3xl border-l-2 border-[#FFFC00]/30 pl-8 italic">${item.desc}</p>
+
+                                <div class="grid grid-cols-1 gap-12 mt-10">
+                                    <div class="space-y-4">
+                                        <div class="flex items-center gap-3">
+                                            <div class="w-2 h-2 rounded-full bg-blue-500 shadow-[0_0_10px_rgba(59,130,246,0.5)]"></div>
+                                            <p class="text-xs font-black text-gray-500 uppercase tracking-widest">Full Request Payload</p>
+                                        </div>
                                         <pre class="code-block"><code class="language-json">${JSON.stringify(item.payload, null, 2)}</code></pre>
-                                    </div>` : ''}
+                                    </div>
                                     
-                                    <div class="${!item.payload ? 'col-span-full' : ''}">
-                                        <p class="text-xs font-bold text-gray-500 uppercase mb-2 ml-1">Response Example</p>
+                                    <div class="space-y-4">
+                                        <div class="flex items-center gap-3">
+                                            <div class="w-2 h-2 rounded-full bg-green-500 shadow-[0_0_10px_rgba(34,197,94,0.5)]"></div>
+                                            <p class="text-xs font-black text-gray-500 uppercase tracking-widest">Full Server Response</p>
+                                        </div>
                                         <pre class="code-block"><code class="language-json">${JSON.stringify(item.response, null, 2)}</code></pre>
                                     </div>
                                 </div>
@@ -882,37 +630,27 @@
                     });
                 });
 
-                nav.innerHTML = navHtml;
-                container.innerHTML = mainHtml;
-                
-                Prism.highlightAll();
-            },
-
-            filter: (term) => {
-                const termLower = term.toLowerCase();
-                const cards = document.querySelectorAll('.endpoint-card');
-                const links = document.querySelectorAll('.sidebar-link');
-                
-                cards.forEach((card, idx) => {
-                    const text = card.innerText.toLowerCase();
-                    const visible = text.includes(termLower);
-                    
-                    card.style.display = visible ? 'block' : 'none';
-                    if (links[idx]) links[idx].style.display = visible ? 'block' : 'none';
+                permissionsList.forEach((perm, idx) => {
+                    registry.innerHTML += `<div class="perm-tag group hover:border-[#FFFC00]/50 transition-colors"><span class="perm-id group-hover:scale-110 transition-transform">${idx}</span>${perm}</div>`;
                 });
+
+                Prism.highlightAll();
             }
         };
 
         document.addEventListener('DOMContentLoaded', () => {
             auth.init();
             renderer.init();
-            tester.init(); // Init tester
-
-            document.getElementById('search-input').addEventListener('input', (e) => {
-                renderer.filter(e.target.value);
+            
+            const search = document.getElementById('search-input');
+            search.addEventListener('input', (e) => {
+                const term = e.target.value.toLowerCase();
+                document.querySelectorAll('section[id^="cmd-"]').forEach(s => {
+                    const match = s.textContent.toLowerCase().includes(term);
+                    s.style.display = match ? 'block' : 'none';
+                });
             });
         });
-
     </script>
 </body>
 </html>
