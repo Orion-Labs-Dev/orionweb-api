@@ -427,15 +427,9 @@ SocketWhitelistIP=</code></pre>
                     <!-- Priority Enforcement Card -->
                     <div class="bg-[#0a0a0a] border border-[#222] p-6 rounded-2xl shadow-lg mt-6">
                         <h3 class="text-[#FFFC00] font-bold mb-4 flex items-center gap-2 text-lg"><i class="fa-solid fa-ranking-star"></i> Priority &amp; Hierarchy Enforcement</h3>
-                        <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
-                            <div class="bg-[#111] border border-[#333] p-5 rounded-xl">
-                                <h4 class="text-white font-bold mb-2 text-sm flex items-center gap-2"><i class="fa-solid fa-arrow-up-short-wide text-orange-400"></i> Priority Check</h4>
-                                <p class="text-xs text-gray-400 leading-relaxed">You cannot create, edit, delete, assign, or remove roles that have a <strong class="text-white">Priority value equal to or higher</strong> than your own highest role's priority. A Moderator at Priority 50 is physically blocked from touching an Admin role at Priority 100.</p>
-                            </div>
-                            <div class="bg-[#111] border border-[#333] p-5 rounded-xl">
-                                <h4 class="text-white font-bold mb-2 text-sm flex items-center gap-2"><i class="fa-solid fa-code text-red-400"></i> Developer List Override</h4>
-                                <p class="text-xs text-gray-400 leading-relaxed">Users defined in the server's hardcoded <code class="text-white">DeveloperList</code> completely bypass all priority checks and permission gates. These accounts always have implicit access to every command and every role operation regardless of their assigned roles.</p>
-                            </div>
+                        <div class="bg-[#111] border border-[#333] p-5 rounded-xl">
+                            <h4 class="text-white font-bold mb-2 text-sm flex items-center gap-2"><i class="fa-solid fa-arrow-up-short-wide text-orange-400"></i> Priority Check</h4>
+                            <p class="text-xs text-gray-400 leading-relaxed">You cannot create, edit, delete, assign, or remove roles that have a <strong class="text-white">Priority value equal to or higher</strong> than your own highest role's priority. A Moderator at Priority 50 is physically blocked from touching an Admin role at Priority 100.</p>
                         </div>
                     </div>
 
@@ -460,28 +454,28 @@ SocketWhitelistIP=</code></pre>
                             <div class="space-y-2 cmd-list">
                                 <div class="cmd-row bg-[#0a0a0a] border border-[#222] rounded-xl p-4 hover:border-purple-500/30 transition-colors">
                                     <div class="flex flex-col lg:flex-row lg:items-center gap-3">
-                                        <code class="text-[#FFFC00] text-sm font-bold whitespace-nowrap shrink-0 lg:w-72">/createrole &lt;Name&gt; &lt;Priority&gt;</code>
+                                        <div class="flex items-center gap-1.5 shrink-0 lg:w-72"><code class="text-[#FFFC00] text-sm font-bold">/createrole</code> <span class="text-[10px] font-mono bg-cyan-500/10 text-cyan-400 border border-cyan-500/20 px-1.5 py-0.5 rounded">Name</span> <span class="text-[10px] font-mono bg-cyan-500/10 text-cyan-400 border border-cyan-500/20 px-1.5 py-0.5 rounded">Priority</span></div>
                                         <span class="text-[10px] font-black text-purple-400 bg-purple-500/10 border border-purple-500/20 px-2 py-0.5 rounded-md w-fit uppercase tracking-wider shrink-0">CanCreateRoles</span>
                                         <p class="text-xs text-gray-500 leading-relaxed flex-1">Defines a new role. Priority must be lower than yours.</p>
                                     </div>
                                 </div>
                                 <div class="cmd-row bg-[#0a0a0a] border border-[#222] rounded-xl p-4 hover:border-purple-500/30 transition-colors">
                                     <div class="flex flex-col lg:flex-row lg:items-center gap-3">
-                                        <code class="text-[#FFFC00] text-sm font-bold whitespace-nowrap shrink-0 lg:w-72">/deleterole &lt;Name&gt;</code>
+                                        <div class="flex items-center gap-1.5 shrink-0 lg:w-72"><code class="text-[#FFFC00] text-sm font-bold">/deleterole</code> <span class="text-[10px] font-mono bg-cyan-500/10 text-cyan-400 border border-cyan-500/20 px-1.5 py-0.5 rounded">Name</span></div>
                                         <span class="text-[10px] font-black text-red-400 bg-red-500/10 border border-red-500/20 px-2 py-0.5 rounded-md w-fit uppercase tracking-wider shrink-0">CanDeleteRoles</span>
                                         <p class="text-xs text-gray-500 leading-relaxed flex-1">Permanently removes a role definition from the server.</p>
                                     </div>
                                 </div>
                                 <div class="cmd-row bg-[#0a0a0a] border border-[#222] rounded-xl p-4 hover:border-purple-500/30 transition-colors">
                                     <div class="flex flex-col lg:flex-row lg:items-center gap-3">
-                                        <code class="text-[#FFFC00] text-sm font-bold whitespace-nowrap shrink-0 lg:w-72">/assignrole &lt;Player&gt; &lt;Role&gt;</code>
+                                        <div class="flex items-center gap-1.5 shrink-0 lg:w-72"><code class="text-[#FFFC00] text-sm font-bold">/assignrole</code> <span class="text-[10px] font-mono bg-cyan-500/10 text-cyan-400 border border-cyan-500/20 px-1.5 py-0.5 rounded">Player</span> <span class="text-[10px] font-mono bg-cyan-500/10 text-cyan-400 border border-cyan-500/20 px-1.5 py-0.5 rounded">Role</span></div>
                                         <span class="text-[10px] font-black text-purple-400 bg-purple-500/10 border border-purple-500/20 px-2 py-0.5 rounded-md w-fit uppercase tracking-wider shrink-0">CanManageRolesOthers</span>
                                         <p class="text-xs text-gray-500 leading-relaxed flex-1">Assigns a role to a target player. Priority checks apply.</p>
                                     </div>
                                 </div>
                                 <div class="cmd-row bg-[#0a0a0a] border border-[#222] rounded-xl p-4 hover:border-purple-500/30 transition-colors">
                                     <div class="flex flex-col lg:flex-row lg:items-center gap-3">
-                                        <code class="text-[#FFFC00] text-sm font-bold whitespace-nowrap shrink-0 lg:w-72">/removerole &lt;Player&gt; &lt;Role&gt;</code>
+                                        <div class="flex items-center gap-1.5 shrink-0 lg:w-72"><code class="text-[#FFFC00] text-sm font-bold">/removerole</code> <span class="text-[10px] font-mono bg-cyan-500/10 text-cyan-400 border border-cyan-500/20 px-1.5 py-0.5 rounded">Player</span> <span class="text-[10px] font-mono bg-cyan-500/10 text-cyan-400 border border-cyan-500/20 px-1.5 py-0.5 rounded">Role</span></div>
                                         <span class="text-[10px] font-black text-purple-400 bg-purple-500/10 border border-purple-500/20 px-2 py-0.5 rounded-md w-fit uppercase tracking-wider shrink-0">CanManageRolesOthers</span>
                                         <p class="text-xs text-gray-500 leading-relaxed flex-1">Removes a role from a target player.</p>
                                     </div>
@@ -500,51 +494,79 @@ SocketWhitelistIP=</code></pre>
                             <div class="space-y-2 cmd-list">
                                 <div class="cmd-row bg-[#0a0a0a] border border-[#222] rounded-xl p-4 hover:border-green-500/30 transition-colors">
                                     <div class="flex flex-col lg:flex-row lg:items-center gap-3">
-                                        <code class="text-[#FFFC00] text-sm font-bold whitespace-nowrap shrink-0 lg:w-72">/heal</code>
+                                        <div class="flex items-center gap-1.5 shrink-0 lg:w-72"><code class="text-[#FFFC00] text-sm font-bold">/heal</code></div>
                                         <span class="text-[10px] font-black text-green-400 bg-green-500/10 border border-green-500/20 px-2 py-0.5 rounded-md w-fit uppercase tracking-wider shrink-0">CanHeal</span>
                                         <p class="text-xs text-gray-500 leading-relaxed flex-1">Restores all vitals (Health, Hunger, Thirst, Stamina, Blood) to 100%.</p>
                                     </div>
                                 </div>
                                 <div class="cmd-row bg-[#0a0a0a] border border-[#222] rounded-xl p-4 hover:border-green-500/30 transition-colors">
                                     <div class="flex flex-col lg:flex-row lg:items-center gap-3">
-                                        <code class="text-[#FFFC00] text-sm font-bold whitespace-nowrap shrink-0 lg:w-72">/grow</code>
+                                        <div class="flex items-center gap-1.5 shrink-0 lg:w-72"><code class="text-[#FFFC00] text-sm font-bold">/grow</code></div>
                                         <span class="text-[10px] font-black text-green-400 bg-green-500/10 border border-green-500/20 px-2 py-0.5 rounded-md w-fit uppercase tracking-wider shrink-0">CanGrow</span>
                                         <p class="text-xs text-gray-500 leading-relaxed flex-1">Sets growth development to 100%.</p>
                                     </div>
                                 </div>
                                 <div class="cmd-row bg-[#0a0a0a] border border-[#222] rounded-xl p-4 hover:border-green-500/30 transition-colors">
                                     <div class="flex flex-col lg:flex-row lg:items-center gap-3">
-                                        <code class="text-[#FFFC00] text-sm font-bold whitespace-nowrap shrink-0 lg:w-72">/vanish</code>
+                                        <div class="flex items-center gap-1.5 shrink-0 lg:w-72"><code class="text-[#FFFC00] text-sm font-bold">/vanish</code></div>
                                         <span class="text-[10px] font-black text-green-400 bg-green-500/10 border border-green-500/20 px-2 py-0.5 rounded-md w-fit uppercase tracking-wider shrink-0">CanVanish</span>
                                         <p class="text-xs text-gray-500 leading-relaxed flex-1">Toggles invisibility/ghost state on your character.</p>
                                     </div>
                                 </div>
                                 <div class="cmd-row bg-[#0a0a0a] border border-[#222] rounded-xl p-4 hover:border-green-500/30 transition-colors">
                                     <div class="flex flex-col lg:flex-row lg:items-center gap-3">
-                                        <code class="text-[#FFFC00] text-sm font-bold whitespace-nowrap shrink-0 lg:w-72">/slay</code>
+                                        <div class="flex items-center gap-1.5 shrink-0 lg:w-72"><code class="text-[#FFFC00] text-sm font-bold">/slay</code></div>
                                         <span class="text-[10px] font-black text-red-400 bg-red-500/10 border border-red-500/20 px-2 py-0.5 rounded-md w-fit uppercase tracking-wider shrink-0">CanSlay</span>
                                         <p class="text-xs text-gray-500 leading-relaxed flex-1">Deals fatal damage to the target specimen.</p>
                                     </div>
                                 </div>
                                 <div class="cmd-row bg-[#0a0a0a] border border-[#222] rounded-xl p-4 hover:border-green-500/30 transition-colors">
                                     <div class="flex flex-col lg:flex-row lg:items-center gap-3">
-                                        <code class="text-[#FFFC00] text-sm font-bold whitespace-nowrap shrink-0 lg:w-72">/tp &lt;Target/Coords&gt;</code>
+                                        <div class="flex items-center gap-1.5 shrink-0 lg:w-72"><code class="text-[#FFFC00] text-sm font-bold">/tp</code> <span class="text-[10px] font-mono bg-cyan-500/10 text-cyan-400 border border-cyan-500/20 px-1.5 py-0.5 rounded">Target | X Y Z</span></div>
                                         <span class="text-[10px] font-black text-blue-400 bg-blue-500/10 border border-blue-500/20 px-2 py-0.5 rounded-md w-fit uppercase tracking-wider shrink-0">CanTeleport</span>
                                         <p class="text-xs text-gray-500 leading-relaxed flex-1">Teleports to a player by name or to specific X Y Z world coordinates.</p>
                                     </div>
                                 </div>
                                 <div class="cmd-row bg-[#0a0a0a] border border-[#222] rounded-xl p-4 hover:border-green-500/30 transition-colors">
                                     <div class="flex flex-col lg:flex-row lg:items-center gap-3">
-                                        <code class="text-[#FFFC00] text-sm font-bold whitespace-nowrap shrink-0 lg:w-72">/swap &lt;Class&gt;</code>
+                                        <div class="flex items-center gap-1.5 shrink-0 lg:w-72"><code class="text-[#FFFC00] text-sm font-bold">/swap</code> <span class="text-[10px] font-mono bg-cyan-500/10 text-cyan-400 border border-cyan-500/20 px-1.5 py-0.5 rounded">Class</span></div>
                                         <span class="text-[10px] font-black text-blue-400 bg-blue-500/10 border border-blue-500/20 px-2 py-0.5 rounded-md w-fit uppercase tracking-wider shrink-0">CanSwap</span>
                                         <p class="text-xs text-gray-500 leading-relaxed flex-1">Transforms your active character into a different dinosaur species.</p>
                                     </div>
                                 </div>
                                 <div class="cmd-row bg-[#0a0a0a] border border-[#222] rounded-xl p-4 hover:border-green-500/30 transition-colors">
                                     <div class="flex flex-col lg:flex-row lg:items-center gap-3">
-                                        <code class="text-[#FFFC00] text-sm font-bold whitespace-nowrap shrink-0 lg:w-72">/health /hunger /thirst /stamina /blood</code>
-                                        <span class="text-[10px] font-black text-green-400 bg-green-500/10 border border-green-500/20 px-2 py-0.5 rounded-md w-fit uppercase tracking-wider shrink-0">CanSet[Stat]</span>
-                                        <p class="text-xs text-gray-500 leading-relaxed flex-1">Sets the specified vital to 100%. Each requires its own permission (e.g. <code class="text-gray-300">CanSetHealth</code>, <code class="text-gray-300">CanSetHunger</code>).</p>
+                                        <div class="flex items-center gap-1.5 shrink-0 lg:w-72"><code class="text-[#FFFC00] text-sm font-bold">/health</code></div>
+                                        <span class="text-[10px] font-black text-green-400 bg-green-500/10 border border-green-500/20 px-2 py-0.5 rounded-md w-fit uppercase tracking-wider shrink-0">CanSetHealth</span>
+                                        <p class="text-xs text-gray-500 leading-relaxed flex-1">Sets health to 100%.</p>
+                                    </div>
+                                </div>
+                                <div class="cmd-row bg-[#0a0a0a] border border-[#222] rounded-xl p-4 hover:border-green-500/30 transition-colors">
+                                    <div class="flex flex-col lg:flex-row lg:items-center gap-3">
+                                        <div class="flex items-center gap-1.5 shrink-0 lg:w-72"><code class="text-[#FFFC00] text-sm font-bold">/hunger</code></div>
+                                        <span class="text-[10px] font-black text-green-400 bg-green-500/10 border border-green-500/20 px-2 py-0.5 rounded-md w-fit uppercase tracking-wider shrink-0">CanSetHunger</span>
+                                        <p class="text-xs text-gray-500 leading-relaxed flex-1">Sets hunger to 100%.</p>
+                                    </div>
+                                </div>
+                                <div class="cmd-row bg-[#0a0a0a] border border-[#222] rounded-xl p-4 hover:border-green-500/30 transition-colors">
+                                    <div class="flex flex-col lg:flex-row lg:items-center gap-3">
+                                        <div class="flex items-center gap-1.5 shrink-0 lg:w-72"><code class="text-[#FFFC00] text-sm font-bold">/thirst</code></div>
+                                        <span class="text-[10px] font-black text-green-400 bg-green-500/10 border border-green-500/20 px-2 py-0.5 rounded-md w-fit uppercase tracking-wider shrink-0">CanSetThirst</span>
+                                        <p class="text-xs text-gray-500 leading-relaxed flex-1">Sets thirst to 100%.</p>
+                                    </div>
+                                </div>
+                                <div class="cmd-row bg-[#0a0a0a] border border-[#222] rounded-xl p-4 hover:border-green-500/30 transition-colors">
+                                    <div class="flex flex-col lg:flex-row lg:items-center gap-3">
+                                        <div class="flex items-center gap-1.5 shrink-0 lg:w-72"><code class="text-[#FFFC00] text-sm font-bold">/stamina</code></div>
+                                        <span class="text-[10px] font-black text-green-400 bg-green-500/10 border border-green-500/20 px-2 py-0.5 rounded-md w-fit uppercase tracking-wider shrink-0">CanSetStamina</span>
+                                        <p class="text-xs text-gray-500 leading-relaxed flex-1">Sets stamina to 100%.</p>
+                                    </div>
+                                </div>
+                                <div class="cmd-row bg-[#0a0a0a] border border-[#222] rounded-xl p-4 hover:border-green-500/30 transition-colors">
+                                    <div class="flex flex-col lg:flex-row lg:items-center gap-3">
+                                        <div class="flex items-center gap-1.5 shrink-0 lg:w-72"><code class="text-[#FFFC00] text-sm font-bold">/blood</code></div>
+                                        <span class="text-[10px] font-black text-green-400 bg-green-500/10 border border-green-500/20 px-2 py-0.5 rounded-md w-fit uppercase tracking-wider shrink-0">CanSetBlood</span>
+                                        <p class="text-xs text-gray-500 leading-relaxed flex-1">Sets blood to 100%.</p>
                                     </div>
                                 </div>
                             </div>
@@ -561,49 +583,49 @@ SocketWhitelistIP=</code></pre>
                             <div class="space-y-2 cmd-list">
                                 <div class="cmd-row bg-[#0a0a0a] border border-[#222] rounded-xl p-4 hover:border-yellow-500/30 transition-colors">
                                     <div class="flex flex-col lg:flex-row lg:items-center gap-3">
-                                        <code class="text-[#FFFC00] text-sm font-bold whitespace-nowrap shrink-0 lg:w-72">/garage &nbsp;or&nbsp; /showgarage</code>
+                                        <div class="flex items-center gap-1.5 shrink-0 lg:w-72"><code class="text-[#FFFC00] text-sm font-bold">/garage</code> <span class="text-[9px] font-black text-gray-500 bg-white/5 border border-white/10 px-1.5 py-0.5 rounded uppercase tracking-widest">alias</span> <code class="text-[#FFFC00]/60 text-sm font-bold">/showgarage</code></div>
                                         <span class="text-[10px] font-black text-yellow-400 bg-yellow-500/10 border border-yellow-500/20 px-2 py-0.5 rounded-md w-fit uppercase tracking-wider shrink-0">CanShowGarage</span>
                                         <p class="text-xs text-gray-500 leading-relaxed flex-1">Lists your stored dinosaurs and their indices in chat.</p>
                                     </div>
                                 </div>
                                 <div class="cmd-row bg-[#0a0a0a] border border-[#222] rounded-xl p-4 hover:border-yellow-500/30 transition-colors">
                                     <div class="flex flex-col lg:flex-row lg:items-center gap-3">
-                                        <code class="text-[#FFFC00] text-sm font-bold whitespace-nowrap shrink-0 lg:w-72">/park</code>
+                                        <div class="flex items-center gap-1.5 shrink-0 lg:w-72"><code class="text-[#FFFC00] text-sm font-bold">/park</code></div>
                                         <span class="text-[10px] font-black text-yellow-400 bg-yellow-500/10 border border-yellow-500/20 px-2 py-0.5 rounded-md w-fit uppercase tracking-wider shrink-0">CanPark</span>
                                         <p class="text-xs text-gray-500 leading-relaxed flex-1">Saves and archives your current active dinosaur to the garage.</p>
                                     </div>
                                 </div>
                                 <div class="cmd-row bg-[#0a0a0a] border border-[#222] rounded-xl p-4 hover:border-yellow-500/30 transition-colors">
                                     <div class="flex flex-col lg:flex-row lg:items-center gap-3">
-                                        <code class="text-[#FFFC00] text-sm font-bold whitespace-nowrap shrink-0 lg:w-72">/retrieve &lt;Index&gt;</code>
+                                        <div class="flex items-center gap-1.5 shrink-0 lg:w-72"><code class="text-[#FFFC00] text-sm font-bold">/retrieve</code> <span class="text-[10px] font-mono bg-cyan-500/10 text-cyan-400 border border-cyan-500/20 px-1.5 py-0.5 rounded">Index</span></div>
                                         <span class="text-[10px] font-black text-yellow-400 bg-yellow-500/10 border border-yellow-500/20 px-2 py-0.5 rounded-md w-fit uppercase tracking-wider shrink-0">CanRetrieve</span>
                                         <p class="text-xs text-gray-500 leading-relaxed flex-1">Spawns a dinosaur from your garage by its stored array index.</p>
                                     </div>
                                 </div>
                                 <div class="cmd-row bg-[#0a0a0a] border border-[#222] rounded-xl p-4 hover:border-yellow-500/30 transition-colors">
                                     <div class="flex flex-col lg:flex-row lg:items-center gap-3">
-                                        <code class="text-[#FFFC00] text-sm font-bold whitespace-nowrap shrink-0 lg:w-72">/spawn ai</code>
+                                        <div class="flex items-center gap-1.5 shrink-0 lg:w-72"><code class="text-[#FFFC00] text-sm font-bold">/spawn ai</code></div>
                                         <span class="text-[10px] font-black text-blue-400 bg-blue-500/10 border border-blue-500/20 px-2 py-0.5 rounded-md w-fit uppercase tracking-wider shrink-0">CanSpawnAI</span>
                                         <p class="text-xs text-gray-500 leading-relaxed flex-1">Spawns an AI-controlled entity into the world.</p>
                                     </div>
                                 </div>
                                 <div class="cmd-row bg-[#0a0a0a] border border-[#222] rounded-xl p-4 hover:border-yellow-500/30 transition-colors">
                                     <div class="flex flex-col lg:flex-row lg:items-center gap-3">
-                                        <code class="text-[#FFFC00] text-sm font-bold whitespace-nowrap shrink-0 lg:w-72">/wipe ai</code>
+                                        <div class="flex items-center gap-1.5 shrink-0 lg:w-72"><code class="text-[#FFFC00] text-sm font-bold">/wipe ai</code></div>
                                         <span class="text-[10px] font-black text-red-400 bg-red-500/10 border border-red-500/20 px-2 py-0.5 rounded-md w-fit uppercase tracking-wider shrink-0">CanWipeAI</span>
                                         <p class="text-xs text-gray-500 leading-relaxed flex-1">Removes all AI-controlled entities from the map.</p>
                                     </div>
                                 </div>
                                 <div class="cmd-row bg-[#0a0a0a] border border-[#222] rounded-xl p-4 hover:border-yellow-500/30 transition-colors">
                                     <div class="flex flex-col lg:flex-row lg:items-center gap-3">
-                                        <code class="text-[#FFFC00] text-sm font-bold whitespace-nowrap shrink-0 lg:w-72">/wipecorpses</code>
+                                        <div class="flex items-center gap-1.5 shrink-0 lg:w-72"><code class="text-[#FFFC00] text-sm font-bold">/wipecorpses</code></div>
                                         <span class="text-[10px] font-black text-red-400 bg-red-500/10 border border-red-500/20 px-2 py-0.5 rounded-md w-fit uppercase tracking-wider shrink-0">CanWipeCorpses</span>
                                         <p class="text-xs text-gray-500 leading-relaxed flex-1">Clears all dropped carcasses from the world.</p>
                                     </div>
                                 </div>
                                 <div class="cmd-row bg-[#0a0a0a] border border-[#222] rounded-xl p-4 hover:border-yellow-500/30 transition-colors">
                                     <div class="flex flex-col lg:flex-row lg:items-center gap-3">
-                                        <code class="text-[#FFFC00] text-sm font-bold whitespace-nowrap shrink-0 lg:w-72">/spawncorpse &lt;DinoName&gt;</code>
+                                        <div class="flex items-center gap-1.5 shrink-0 lg:w-72"><code class="text-[#FFFC00] text-sm font-bold">/spawncorpse</code> <span class="text-[10px] font-mono bg-cyan-500/10 text-cyan-400 border border-cyan-500/20 px-1.5 py-0.5 rounded">DinoName</span></div>
                                         <span class="text-[10px] font-black text-yellow-400 bg-yellow-500/10 border border-yellow-500/20 px-2 py-0.5 rounded-md w-fit uppercase tracking-wider shrink-0">CanSpawnCorpse</span>
                                         <p class="text-xs text-gray-500 leading-relaxed flex-1">Spawns a food source carcass at your current location.</p>
                                     </div>
