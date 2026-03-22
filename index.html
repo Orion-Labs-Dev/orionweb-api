@@ -1887,7 +1887,13 @@ if ($context.Request.IsWebSocketRequest) {
 
         const renderer = {
             init: () => {
-                renderer.renderDocsSidebar();
+                // Render the correct sidebar for whichever tab is currently active
+                const isApiView = document.getElementById('view-docs').classList.contains('hidden');
+                if (isApiView) {
+                    renderer.renderApiSidebar();
+                } else {
+                    renderer.renderDocsSidebar();
+                }
                 const container = document.getElementById('endpoints-container');
                 const registry = document.getElementById('permission-registry');
 
