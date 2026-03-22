@@ -30,6 +30,8 @@
     "nav_version": "v1.12.0",
     "nav_lock": "Lock",
 
+    "lang_dropdown_header": "Select Language",
+
     "sidebar_filter_placeholder": "Filter...",
 
     "sidebar_docs_heading": "Topics",
