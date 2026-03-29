@@ -99,27 +99,16 @@
         .fade-in { animation: fadeIn 0.3s ease-out; }
         @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
 
-        .permission-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
-            gap: 10px;
-        }
         .perm-tag {
             background: #111;
             border: 1px solid #222;
-            padding: 8px 12px;
+            padding: 10px 14px;
             border-radius: 8px;
-            font-size: 0.75rem;
             font-family: 'JetBrains Mono', monospace;
             color: #ccc;
             display: flex;
             align-items: center;
-        }
-        .perm-id {
-            color: var(--accent);
-            font-weight: bold;
-            margin-right: 10px;
-            min-width: 20px;
+            justify-content: space-between;
         }
 
         .access-input, .tester-input {
@@ -383,7 +372,7 @@
                             <span data-i18n="generator_label_permissions"></span>
                             <span class="bg-[#222] px-2 py-0.5 rounded text-[#FFFC00]" id="gen-perm-count"></span>
                         </label>
-                        <div class="flex flex-wrap gap-2 max-h-56 overflow-y-auto custom-scrollbar p-3 bg-[#111] rounded-xl border border-[#222]" id="gen-perm-list">
+                        <div class="max-h-64 overflow-y-auto custom-scrollbar p-3 bg-[#111] rounded-xl border border-[#222] space-y-3" id="gen-perm-list">
                             <!-- Perms injected here -->
                         </div>
                     </div>
@@ -428,8 +417,10 @@
                 <span class="text-[#FFFC00]" data-i18n="nav_brand"></span> <span data-i18n="nav_brand_suffix"></span>
             </h1>
             <nav class="flex items-center h-full gap-2">
-                <button class="top-nav-btn active" onclick="ui.switchMainTab('docs')"><i class="fa-solid fa-book mr-2"></i> <span data-i18n="nav_docs"></span></button>
-                <button class="top-nav-btn" onclick="ui.switchMainTab('api')"><i class="fa-solid fa-plug mr-2"></i> <span data-i18n="nav_api"></span></button>
+                <button class="top-nav-btn active" data-tab="docs" onclick="ui.switchMainTab('docs')"><i class="fa-solid fa-book mr-2"></i> <span data-i18n="nav_docs"></span></button>
+                <button class="top-nav-btn" data-tab="cmds" onclick="ui.switchMainTab('cmds')"><i class="fa-solid fa-terminal mr-2"></i> <span data-i18n="nav_cmds">Commands</span></button>
+                <button class="top-nav-btn" data-tab="perms" onclick="ui.switchMainTab('perms')"><i class="fa-solid fa-key mr-2"></i> <span data-i18n="nav_perms">Permission Nodes</span></button>
+                <button class="top-nav-btn" data-tab="api" onclick="ui.switchMainTab('api')"><i class="fa-solid fa-plug mr-2"></i> <span data-i18n="nav_api"></span></button>
             </nav>
         </div>
         <div class="flex items-center gap-4">
@@ -541,61 +532,6 @@ SocketWhitelistIP=</code></pre>
                     </div>
                 </section>
 
-                <!-- Section: Permission Registry -->
-                <section id="doc-registry" class="space-y-6 pt-6">
-                    <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4 border-b border-[#222] pb-4">
-                        <h2 class="text-4xl font-black text-white uppercase italic tracking-tighter shrink-0" data-i18n="docs_registry_title"></h2>
-                        <button onclick="generator.open()" class="bg-[#FFFC00] hover:bg-[#e6e300] text-black px-4 py-2 rounded-lg font-bold text-sm flex items-center justify-center gap-2 transition shrink-0 shadow-lg">
-                            <i class="fa-solid fa-wand-magic-sparkles"></i> <span data-i18n="docs_registry_btn"></span>
-                        </button>
-                    </div>
-                    <p class="text-gray-400 leading-relaxed text-sm" id="docs-registry-desc"></p>
-                    <div class="permission-grid" id="permission-registry"></div>
-                </section>
-
-                <!-- ============================================ -->
-                <!-- Section: Chat Commands (OVERHAULED)          -->
-                <!-- ============================================ -->
-                <section id="doc-chat" class="space-y-8">
-                    <h2 class="text-4xl font-black text-white uppercase tracking-tighter italic border-b border-[#222] pb-4" data-i18n="docs_chat_title"></h2>
-                    <p class="text-gray-400 leading-relaxed text-lg" data-i18n="docs_chat_desc"></p>
-
-                    <!-- Interception Pipeline + Gatekeeper -->
-                    <div class="bg-[#0d0d0d] border border-[#222] rounded-2xl overflow-hidden mt-6 shadow-xl">
-                        <div class="p-6 border-b border-[#222]">
-                            <h3 class="text-white font-bold text-lg mb-2 flex items-center gap-2"><i class="fa-solid fa-filter text-[#FFFC00]"></i> <span data-i18n="docs_chat_pipeline_title"></span></h3>
-                            <p class="text-sm text-gray-400 leading-relaxed" id="docs-chat-pipeline-desc"></p>
-                        </div>
-                        <div class="p-6 bg-[#111]">
-                            <h3 class="text-white font-bold text-lg mb-2 flex items-center gap-2"><i class="fa-solid fa-shield-halved text-purple-400"></i> <span data-i18n="docs_chat_gatekeeper_title"></span></h3>
-                            <p class="text-sm text-gray-400 leading-relaxed" id="docs-chat-gatekeeper-desc"></p>
-                        </div>
-                    </div>
-
-                    <!-- Priority Enforcement Card -->
-                    <div class="bg-[#0a0a0a] border border-[#222] p-6 rounded-2xl shadow-lg mt-6">
-                        <h3 class="text-[#FFFC00] font-bold mb-4 flex items-center gap-2 text-lg"><i class="fa-solid fa-ranking-star"></i> <span data-i18n="docs_chat_priority_title"></span></h3>
-                        <div class="bg-[#111] border border-[#333] p-5 rounded-xl">
-                            <h4 class="text-white font-bold mb-2 text-sm flex items-center gap-2"><i class="fa-solid fa-arrow-up-short-wide text-orange-400"></i> <span data-i18n="docs_chat_priority_check_title"></span></h4>
-                            <p class="text-xs text-gray-400 leading-relaxed" id="docs-chat-priority-check-desc"></p>
-                        </div>
-                    </div>
-
-                    <!-- Command Registry with Search -->
-                    <div class="mt-8">
-                        <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4 mb-6">
-                            <h3 class="text-2xl font-black text-white uppercase tracking-tighter italic" data-i18n="docs_chat_registry_title"></h3>
-                            <div class="relative">
-                                <i class="fa-solid fa-search absolute left-3 top-3 text-gray-600 text-xs"></i>
-                                <input type="text" id="cmd-search-input" data-i18n-placeholder="docs_chat_registry_search_placeholder" class="bg-[#111] border border-[#222] rounded-lg py-2 pl-9 pr-4 text-sm text-white focus:outline-none focus:border-[#FFFC00] transition-colors placeholder-gray-600 w-full sm:w-64" oninput="chatCmdSearch(this.value)">
-                            </div>
-                        </div>
-
-                        <div id="cmd-registry-container"></div>
-
-                    </div>
-                </section>
-
                 <!-- Section: Live Event Streams -->
                 <section id="doc-events" class="space-y-6 pt-6">
                     <h2 class="text-4xl font-black text-white uppercase tracking-tighter italic border-b border-[#222] pb-4" data-i18n="docs_events_title"></h2>
@@ -668,6 +604,83 @@ SocketWhitelistIP=</code></pre>
                 </section>
                 
                 <div class="pb-20"></div>
+            </div>
+
+            <!-- ========================================== -->
+            <!-- VIEW: COMMANDS                             -->
+            <!-- ========================================== -->
+            <div id="view-cmds" class="max-w-4xl mx-auto p-8 md:p-12 space-y-16 hidden fade-in">
+                <!-- Section: Chat Commands -->
+                <section id="doc-chat" class="space-y-8">
+                    <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4 border-b border-[#222] pb-4">
+                        <h2 class="text-4xl font-black text-white uppercase tracking-tighter italic" data-i18n="docs_chat_title"></h2>
+                    </div>
+                    <p class="text-gray-400 leading-relaxed text-lg" data-i18n="docs_chat_desc"></p>
+
+                    <!-- Global Targeting (!everyone) Callout -->
+                    <div class="bg-blue-900/20 border border-blue-500/30 p-5 rounded-2xl flex gap-4 items-start shadow-lg">
+                        <div class="bg-blue-500/20 p-3 rounded-xl border border-blue-500/30 text-blue-400 shrink-0">
+                            <i class="fa-solid fa-users text-xl"></i>
+                        </div>
+                        <div>
+                            <h4 class="text-blue-400 font-bold text-sm mb-1 uppercase tracking-widest">Global Targeting</h4>
+                            <p class="text-xs text-gray-300 leading-relaxed">All commands that accept a <code class="text-gray-400 font-mono">Player</code> parameter fully support the <code class="text-[#FFFC00] font-mono bg-[#111] px-1.5 py-0.5 rounded border border-[#333]">!everyone</code> target identifier. Use this to easily apply an action to all currently connected players (e.g. <code class="text-[#FFFC00] font-mono">/heal !everyone</code>).</p>
+                        </div>
+                    </div>
+
+                    <!-- Interception Pipeline + Gatekeeper -->
+                    <div class="bg-[#0d0d0d] border border-[#222] rounded-2xl overflow-hidden mt-6 shadow-xl">
+                        <div class="p-6 border-b border-[#222]">
+                            <h3 class="text-white font-bold text-lg mb-2 flex items-center gap-2"><i class="fa-solid fa-filter text-[#FFFC00]"></i> <span data-i18n="docs_chat_pipeline_title"></span></h3>
+                            <p class="text-sm text-gray-400 leading-relaxed" id="docs-chat-pipeline-desc"></p>
+                        </div>
+                        <div class="p-6 bg-[#111]">
+                            <h3 class="text-white font-bold text-lg mb-2 flex items-center gap-2"><i class="fa-solid fa-shield-halved text-purple-400"></i> <span data-i18n="docs_chat_gatekeeper_title"></span></h3>
+                            <p class="text-sm text-gray-400 leading-relaxed" id="docs-chat-gatekeeper-desc"></p>
+                        </div>
+                    </div>
+
+                    <!-- Priority Enforcement Card -->
+                    <div class="bg-[#0a0a0a] border border-[#222] p-6 rounded-2xl shadow-lg mt-6">
+                        <h3 class="text-[#FFFC00] font-bold mb-4 flex items-center gap-2 text-lg"><i class="fa-solid fa-ranking-star"></i> <span data-i18n="docs_chat_priority_title"></span></h3>
+                        <div class="bg-[#111] border border-[#333] p-5 rounded-xl">
+                            <h4 class="text-white font-bold mb-2 text-sm flex items-center gap-2"><i class="fa-solid fa-arrow-up-short-wide text-orange-400"></i> <span data-i18n="docs_chat_priority_check_title"></span></h4>
+                            <p class="text-xs text-gray-400 leading-relaxed" id="docs-chat-priority-check-desc"></p>
+                        </div>
+                    </div>
+
+                    <!-- Command Registry with Search -->
+                    <div class="mt-8">
+                        <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4 mb-6">
+                            <h3 class="text-2xl font-black text-white uppercase tracking-tighter italic" data-i18n="docs_chat_registry_title"></h3>
+                            <div class="relative">
+                                <i class="fa-solid fa-search absolute left-3 top-3 text-gray-600 text-xs"></i>
+                                <input type="text" id="cmd-search-input" data-i18n-placeholder="docs_chat_registry_search_placeholder" class="bg-[#111] border border-[#222] rounded-lg py-2 pl-9 pr-4 text-sm text-white focus:outline-none focus:border-[#FFFC00] transition-colors placeholder-gray-600 w-full sm:w-64" oninput="chatCmdSearch(this.value)">
+                            </div>
+                        </div>
+
+                        <div id="cmd-registry-container"></div>
+
+                    </div>
+                </section>
+                <div class="pb-20"></div>
+            </div>
+
+            <!-- ========================================== -->
+            <!-- VIEW: PERMISSIONS                          -->
+            <!-- ========================================== -->
+            <div id="view-perms" class="max-w-4xl mx-auto p-8 md:p-12 space-y-16 hidden fade-in">
+                <!-- Section: Permission Registry -->
+                <section id="doc-registry" class="space-y-6 pt-6">
+                    <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4 border-b border-[#222] pb-4">
+                        <h2 class="text-4xl font-black text-white uppercase italic tracking-tighter shrink-0" data-i18n="docs_registry_title"></h2>
+                        <button onclick="generator.open()" class="bg-[#FFFC00] hover:bg-[#e6e300] text-black px-4 py-2 rounded-lg font-bold text-sm flex items-center justify-center gap-2 transition shrink-0 shadow-lg">
+                            <i class="fa-solid fa-wand-magic-sparkles"></i> <span data-i18n="docs_registry_btn"></span>
+                        </button>
+                    </div>
+                    <p class="text-gray-400 leading-relaxed text-sm" id="docs-registry-desc"></p>
+                    <div id="permission-registry" class="space-y-6"></div>
+                </section>
             </div>
 
             <!-- ========================================== -->
@@ -1392,7 +1405,7 @@ if ($context.Request.IsWebSocketRequest) {
                         { 
                             action: "RETRIEVE_PLAYERS_LIST", 
                             type: "READ", 
-                            desc: (items.RETRIEVE_PLAYERS_LIST || {}).desc || "", 
+                            desc: (items.RETRIEVE_PLAYERS_LIST || {}).desc || "Returns a lightweight list of all players currently connected.", 
                             payload: { "action": "RETRIEVE_PLAYERS_LIST" },
                             response: { 
                                 "type": "player_list", 
@@ -1406,21 +1419,34 @@ if ($context.Request.IsWebSocketRequest) {
                         { 
                             action: "RETRIEVE_PLAYER_INFO", 
                             type: "READ", 
-                            desc: (items.RETRIEVE_PLAYER_INFO || {}).desc || "", 
+                            desc: (items.RETRIEVE_PLAYER_INFO || {}).desc || "Get an exhaustive dump of a player's current status (vitals, group, nest, growth, skin).", 
                             payload: { "action": "RETRIEVE_PLAYER_INFO", "steamId": "7656119xxxxxxxxxx" },
-                            response: fullPlayerInfo 
+                            response: {
+                                "type": "player_info_retrieved",
+                                "playerInfo": {
+                                    "SteamId": "7656119xxxxxxxxxx",
+                                    "DinoName": "BP_Tyrannosaurus_C",
+                                    "Growth": 1.0,
+                                    "Health": 100.0,
+                                    "Hunger": 100.0,
+                                    "Thirst": 100.0,
+                                    "Stamina": 100.0,
+                                    "Blood": 100.0,
+                                    "Nutrients": { "CarbValue": 100.0, "ProteinValue": 100.0, "LipidValue": 100.0 },
+                                    "Location": { "X": 1500.0, "Y": -200.0, "Z": 100.0 }
+                                }
+                            } 
                         }
                     ]
                 },
                 {
                     category: cats.physiological_control || "Physiological Control",
                     items: [
-                        { action: "HEAL_DINO", type: "WRITE", desc: (items.HEAL_DINO || {}).desc || "", payload: { "action": "HEAL_DINO", "steamId": "7656119xxxxxxxxxx" }, response: { "type": "dino_heal_successful", "dinoHeal": { "status": "Success", "reason": "Dino Healed!" } } },
-                        { action: "GROW_DINO", type: "WRITE", desc: (items.GROW_DINO || {}).desc || "", payload: { "action": "GROW_DINO", "steamId": "7656119xxxxxxxxxx", "percent": 100.0 }, response: { "type": "dino_grow_successful", "dinoGrow": { "status": "Success", "reason": "Dino Grown!" } } },
-                        { action: "SLAY_DINO", type: "DELETE", desc: (items.SLAY_DINO || {}).desc || "", payload: { "action": "SLAY_DINO", "steamId": "7656119xxxxxxxxxx" }, response: { "type": "dino_slay_successful", "dinoSlay": { "status": "Success", "reason": "Dino Slayed!" } } },
-                        { action: "ADMIN_SLAY_DINO", type: "DELETE", desc: (items.ADMIN_SLAY_DINO || {}).desc || "", payload: { "action": "ADMIN_SLAY_DINO", "steamId": "7656119xxxxxxxxxx" }, response: { "type": "dino_slay_successful", "dinoSlay": { "status": "Success", "reason": "Dino Slayed!" } } },
-                        { action: "SET_SKIN", type: "WRITE", desc: (items.SET_SKIN || {}).desc || "", payload: { "action": "SET_SKIN", "steamId": "7656119xxxxxxxxxx", "skinData": { "bIsFemale": true, "SkinVariation": 0.5, "PatternIndex": 3, "MaleDisplayColor": {"r": 1.0, "g": 0.0, "b": 0.0, "a": 1.0}, "MarkingsColor": {"r": 1.0, "g": 1.0, "b": 1.0, "a": 1.0}, "BodyColor": {"r": 0.2, "g": 0.1, "b": 0.1, "a": 1.0}, "FlankColor": {"r": 0.2, "g": 0.1, "b": 0.1, "a": 1.0}, "UnderbellyColor": {"r": 0.9, "g": 0.9, "b": 0.9, "a": 1.0}, "Detail1Color": {"r": 1.0, "g": 1.0, "b": 1.0, "a": 1.0}, "EyesColor": {"r": 1.0, "g": 1.0, "b": 0.0, "a": 1.0} } }, response: { "type": "set_skin_successful", "setSkin": { "status": "Success", "reason": "Skin successfully applied!" } } },
-                        { action: "SET_PLAYER_INFO", type: "WRITE", desc: (items.SET_PLAYER_INFO || {}).desc || "", payload: { "action": "SET_PLAYER_INFO", "steamId": "7656119xxxxxxxxxx", "health": 100.0, "hunger": 100.0, "thirst": 100.0, "stamina": 100.0, "blood": 100.0, "growth": 1.0, "location": { "x": 1500.0, "y": -200.0, "z": 100.0 }, "nutrients": { "CarbValue": 10000.0, "ProteinValue": 10000.0, "LipidValue": 10000.0 } }, response: { "type": "set_player_info_successful", "setPlayerInfo": { "status": "Success", "reason": "Player info successfully updated!" } } },
+                        { action: "HEAL_DINO", type: "WRITE", desc: (items.HEAL_DINO || {}).desc || "Restores health, bleed, and fractures to full.", payload: { "action": "HEAL_DINO", "steamId": "7656119xxxxxxxxxx" }, response: { "type": "dino_heal_successful", "dinoHeal": { "status": "Success", "reason": "Dino Healed!" } } },
+                        { action: "GROW_DINO", type: "WRITE", desc: (items.GROW_DINO || {}).desc || "Sets dinosaur growth percentage.", payload: { "action": "GROW_DINO", "steamId": "7656119xxxxxxxxxx", "percent": 100.0 }, response: { "type": "dino_grow_successful", "dinoGrow": { "status": "Success", "reason": "Dino Grown!" } } },
+                        { action: "ADMIN_SLAY_DINO", type: "DELETE", desc: (items.ADMIN_SLAY_DINO || {}).desc || "Instantly kills the dinosaur.", payload: { "action": "ADMIN_SLAY_DINO", "steamId": "7656119xxxxxxxxxx" }, response: { "type": "dino_slay_successful", "dinoSlay": { "status": "Success", "reason": "Dino Slayed!" } } },
+                        { action: "SET_SKIN", type: "WRITE", desc: (items.SET_SKIN || {}).desc || "Overwrites the current skin customized colors.", payload: { "action": "SET_SKIN", "steamId": "7656119xxxxxxxxxx", "skinData": { "bIsFemale": true, "PatternIndex": 3, "BodyColor": {"r": 0.2, "g": 0.1, "b": 0.1, "a": 1.0} } }, response: { "type": "set_skin_successful", "setSkin": { "status": "Success", "reason": "Skin successfully applied!" } } },
+                        { action: "SET_PLAYER_INFO", type: "WRITE", desc: (items.SET_PLAYER_INFO || {}).desc || "Modify a wide variety of stats, properties, and physical locations simultaneously.", payload: { "action": "SET_PLAYER_INFO", "steamId": "7656119xxxxxxxxxx", "fullPayload": { "health": 100.0, "hunger": 100.0, "thirst": 100.0, "stamina": 100.0, "blood": 100.0, "growth": 1.0, "location": { "x": 1500.0, "y": -200.0, "z": 100.0 } } }, response: { "type": "set_player_info_successful", "setPlayerInfo": { "status": "Success", "reason": "Player info successfully updated!" } } },
                         { action: "SET_HEALTH", type: "WRITE", desc: (items.SET_HEALTH || {}).desc || "", payload: { "action": "SET_HEALTH", "steamId": "7656119xxxxxxxxxx", "value": 100.0 }, response: { "type": "dino_set_health_successful", "dinoSetHealth": { "status": "Success", "reason": "Health set!" } } },
                         { action: "SET_HUNGER", type: "WRITE", desc: (items.SET_HUNGER || {}).desc || "", payload: { "action": "SET_HUNGER", "steamId": "7656119xxxxxxxxxx", "value": 100.0 }, response: { "type": "dino_set_hunger_successful", "dinoSetHunger": { "status": "Success", "reason": "Hunger set!" } } },
                         { action: "SET_THIRST", type: "WRITE", desc: (items.SET_THIRST || {}).desc || "", payload: { "action": "SET_THIRST", "steamId": "7656119xxxxxxxxxx", "value": 100.0 }, response: { "type": "dino_set_thirst_successful", "dinoSetThirst": { "status": "Success", "reason": "Thirst set!" } } },
@@ -1432,10 +1458,10 @@ if ($context.Request.IsWebSocketRequest) {
                 {
                     category: cats.archiving || "Archiving",
                     items: [
-                        { action: "RETRIEVE_PLAYER_GARAGE_DATA", type: "READ", desc: (items.RETRIEVE_PLAYER_GARAGE_DATA || {}).desc || "", payload: { "action": "RETRIEVE_PLAYER_GARAGE_DATA", "steamId": "7656119xxxxxxxxxx" }, response: { "type": "garage_data", "StoredPlayerData": [ { "Index": 0, "Class": "Tyrannosaurus", "SteamId": "7656119xxxxxxxxxx", "Growth": 1.0, "Health": 100.0, "Hunger": 100, "Thirst": 100, "Stamina": 100, "Blood": 100.0 }, { "Index": 1, "Class": "Pteranodon", "SteamId": "7656119xxxxxxxxxx", "Growth": 0.5, "Health": 80.0, "Hunger": 70, "Thirst": 80, "Stamina": 100, "Blood": 100.0 } ] } },
-                        { action: "GARAGE_STORE", type: "WRITE", desc: (items.GARAGE_STORE || {}).desc || "", payload: { "action": "GARAGE_STORE", "steamId": "7656119xxxxxxxxxx" }, response: { "type": "garage_store_successful", "garage_store": { "status": "Success", "reason": "Dino stored to garage!" } } },
-                        { action: "RETRIEVE_DINO_FROM_GARAGE", type: "WRITE", desc: (items.RETRIEVE_DINO_FROM_GARAGE || {}).desc || "", payload: { "action": "RETRIEVE_DINO_FROM_GARAGE", "steamId": "7656119xxxxxxxxxx", "dinoIdx": 0 }, response: { "type": "garage_retrieve_successful", "garage_retrieve": { "status": "Success", "reason": "Dino retrieved from garage!" } } },
-                        { action: "SWAP_DINO", type: "WRITE", desc: (items.SWAP_DINO || {}).desc || "", payload: { "action": "SWAP_DINO", "steamId": "7656119xxxxxxxxxx", "dinoName": "BP_Tyrannosaurus_C" }, response: { "type": "swap_dino_successful", "swapDino": { "status": "Success", "reason": "Dinosaur successfully swapped!" } } }
+                        { action: "RETRIEVE_PLAYER_GARAGE_DATA", type: "READ", desc: (items.RETRIEVE_PLAYER_GARAGE_DATA || {}).desc || "Fetches the player's saved garage data.", payload: { "action": "RETRIEVE_PLAYER_GARAGE_DATA", "steamId": "7656119xxxxxxxxxx" }, response: { "type": "garage_data", "StoredPlayerData": [ { "Index": 0, "Class": "Tyrannosaurus", "Growth": 1.0, "Health": 100.0, "Hunger": 100, "Thirst": 100, "Stamina": 100, "Blood": 100.0 } ] } },
+                        { action: "GARAGE_STORE", type: "WRITE", desc: (items.GARAGE_STORE || {}).desc || "Safely parks the active dino into the garage.", payload: { "action": "GARAGE_STORE", "steamId": "7656119xxxxxxxxxx" }, response: { "type": "garage_store_successful", "garage_store": { "status": "Success", "reason": "Dino stored to garage!" } } },
+                        { action: "RETRIEVE_DINO_FROM_GARAGE", type: "WRITE", desc: (items.RETRIEVE_DINO_FROM_GARAGE || {}).desc || "Spawns the player as a dino currently stored in the garage array.", payload: { "action": "RETRIEVE_DINO_FROM_GARAGE", "steamId": "7656119xxxxxxxxxx", "fullPayload": { "speciesId": 0 } }, response: { "type": "garage_retrieve_successful", "garage_retrieve": { "status": "Success", "reason": "Dino retrieved from garage!" } } },
+                        { action: "SWAP_DINO", type: "WRITE", desc: (items.SWAP_DINO || {}).desc || "Instantly forces a species swap.", payload: { "action": "SWAP_DINO", "steamId": "7656119xxxxxxxxxx", "dinoName": "BP_Tyrannosaurus_C" }, response: { "type": "swap_dino_successful", "swapDino": { "status": "Success", "reason": "Dinosaur successfully swapped!" } } }
                     ]
                 },
                 {
@@ -1446,47 +1472,120 @@ if ($context.Request.IsWebSocketRequest) {
                     ]
                 },
                 {
-                    category: cats.movement || "Movement & Utilities",
+                    category: cats.movement || "Movement, World & Utilities",
                     items: [
                         { action: "TELEPORT_TO_PLAYER", type: "WRITE", desc: (items.TELEPORT_TO_PLAYER || {}).desc || "", payload: { "action": "TELEPORT_TO_PLAYER", "steamId": "7656119xxxxxxxxxx", "targetSteamId": "7656119xxxxxxTarget" }, response: { "type": "dino_teleport_to_coords_successful", "dinoTeleportToPlayer": { "status": "Success", "reason": "Player teleported to player location!" } } },
-                        { action: "TELEPORT_TO_COORDS", type: "WRITE", desc: (items.TELEPORT_TO_COORDS || {}).desc || "", payload: { "action": "TELEPORT_TO_COORDS", "steamId": "7656119xxxxxxxxxx", "x": 100.5, "y": -500.0, "z": 200.0 }, response: { "type": "dino_teleport_to_coords_successful", "dinoTeleportToCoords": { "status": "Success", "reason": "Player teleported to new location!" } } }
+                        { action: "TELEPORT_TO_COORDS", type: "WRITE", desc: (items.TELEPORT_TO_COORDS || {}).desc || "", payload: { "action": "TELEPORT_TO_COORDS", "steamId": "7656119xxxxxxxxxx", "fullPayload": { "x": 100.5, "y": -500.0, "z": 200.0 } }, response: { "type": "dino_teleport_to_coords_successful", "dinoTeleportToCoords": { "status": "Success", "reason": "Player teleported to new location!" } } },
+                        { action: "SET_TIME", type: "WRITE", desc: (items.SET_TIME || {}).desc || "Change the time of day, day length, or night length.", payload: { "action": "SET_TIME", "fullPayload": { "type": "time", "value": 1200.0 } }, response: { "type": "set_time_successful", "status": "Success" } },
+                        { action: "SET_WEATHER", type: "WRITE", desc: (items.SET_WEATHER || {}).desc || "Override the dynamic weather system and transition to a new preset.", payload: { "action": "SET_WEATHER", "fullPayload": { "value": "storm" } }, response: { "type": "set_weather_successful", "status": "Success" } }
                     ]
                 },
                 {
-                    category: cats.permissions || "Permissions",
+                    category: cats.permissions || "Permissions (String Based)",
                     items: [
-                        { action: "RETRIEVE_ROLES", type: "READ", desc: (items.RETRIEVE_ROLES || {}).desc || "", payload: { "action": "RETRIEVE_ROLES" }, response: { "type": "roles_list", "roles": [ { "roleName": "Sentinel", "priority": 75, "permissions": [0, 2, 10, 24] } ] } },
-                        { action: "CREATE_ROLE", type: "ADMIN", desc: (items.CREATE_ROLE || {}).desc || "", payload: { "action": "CREATE_ROLE", "roleName": "Sentinel", "priority": 75, "permissions": [0, 2, 10, 24] }, response: { "type": "create_role_success", "roleName": "Sentinel" } },
-                        { action: "UPDATE_ROLE", type: "ADMIN", desc: (items.UPDATE_ROLE || {}).desc || "", payload: { "action": "UPDATE_ROLE", "roleName": "Sentinel", "newPriority": 80, "newPermissions": [0, 1, 2, 10, 11, 24], "executorSteamId": "7656119xxxxxxxxxx" }, response: { "type": "update_role_success", "roleName": "Sentinel" } },
-                        { action: "DELETE_ROLE", type: "ADMIN", desc: (items.DELETE_ROLE || {}).desc || "", payload: { "action": "DELETE_ROLE", "roleName": "Sentinel", "executorSteamId": "7656119xxxxxxxxxx" }, response: { "type": "delete_role_success", "roleName": "Sentinel" } },
-                        { action: "ASSIGN_ROLE_TO_USER", type: "ADMIN", desc: (items.ASSIGN_ROLE_TO_USER || {}).desc || "", payload: { "action": "ASSIGN_ROLE_TO_USER", "steamId": "7656119xxxxxxxxxx", "roleName": "Sentinel" }, response: { "type": "assign_role_success", "steamId": "7656119xxxxxxxxxx", "role": "Sentinel" } },
-                        { action: "REMOVE_ROLE_FROM_USER", type: "ADMIN", desc: (items.REMOVE_ROLE_FROM_USER || {}).desc || "", payload: { "action": "REMOVE_ROLE_FROM_USER", "steamId": "7656119xxxxxxxxxx", "roleName": "Sentinel" }, response: { "type": "remove_role_success", "steamId": "7656119xxxxxxxxxx", "role": "Sentinel" } },
+                        { action: "RETRIEVE_ROLES", type: "READ", desc: (items.RETRIEVE_ROLES || {}).desc || "Get a list of all server roles, their priorities, and their permission nodes.", payload: { "action": "RETRIEVE_ROLES" }, response: { "type": "roles_list", "roles": [ { "roleName": "VIP", "priority": 75, "permissions": ["skin.rainbow", "tp.use"] } ] } },
+                        { action: "CREATE_ROLE", type: "ADMIN", desc: (items.CREATE_ROLE || {}).desc || "Create a new role.", payload: { "action": "CREATE_ROLE", "steamId": "7656119xxxxxxxxxx", "fullPayload": { "roleName": "Sentinel", "priority": 75, "permissions": ["skin.rainbow", "tp.use"] } }, response: { "type": "create_role_success", "roleName": "Sentinel" } },
+                        { action: "UPDATE_ROLE", type: "ADMIN", desc: (items.UPDATE_ROLE || {}).desc || "Modify an existing role's permissions.", payload: { "action": "UPDATE_ROLE", "steamId": "7656119xxxxxxxxxx", "fullPayload": { "roleName": "Sentinel", "newPriority": 80, "newPermissions": ["skin.rainbow", "tp.use", "godmode.use"] } }, response: { "type": "update_role_success", "roleName": "Sentinel" } },
+                        { action: "DELETE_ROLE", type: "ADMIN", desc: (items.DELETE_ROLE || {}).desc || "Remove a role.", payload: { "action": "DELETE_ROLE", "steamId": "7656119xxxxxxxxxx", "fullPayload": { "roleName": "Sentinel" } }, response: { "type": "delete_role_success", "roleName": "Sentinel" } },
+                        { action: "ASSIGN_ROLE_TO_USER", type: "ADMIN", desc: (items.ASSIGN_ROLE_TO_USER || {}).desc || "Assigns a role to a player.", payload: { "action": "ASSIGN_ROLE_TO_USER", "steamId": "7656119xxxxxxxxxx", "fullPayload": { "targetId": "7656119YYYYYYYYY", "roleName": "Sentinel" } }, response: { "type": "assign_role_success", "steamId": "7656119YYYYYYYYY", "role": "Sentinel" } },
+                        { action: "REMOVE_ROLE_FROM_USER", type: "ADMIN", desc: (items.REMOVE_ROLE_FROM_USER || {}).desc || "Removes a role from a player.", payload: { "action": "REMOVE_ROLE_FROM_USER", "steamId": "7656119xxxxxxxxxx", "fullPayload": { "targetId": "7656119YYYYYYYYY", "roleName": "Sentinel" } }, response: { "type": "remove_role_success", "steamId": "7656119YYYYYYYYY", "role": "Sentinel" } },
                         { action: "RETRIEVE_USER_ROLES", type: "READ", desc: (items.RETRIEVE_USER_ROLES || {}).desc || "", payload: { "action": "RETRIEVE_USER_ROLES", "steamId": "7656119xxxxxxxxxx" }, response: { "type": "user_roles_list", "steamId": "7656119xxxxxxxxxx", "roles": [ { "roleName": "Guardian", "priority": 50 }, { "roleName": "Sentinel", "priority": 80 } ] } },
-                        { action: "CHECK_USER_PERMISSION", type: "READ", desc: (items.CHECK_USER_PERMISSION || {}).desc || "", payload: { "action": "CHECK_USER_PERMISSION", "steamId": "7656119xxxxxxxxxx", "permission": 10 }, response: { "type": "permission_check_result", "steamId": "7656119xxxxxxxxxx", "permission": 10, "hasPermission": true } }
+                        { action: "CHECK_USER_PERMISSION", type: "READ", desc: (items.CHECK_USER_PERMISSION || {}).desc || "", payload: { "action": "CHECK_USER_PERMISSION", "steamId": "7656119xxxxxxxxxx", "fullPayload": { "permission": "tp.use" } }, response: { "type": "permission_check_result", "steamId": "7656119xxxxxxxxxx", "permission": "tp.use", "hasPermission": true } }
                     ]
                 },
                 {
                     category: cats.console || "Console Authority",
                     items: [
                         { action: "CONSOLE_ASSIGN_ROLE", type: "ADMIN", desc: (items.CONSOLE_ASSIGN_ROLE || {}).desc || "", payload: { "action": "CONSOLE_ASSIGN_ROLE", "steamId": "7656119xxxxxxxxxx", "roleName": "Owner" }, response: { "type": "console_assign_success", "steamId": "7656119xxxxxxxxxx", "role": "Owner" } },
-                        { action: "CONSOLE_UPDATE_ROLE", type: "ADMIN", desc: (items.CONSOLE_UPDATE_ROLE || {}).desc || "", payload: { "action": "CONSOLE_UPDATE_ROLE", "currentName": "Sentinel", "newName": "Protector", "newPriority": 90, "newPermissions": [0, 1, 2, 10, 11, 24] }, response: { "type": "console_update_success", "roleName": "Protector" } },
+                        { action: "CONSOLE_UPDATE_ROLE", type: "ADMIN", desc: (items.CONSOLE_UPDATE_ROLE || {}).desc || "", payload: { "action": "CONSOLE_UPDATE_ROLE", "currentName": "Sentinel", "newName": "Protector", "newPriority": 90, "newPermissions": ["skin.rainbow", "tp.use"] }, response: { "type": "console_update_success", "roleName": "Protector" } },
                         { action: "CONSOLE_DELETE_ROLE", type: "ADMIN", desc: (items.CONSOLE_DELETE_ROLE || {}).desc || "", payload: { "action": "CONSOLE_DELETE_ROLE", "roleName": "Sentinel" }, response: { "type": "console_delete_success", "roleName": "Sentinel" } }
                     ]
                 },
                 {
                     category: cats.broadcasting || "Broadcasting",
                     items: [
-                        { action: "SEND_GLOBAL_ANNOUNCEMENT", type: "WRITE", desc: (items.SEND_GLOBAL_ANNOUNCEMENT || {}).desc || "", payload: { "action": "SEND_GLOBAL_ANNOUNCEMENT", "message": "Server Shutdown in 10m", "announcer": "System", "duration": 10.0 }, response: { "type": "global_announcement_sent", "message": "Server Shutdown in 10m" } },
-                        { action: "SEND_DIRECT_ANNOUNCEMENT", type: "WRITE", desc: (items.SEND_DIRECT_ANNOUNCEMENT || {}).desc || "", payload: { "action": "SEND_DIRECT_ANNOUNCEMENT", "steamId": "7656119xxxxxxxxxx", "message": "Admin assistance requested.", "announcer": "Staff", "announcerId": "1", "isDirectMessage": true }, response: { "type": "announcement_sent", "directAnnouncement": { "status": "Success", "reason": "Direct announcement sent." } } },
-                        { action: "SEND_NOTIFICATION", type: "WRITE", desc: (items.SEND_NOTIFICATION || {}).desc || "", payload: { "action": "SEND_NOTIFICATION", "steamId": "7656119xxxxxxxxxx", "text": "You have been healed!" }, response: { "type": "SEND_NOTIFICATION_successful", "SEND_NOTIFICATION": { "status": "Success", "reason": "Notification successfully sent!" } } }
+                        { action: "SEND_GLOBAL_ANNOUNCEMENT", type: "WRITE", desc: (items.SEND_GLOBAL_ANNOUNCEMENT || {}).desc || "Display an announcement on the screens of all connected players.", payload: { "action": "SEND_GLOBAL_ANNOUNCEMENT", "fullPayload": { "message": "Server Shutdown in 10m", "announcer": "System", "time": 10.0 } }, response: { "type": "global_announcement_sent", "message": "Server Shutdown in 10m" } },
+                        { action: "SEND_DIRECT_ANNOUNCEMENT", type: "WRITE", desc: (items.SEND_DIRECT_ANNOUNCEMENT || {}).desc || "Sends a direct message announcement to a specific player.", payload: { "action": "SEND_DIRECT_ANNOUNCEMENT", "steamId": "7656119xxxxxxxxxx", "fullPayload": { "message": "Admin assistance requested.", "announcer": "Staff" } }, response: { "type": "announcement_sent", "directAnnouncement": { "status": "Success", "reason": "Direct announcement sent." } } },
+                        { action: "SEND_NOTIFICATION", type: "WRITE", desc: (items.SEND_NOTIFICATION || {}).desc || "Sends a standard notification text popup.", payload: { "action": "SEND_NOTIFICATION", "steamId": "7656119xxxxxxxxxx", "fullPayload": { "text": "You have been healed!" } }, response: { "type": "SEND_NOTIFICATION_successful", "SEND_NOTIFICATION": { "status": "Success", "reason": "Notification successfully sent!" } } }
                     ]
                 }
             ];
         }
 
-        // Permissions list from language file
-        function getPermissionsList() {
-            return LANG.permissions || [];
+        // Generate logical groups of permissions to replace the raw array
+        function getPermissionsGroups() {
+            return [
+                {
+                    group: "Global & Administrative",
+                    nodes: ["*", "admin.*", "athena.dev", "admin.whitelist", "admin.op"]
+                },
+                {
+                    group: "Slay",
+                    nodes: ["slay.*", "slay.use", "slay.others.*", "slay.others"]
+                },
+                {
+                    group: "Heal",
+                    nodes: ["heal.*", "heal.use", "heal.others.*", "heal.others"]
+                },
+                {
+                    group: "Smite",
+                    nodes: ["smite.*", "smite.use", "smite.others.*", "smite.others"]
+                },
+                {
+                    group: "Grow",
+                    nodes: ["grow.*", "grow.use", "grow.others.*", "grow.others"]
+                },
+                {
+                    group: "Vitals",
+                    nodes: [
+                        "health.*", "health.use", "health.others.*", "health.others",
+                        "hunger.*", "hunger.use", "hunger.others.*", "hunger.others",
+                        "thirst.*", "thirst.use", "thirst.others.*", "thirst.others",
+                        "stamina.*", "stamina.use", "stamina.others.*", "stamina.others",
+                        "blood.*", "blood.use", "blood.others.*", "blood.others"
+                    ]
+                },
+                {
+                    group: "Teleport",
+                    nodes: ["tp.*", "tp.use", "tp.others.*", "tp.others"]
+                },
+                {
+                    group: "Cosmetics",
+                    nodes: ["skin.*", "skin.use", "skin.rainbow", "skin.rainbow2", "skin.dev", "gender.*", "gender.use"]
+                },
+                {
+                    group: "Lifecycle",
+                    nodes: ["elder.*", "elder.use", "godmode.*", "godmode.use", "godmode.others.*", "godmode.others", "vanish.*", "vanish.use", "swap.*", "swap.use"]
+                },
+                {
+                    group: "Garage & Park",
+                    nodes: ["garage.*", "garage.use", "park.*", "park.use", "retrieve.*", "retrieve.use"]
+                },
+                {
+                    group: "Role Management",
+                    nodes: ["roles.*", "roles.create", "roles.delete", "roles.assign", "roles.console"]
+                },
+                {
+                    group: "Moderation",
+                    nodes: ["punish.*", "mute.*", "mute.use", "unmute.*", "unmute.use", "kick.*", "kick.use", "ban.*", "ban.use", "unban.*", "unban.use"]
+                },
+                {
+                    group: "Chat & Communication",
+                    nodes: ["announce.*", "announce.use", "dm.*", "dm.use"]
+                },
+                {
+                    group: "World & Weather",
+                    nodes: ["weather.*", "weather.use", "time.*", "time.use"]
+                },
+                {
+                    group: "Spawning & AI",
+                    nodes: ["spawn.*", "spawn.ai", "spawn.corpse", "wipe.*", "wipe.ai", "wipe.corpses"]
+                },
+                {
+                    group: "Utility",
+                    nodes: ["group.*", "group.use", "command.delay.<N>", "command.delay.bypass"]
+                }
+            ];
         }
 
         // Build cmdCategories using language keys
@@ -1495,48 +1594,72 @@ if ($context.Request.IsWebSocketRequest) {
             const rm = (lc.role_management || {}).items || {};
             const ds = (lc.dino_stats || {}).items || {};
             const wg = (lc.world_garage || {}).items || {};
+            const mo = (lc.moderation || {}).items || {};
+            const cw = (lc.cosmetics_weather || {}).items || {};
 
             return [
                 {
                     name: (lc.role_management || {}).name || "Role Management", icon: "fa-user-shield", color: "purple",
                     items: [
-                        { cmd: "/createrole", params: ["Name", "Priority"], perm: (rm.createrole || {}).perm || "Can Create Roles", permRaw: "CanCreateRoles", desc: (rm.createrole || {}).desc || "",
-                          detail: { summary: (rm.createrole || {}).summary || "", usage: ["/createrole Moderator 50", "/createrole VIP 10"], notes: (rm.createrole || {}).notes || "" } },
-                        { cmd: "/deleterole", params: ["Name"], perm: (rm.deleterole || {}).perm || "Can Delete Roles", permRaw: "CanDeleteRoles", desc: (rm.deleterole || {}).desc || "", permColor: "red",
-                          detail: { summary: (rm.deleterole || {}).summary || "", usage: ["/deleterole Moderator"], notes: (rm.deleterole || {}).notes || "" } },
-                        { cmd: "/assignrole", params: ["Player", "Role"], perm: (rm.assignrole || {}).perm || "Can Manage Roles · Others", permRaw: "CanManageRolesOthers", desc: (rm.assignrole || {}).desc || "",
-                          detail: { summary: (rm.assignrole || {}).summary || "", usage: ["/assignrole Specimen_Alpha VIP", "/assignrole 7656119xxxxxxxxxx Moderator"], notes: (rm.assignrole || {}).notes || "" } },
-                        { cmd: "/removerole", params: ["Player", "Role"], perm: (rm.removerole || {}).perm || "Can Manage Roles · Others", permRaw: "CanManageRolesOthers", desc: (rm.removerole || {}).desc || "",
-                          detail: { summary: (rm.removerole || {}).summary || "", usage: ["/removerole Specimen_Alpha VIP", "/removerole 7656119xxxxxxxxxx Moderator"], notes: (rm.removerole || {}).notes || "" } }
+                        { cmd: "/createrole", params: ["Name", "Priority"], perm: "roles.create", desc: (rm.createrole || {}).desc || "Creates a new role.",
+                            detail: { summary: (rm.createrole || {}).summary || "Priority must be lower than your own.", usage: ["/createrole Moderator 50", "/createrole VIP 10"], notes: (rm.createrole || {}).notes || "" } },
+                        { cmd: "/deleterole", params: ["Name"], perm: "roles.delete", permColor: "red", desc: (rm.deleterole || {}).desc || "Deletes an existing role.",
+                            detail: { summary: (rm.deleterole || {}).summary || "", usage: ["/deleterole Moderator"], notes: (rm.deleterole || {}).notes || "" } },
+                        { cmd: "/assignrole", params: ["Player", "Role"], perm: "roles.assign", desc: (rm.assignrole || {}).desc || "Assigns a role to a player.",
+                            detail: { summary: (rm.assignrole || {}).summary || "", usage: ["/assignrole Specimen_Alpha VIP", "/assignrole 7656119xxxxxxxxxx Moderator"], notes: (rm.assignrole || {}).notes || "" } },
+                        { cmd: "/removerole", params: ["Player", "Role"], perm: "roles.assign", desc: (rm.removerole || {}).desc || "Removes a role from a player.",
+                            detail: { summary: (rm.removerole || {}).summary || "", usage: ["/removerole Specimen_Alpha VIP", "/removerole 7656119xxxxxxxxxx Moderator"], notes: (rm.removerole || {}).notes || "" } }
                     ]
                 },
                 {
                     name: (lc.dino_stats || {}).name || "Dino & Player Stats", icon: "fa-dna", color: "green",
                     items: [
-                        { cmd: "/heal", params: ["Player"], perm: (ds.heal || {}).perm || "Can Heal", permRaw: "CanHeal", desc: (ds.heal || {}).desc || "", detail: { summary: (ds.heal || {}).summary || "", usage: ["/heal Specimen_Alpha", "/heal 7656119xxxxxxxxxx"], notes: (ds.heal || {}).notes || "" } },
-                        { cmd: "/grow", params: ["Player"], perm: (ds.grow || {}).perm || "Can Grow", permRaw: "CanGrow", desc: (ds.grow || {}).desc || "", detail: { summary: (ds.grow || {}).summary || "", usage: ["/grow Specimen_Alpha", "/grow 7656119xxxxxxxxxx"], notes: (ds.grow || {}).notes || "" } },
-                        { cmd: "/vanish", params: ["Player"], perm: (ds.vanish || {}).perm || "Can Vanish", permRaw: "CanVanish", desc: (ds.vanish || {}).desc || "", detail: { summary: (ds.vanish || {}).summary || "", usage: ["/vanish Specimen_Alpha", "/vanish 7656119xxxxxxxxxx"], notes: (ds.vanish || {}).notes || "" } },
-                        { cmd: "/slay", params: ["Player"], perm: (ds.slay || {}).perm || "Can Slay", permRaw: "CanSlay", desc: (ds.slay || {}).desc || "", permColor: "red", detail: { summary: (ds.slay || {}).summary || "", usage: ["/slay Specimen_Alpha", "/slay 7656119xxxxxxxxxx"], notes: (ds.slay || {}).notes || "" } },
-                        { cmd: "/tp", params: ["Player | X Y Z"], perm: (ds.tp || {}).perm || "Can Teleport", permRaw: "CanTeleport", desc: (ds.tp || {}).desc || "", permColor: "blue", detail: { summary: (ds.tp || {}).summary || "", usage: ["/tp Specimen_Alpha", "/tp 1200.5 4050.0 100.0", "/tp Specimen_Alpha Specimen_Beta", "/tp Specimen_Alpha 1200.5 4050.0 100.0"], notes: (ds.tp || {}).notes || "" } },
-                        { cmd: "/swap", params: ["Class"], perm: (ds.swap || {}).perm || "Can Swap", permRaw: "CanSwap", desc: (ds.swap || {}).desc || "", permColor: "blue", detail: { summary: (ds.swap || {}).summary || "", usage: ["/swap BP_Tyrannosaurus_C", "/swap BP_Pteranodon_C"], notes: (ds.swap || {}).notes || "" } },
-                        { cmd: "/health", params: ["Player", "0-100"], perm: (ds.health || {}).perm || "Can Set Health", permRaw: "CanSetHealth", desc: (ds.health || {}).desc || "", detail: { summary: (ds.health || {}).summary || "", usage: ["/health Specimen_Alpha 100", "/health 7656119xxxxxxxxxx 50"], notes: (ds.health || {}).notes || "" } },
-                        { cmd: "/hunger", params: ["Player", "0-100"], perm: (ds.hunger || {}).perm || "Can Set Hunger", permRaw: "CanSetHunger", desc: (ds.hunger || {}).desc || "", detail: { summary: (ds.hunger || {}).summary || "", usage: ["/hunger Specimen_Alpha 100", "/hunger 7656119xxxxxxxxxx 75"], notes: (ds.hunger || {}).notes || "" } },
-                        { cmd: "/thirst", params: ["Player", "0-100"], perm: (ds.thirst || {}).perm || "Can Set Thirst", permRaw: "CanSetThirst", desc: (ds.thirst || {}).desc || "", detail: { summary: (ds.thirst || {}).summary || "", usage: ["/thirst Specimen_Alpha 100"], notes: (ds.thirst || {}).notes || "" } },
-                        { cmd: "/stamina", params: ["Player", "0-100"], perm: (ds.stamina || {}).perm || "Can Set Stamina", permRaw: "CanSetStamina", desc: (ds.stamina || {}).desc || "", detail: { summary: (ds.stamina || {}).summary || "", usage: ["/stamina Specimen_Alpha 100"], notes: (ds.stamina || {}).notes || "" } },
-                        { cmd: "/blood", params: ["Player", "0-100"], perm: (ds.blood || {}).perm || "Can Set Blood", permRaw: "CanSetBlood", desc: (ds.blood || {}).desc || "", detail: { summary: (ds.blood || {}).summary || "", usage: ["/blood Specimen_Alpha 100"], notes: (ds.blood || {}).notes || "" } },
-                        { cmd: "/set-nutrient", params: ["Type", "0-100"], perm: (ds["set-nutrient"] || {}).perm || "Can Set Nutrient", permRaw: "CanSetNutrient", desc: (ds["set-nutrient"] || {}).desc || "", detail: { summary: (ds["set-nutrient"] || {}).summary || "", usage: ["/set-nutrient PROTEIN 100", "/set-nutrient LIPIDS 50", "/set-nutrient CARBS 75"], notes: (ds["set-nutrient"] || {}).notes || "" } }
+                        { cmd: "/heal", params: ["Player"], perm: "heal.use / heal.others", desc: (ds.heal || {}).desc || "Restores health, bleed, and fractures.", detail: { summary: (ds.heal || {}).summary || "Supports !everyone target.", usage: ["/heal Specimen_Alpha", "/heal !everyone"], notes: (ds.heal || {}).notes || "" } },
+                        { cmd: "/grow", params: ["Player", "Value"], perm: "grow.use / grow.others", desc: (ds.grow || {}).desc || "Sets dinosaur growth percentage.", detail: { summary: (ds.grow || {}).summary || "Supports !everyone target.", usage: ["/grow Specimen_Alpha 100", "/grow !everyone 100"], notes: (ds.grow || {}).notes || "" } },
+                        { cmd: "/vanish", params: ["Player"], perm: "vanish.use", desc: (ds.vanish || {}).desc || "Toggles invisibility.", detail: { summary: (ds.vanish || {}).summary || "Hides the player from clients.", usage: ["/vanish Specimen_Alpha", "/vanish 7656119xxxxxxxxxx"], notes: (ds.vanish || {}).notes || "" } },
+                        { cmd: "/slay", params: ["Player"], perm: "slay.use / slay.others", permColor: "red", desc: (ds.slay || {}).desc || "Instantly kills the dinosaur.", detail: { summary: (ds.slay || {}).summary || "Supports !everyone target.", usage: ["/slay Specimen_Alpha", "/slay !everyone"], notes: (ds.slay || {}).notes || "" } },
+                        { cmd: "/smite", params: ["Player"], perm: "smite.use / smite.others", permColor: "red", desc: (ds.smite || {}).desc || "Applies visual smite effect.", detail: { summary: (ds.smite || {}).summary || "Supports !everyone target.", usage: ["/smite Specimen_Alpha", "/smite !everyone"], notes: (ds.smite || {}).notes || "" } },
+                        { cmd: "/tp", params: ["Player | X Y Z"], perm: "tp.use", permColor: "blue", desc: (ds.tp || {}).desc || "Teleports player.", detail: { summary: (ds.tp || {}).summary || "", usage: ["/tp Specimen_Alpha", "/tp 1200.5 4050.0 100.0", "/tp Specimen_Alpha Specimen_Beta", "/tp Specimen_Alpha 1200.5 4050.0 100.0"], notes: (ds.tp || {}).notes || "" } },
+                        { cmd: "/swap", params: ["Class"], perm: "swap.use", permColor: "blue", desc: (ds.swap || {}).desc || "Swaps dinosaur species.", detail: { summary: (ds.swap || {}).summary || "", usage: ["/swap BP_Tyrannosaurus_C", "/swap BP_Pteranodon_C", "/swap Specimen_Alpha BP_Pteranodon_C"], notes: (ds.swap || {}).notes || "" } },
+                        { cmd: "/health", params: ["Player", "0-100"], perm: "health.use / health.others", desc: (ds.health || {}).desc || "Sets health percentage.", detail: { summary: (ds.health || {}).summary || "Supports !everyone target.", usage: ["/health Specimen_Alpha 100", "/health !everyone 50"], notes: (ds.health || {}).notes || "" } },
+                        { cmd: "/hunger", params: ["Player", "0-100"], perm: "hunger.use / hunger.others", desc: (ds.hunger || {}).desc || "Sets hunger percentage.", detail: { summary: (ds.hunger || {}).summary || "Supports !everyone target.", usage: ["/hunger Specimen_Alpha 100", "/hunger !everyone 75"], notes: (ds.hunger || {}).notes || "" } },
+                        { cmd: "/thirst", params: ["Player", "0-100"], perm: "thirst.use / thirst.others", desc: (ds.thirst || {}).desc || "Sets thirst percentage.", detail: { summary: (ds.thirst || {}).summary || "Supports !everyone target.", usage: ["/thirst Specimen_Alpha 100", "/thirst !everyone 100"], notes: (ds.thirst || {}).notes || "" } },
+                        { cmd: "/stamina", params: ["Player", "0-100"], perm: "stamina.use / stamina.others", desc: (ds.stamina || {}).desc || "Sets stamina percentage.", detail: { summary: (ds.stamina || {}).summary || "Supports !everyone target.", usage: ["/stamina Specimen_Alpha 100", "/stamina !everyone 100"], notes: (ds.stamina || {}).notes || "" } },
+                        { cmd: "/blood", params: ["Player", "0-100"], perm: "blood.use / blood.others", desc: (ds.blood || {}).desc || "Sets blood percentage.", detail: { summary: (ds.blood || {}).summary || "Supports !everyone target.", usage: ["/blood Specimen_Alpha 100", "/blood !everyone 100"], notes: (ds.blood || {}).notes || "" } },
+                        { cmd: "/set-nutrient", params: ["Type", "0-100"], perm: "nutrients.use", desc: (ds["set-nutrient"] || {}).desc || "Sets specific nutrient values.", detail: { summary: (ds["set-nutrient"] || {}).summary || "", usage: ["/set-nutrient PROTEIN 100", "/set-nutrient LIPIDS 50", "/set-nutrient CARBS 75"], notes: (ds["set-nutrient"] || {}).notes || "" } }
                     ]
                 },
                 {
-                    name: (lc.world_garage || {}).name || "World & Garage", icon: "fa-terminal", color: "yellow",
+                    name: (lc.moderation || {}).name || "Moderation & Punishments", icon: "fa-gavel", color: "red",
                     items: [
-                        { cmd: "/garage", alias: "/showgarage", perm: (wg.garage || {}).perm || "Can Show Garage", permRaw: "CanShowGarage", desc: (wg.garage || {}).desc || "", detail: { summary: (wg.garage || {}).summary || "", usage: ["/garage", "/showgarage"], notes: (wg.garage || {}).notes || "" } },
-                        { cmd: "/park", perm: (wg.park || {}).perm || "Can Park", permRaw: "CanPark", desc: (wg.park || {}).desc || "", detail: { summary: (wg.park || {}).summary || "", usage: ["/park"], notes: (wg.park || {}).notes || "" } },
-                        { cmd: "/retrieve", params: ["Index"], perm: (wg.retrieve || {}).perm || "Can Retrieve", permRaw: "CanRetrieve", desc: (wg.retrieve || {}).desc || "", detail: { summary: (wg.retrieve || {}).summary || "", usage: ["/retrieve 0", "/retrieve 1"], notes: (wg.retrieve || {}).notes || "" } },
-                        { cmd: "/spawn ai", perm: (wg.spawn_ai || {}).perm || "Can Spawn AI", permRaw: "CanSpawnAI", desc: (wg.spawn_ai || {}).desc || "", permColor: "blue", detail: { summary: (wg.spawn_ai || {}).summary || "", usage: ["/spawn ai"], notes: (wg.spawn_ai || {}).notes || "" } },
-                        { cmd: "/wipe ai", perm: (wg.wipe_ai || {}).perm || "Can Wipe AI", permRaw: "CanWipeAI", desc: (wg.wipe_ai || {}).desc || "", permColor: "red", detail: { summary: (wg.wipe_ai || {}).summary || "", usage: ["/wipe ai"], notes: (wg.wipe_ai || {}).notes || "" } },
-                        { cmd: "/wipecorpses", perm: (wg.wipecorpses || {}).perm || "Can Wipe Corpses", permRaw: "CanWipeCorpses", desc: (wg.wipecorpses || {}).desc || "", permColor: "red", detail: { summary: (wg.wipecorpses || {}).summary || "", usage: ["/wipecorpses"], notes: (wg.wipecorpses || {}).notes || "" } },
-                        { cmd: "/spawncorpse", params: ["DinoName"], perm: (wg.spawncorpse || {}).perm || "Can Spawn Corpse", permRaw: "CanSpawnCorpse", desc: (wg.spawncorpse || {}).desc || "", detail: { summary: (wg.spawncorpse || {}).summary || "", usage: ["/spawncorpse Tyrannosaurus", "/spawncorpse Pteranodon"], notes: (wg.spawncorpse || {}).notes || "" } }
+                        { cmd: "/mute", params: ["Player", "Duration", "Reason"], perm: "mute.use", desc: (mo.mute || {}).desc || "Mutes a player in chat.", detail: { summary: (mo.mute || {}).summary || "Duration format: 1h, 30m, 2d. Omit for permanent.", usage: ["/mute Specimen_Alpha 1h Spam"], notes: (mo.mute || {}).notes || "" } },
+                        { cmd: "/unmute", params: ["Player"], perm: "unmute.use", desc: (mo.unmute || {}).desc || "Removes an active mute.", detail: { summary: (mo.unmute || {}).summary || "", usage: ["/unmute Specimen_Alpha"], notes: (mo.unmute || {}).notes || "" } },
+                        { cmd: "/kick", params: ["Player", "Reason"], perm: "kick.use", desc: (mo.kick || {}).desc || "Disconnects player from server.", detail: { summary: (mo.kick || {}).summary || "Supports !everyone target.", usage: ["/kick Specimen_Alpha Rule Break", "/kick !everyone Server Restart"], notes: (mo.kick || {}).notes || "" } },
+                        { cmd: "/ban", params: ["Player", "Duration", "Reason"], perm: "ban.use", desc: (mo.ban || {}).desc || "Bans a player.", detail: { summary: (mo.ban || {}).summary || "Duration format: 1h, 30m, 2d. Omit for permanent.", usage: ["/ban Specimen_Alpha 2d Toxicity"], notes: (mo.ban || {}).notes || "" } },
+                        { cmd: "/unban", params: ["SteamID"], perm: "unban.use", desc: (mo.unban || {}).desc || "Unbans a player by exact SteamID.", detail: { summary: (mo.unban || {}).summary || "Used when player is offline.", usage: ["/unban 7656119xxxxxxxxxx"], notes: (mo.unban || {}).notes || "" } },
+                        { cmd: "/announce", params: ["Message", "Duration"], perm: "announce.use", desc: (mo.announce || {}).desc || "Sends a global screen announcement.", detail: { summary: (mo.announce || {}).summary || "", usage: ["/announce Server restarting in 5 minutes! 15"], notes: (mo.announce || {}).notes || "" } },
+                        { cmd: "/dm", params: ["Player", "Message"], perm: "dm.use", desc: (mo.dm || {}).desc || "Sends a direct message to a player.", detail: { summary: (mo.dm || {}).summary || "", usage: ["/dm Specimen_Alpha Please stop rulebreaking."], notes: (mo.dm || {}).notes || "" } }
+                    ]
+                },
+                {
+                    name: (lc.world_garage || {}).name || "World & Garage", icon: "fa-car", color: "yellow",
+                    items: [
+                        { cmd: "/garage", alias: "/showgarage", perm: "garage.use", desc: (wg.garage || {}).desc || "Lists stored dinosaurs in your garage.", detail: { summary: (wg.garage || {}).summary || "", usage: ["/garage", "/showgarage"], notes: (wg.garage || {}).notes || "" } },
+                        { cmd: "/park", perm: "park.use", desc: (wg.park || {}).desc || "Safely stores living dinosaur into garage.", detail: { summary: (wg.park || {}).summary || "", usage: ["/park"], notes: (wg.park || {}).notes || "" } },
+                        { cmd: "/retrieve", params: ["Index"], perm: "retrieve.use", desc: (wg.retrieve || {}).desc || "Spawns stored dinosaur.", detail: { summary: (wg.retrieve || {}).summary || "", usage: ["/retrieve 0", "/retrieve 1"], notes: (wg.retrieve || {}).notes || "" } },
+                        { cmd: "/spawn ai", perm: "spawn.ai", permColor: "blue", desc: (wg.spawn_ai || {}).desc || "Forces AI spawn globally.", detail: { summary: (wg.spawn_ai || {}).summary || "", usage: ["/spawn ai"], notes: (wg.spawn_ai || {}).notes || "" } },
+                        { cmd: "/wipe ai", perm: "wipe.ai", permColor: "red", desc: (wg.wipe_ai || {}).desc || "Wipes all active AI.", detail: { summary: (wg.wipe_ai || {}).summary || "", usage: ["/wipe ai"], notes: (wg.wipe_ai || {}).notes || "" } },
+                        { cmd: "/wipecorpses", perm: "wipe.corpses", permColor: "red", desc: (wg.wipecorpses || {}).desc || "Wipes all corpses on the map.", detail: { summary: (wg.wipecorpses || {}).summary || "", usage: ["/wipecorpses"], notes: (wg.wipecorpses || {}).notes || "" } },
+                        { cmd: "/spawncorpse", params: ["DinoName"], perm: "spawn.corpse", desc: (wg.spawncorpse || {}).desc || "Spawns a corpse at your location.", detail: { summary: (wg.spawncorpse || {}).summary || "", usage: ["/spawncorpse Tyrannosaurus", "/spawncorpse Pteranodon"], notes: (wg.spawncorpse || {}).notes || "" } }
+                    ]
+                },
+                {
+                    name: (lc.cosmetics_weather || {}).name || "Cosmetics, Time & Weather", icon: "fa-cloud-sun", color: "sky",
+                    items: [
+                        { cmd: "/skin", params: ["Player", "BodyType", "Color"], perm: "skin.use", desc: (cw.skin || {}).desc || "Applies skin colors to a player.", detail: { summary: (cw.skin || {}).summary || "Apply RGB, HEX, or preset names (e.g. RAINBOW).", usage: ["/skin Specimen_Alpha all #FF0000", "/skin Specimen_Alpha RAINBOW", "/skin Specimen_Alpha body 255 0 0"], notes: (cw.skin || {}).notes || "" } },
+                        { cmd: "/gender", params: ["Player", "M/F"], perm: "gender.use", desc: (cw.gender || {}).desc || "Swaps dinosaur gender.", detail: { summary: (cw.gender || {}).summary || "Preserves existing skin colors.", usage: ["/gender Specimen_Alpha male"], notes: (cw.gender || {}).notes || "" } },
+                        { cmd: "/time set", params: ["Value"], perm: "time.use", desc: (cw.time || {}).desc || "Changes time of day immediately.", detail: { summary: (cw.time || {}).summary || "", usage: ["/time set day", "/time set night", "/time set 1200"], notes: (cw.time || {}).notes || "" } },
+                        { cmd: "/weather", params: ["Preset", "TransitionSec"], perm: "weather.use", desc: (cw.weather || {}).desc || "Overrides current dynamic weather.", detail: { summary: (cw.weather || {}).summary || "Presets: clear, cloudy, storm, blizzard, sandstorm, etc.", usage: ["/weather storm 5", "/weather clear", "/weather fogdensity 2.0"], notes: (cw.weather || {}).notes || "" } }
                     ]
                 }
             ];
@@ -1544,7 +1667,7 @@ if ($context.Request.IsWebSocketRequest) {
 
         // These will be populated after language loads
         let apiData = [];
-        let permissionsList = [];
+        let permissionsGroups = [];
         let cmdCategories = [];
 
         const cmdModal = {
@@ -1557,6 +1680,8 @@ if ($context.Request.IsWebSocketRequest) {
                 const col = item.permColor || cat.color;
                 const paramHtml = (item.params || []).map(p => `<span class="text-[11px] font-mono bg-cyan-500/10 text-cyan-400 border border-cyan-500/20 px-2 py-1 rounded">${p}</span>`).join('');
                 const aliasHtml = item.alias ? `<div class="flex items-center gap-2 mt-3"><span class="text-[9px] font-black text-gray-500 bg-white/5 border border-white/10 px-1.5 py-0.5 rounded uppercase tracking-widest">${t('cmd_detail_label_alias')}</span> <code class="text-[#FFFC00]/60 text-sm font-bold">${item.alias}</code></div>` : '';
+                const hasPlayerParam = (item.params || []).some(p => p.toLowerCase().includes('player'));
+                const everyoneBadge = hasPlayerParam ? `<span class="bg-blue-500/20 text-blue-400 border border-blue-500/30 px-2 py-0.5 rounded-lg text-[9px] uppercase tracking-widest font-black inline-flex items-center gap-1"><i class="fa-solid fa-users"></i> !everyone</span>` : '';
 
                 body.innerHTML = `
                     <div>
@@ -1571,7 +1696,10 @@ if ($context.Request.IsWebSocketRequest) {
                     </div>
                     ${paramHtml ? `
                     <div class="bg-[#111] border border-[#222] rounded-xl p-4">
-                        <div class="text-[10px] font-black text-gray-500 uppercase tracking-widest mb-3">${t('cmd_detail_label_params')}</div>
+                        <div class="flex items-center gap-3 mb-3">
+                            <span class="text-[10px] font-black text-gray-500 uppercase tracking-widest">${t('cmd_detail_label_params')}</span>
+                            ${everyoneBadge}
+                        </div>
                         <div class="flex flex-wrap gap-2">${paramHtml}</div>
                         <p class="text-[11px] text-gray-600 mt-3 italic"><i class="fa-solid fa-circle-info mr-1"></i> ${t('cmd_detail_params_hint')}</p>
                     </div>` : ''}
@@ -1598,8 +1726,9 @@ if ($context.Request.IsWebSocketRequest) {
 
             cmdCategories.forEach((cat, cIdx) => {
                 const catDiv = document.createElement('div');
-                catDiv.className = 'cmd-category mb-8';
+                catDiv.className = 'cmd-category mb-8 scroll-mt-24';
                 catDiv.dataset.category = cat.name;
+                catDiv.id = `cmd-cat-${cIdx}`;
 
                 let rowsHtml = '';
                 cat.items.forEach((item, iIdx) => {
@@ -1664,23 +1793,38 @@ if ($context.Request.IsWebSocketRequest) {
             
             init: () => {
                 const list = document.getElementById('gen-perm-list');
-                permissionsList.forEach((perm, idx) => {
-                    const btn = document.createElement('button');
-                    btn.className = 'text-[11px] font-bold bg-[#222] border border-[#333] text-gray-400 px-2 py-1 rounded hover:bg-[#333] transition-colors flex items-center gap-1.5 shrink-0';
-                    btn.innerHTML = `<span class="text-[#FFFC00]">${idx}</span> ${perm}`;
-                    btn.onclick = () => {
-                        if(generator.selectedPerms.has(idx)) {
-                            generator.selectedPerms.delete(idx);
-                            btn.classList.remove('bg-blue-600/20', 'border-blue-500', 'text-white');
-                            btn.classList.add('bg-[#222]', 'border-[#333]', 'text-gray-400');
-                        } else {
-                            generator.selectedPerms.add(idx);
-                            btn.classList.add('bg-blue-600/20', 'border-blue-500', 'text-white');
-                            btn.classList.remove('bg-[#222]', 'border-[#333]', 'text-gray-400');
-                        }
-                        generator.update();
-                    };
-                    list.appendChild(btn);
+                if(!list) return;
+                list.innerHTML = '';
+
+                permissionsGroups.forEach(group => {
+                    const groupDiv = document.createElement('div');
+                    groupDiv.className = 'w-full';
+                    groupDiv.innerHTML = `<div class="text-[10px] font-black text-gray-500 uppercase tracking-widest mb-2 border-b border-[#333] pb-1">${group.group}</div>`;
+                    const btnContainer = document.createElement('div');
+                    btnContainer.className = 'flex flex-wrap gap-2';
+                    
+                    group.nodes.forEach(perm => {
+                        const btn = document.createElement('button');
+                        btn.className = 'text-[11px] font-bold bg-[#222] border border-[#333] text-gray-400 px-3 py-1.5 rounded-lg hover:bg-[#333] transition-colors flex items-center gap-2 shrink-0';
+                        btn.innerHTML = `<i class="fa-solid fa-plus text-[10px] opacity-50"></i> <span class="font-mono">${perm}</span>`;
+                        btn.onclick = () => {
+                            if(generator.selectedPerms.has(perm)) {
+                                generator.selectedPerms.delete(perm);
+                                btn.classList.remove('bg-blue-600/20', 'border-blue-500', 'text-white');
+                                btn.classList.add('bg-[#222]', 'border-[#333]', 'text-gray-400');
+                                btn.innerHTML = `<i class="fa-solid fa-plus text-[10px] opacity-50"></i> <span class="font-mono">${perm}</span>`;
+                            } else {
+                                generator.selectedPerms.add(perm);
+                                btn.classList.add('bg-blue-600/20', 'border-blue-500', 'text-white');
+                                btn.classList.remove('bg-[#222]', 'border-[#333]', 'text-gray-400');
+                                btn.innerHTML = `<i class="fa-solid fa-check text-[10px]"></i> <span class="font-mono">${perm}</span>`;
+                            }
+                            generator.update();
+                        };
+                        btnContainer.appendChild(btn);
+                    });
+                    groupDiv.appendChild(btnContainer);
+                    list.appendChild(groupDiv);
                 });
             },
 
@@ -1725,14 +1869,14 @@ if ($context.Request.IsWebSocketRequest) {
                         action: "CREATE_ROLE",
                         roleName: roleName,
                         priority: priority,
-                        permissions: Array.from(generator.selectedPerms).sort((a,b)=>a-b)
+                        permissions: Array.from(generator.selectedPerms).sort()
                     };
                 } else {
                     payload = {
                         action: "UPDATE_ROLE",
                         roleName: roleName,
                         newPriority: priority,
-                        newPermissions: Array.from(generator.selectedPerms).sort((a,b)=>a-b),
+                        newPermissions: Array.from(generator.selectedPerms).sort(),
                         executorSteamId: executor
                     };
                 }
@@ -1784,6 +1928,28 @@ if ($context.Request.IsWebSocketRequest) {
                 });
             },
 
+            copyToClipboardText: (text, btn = null) => {
+                const textArea = document.createElement("textarea");
+                textArea.value = text;
+                document.body.appendChild(textArea);
+                textArea.select();
+                try {
+                    document.execCommand('copy');
+                    if (btn) {
+                        const icon = btn.querySelector('i.fa-copy');
+                        if (icon) {
+                            icon.classList.remove('fa-copy', 'text-gray-500');
+                            icon.classList.add('fa-check', 'text-[#FFFC00]', 'opacity-100');
+                            setTimeout(() => { 
+                                icon.classList.add('fa-copy', 'text-gray-500'); 
+                                icon.classList.remove('fa-check', 'text-[#FFFC00]', 'opacity-100'); 
+                            }, 2000);
+                        }
+                    }
+                } catch (err) { console.error('Failed to copy', err); }
+                document.body.removeChild(textArea);
+            },
+
             copyToClipboard: (btn, explicitTargetId = null) => {
                 let code = "";
                 if (explicitTargetId) {
@@ -1794,17 +1960,7 @@ if ($context.Request.IsWebSocketRequest) {
                     code = visiblePre ? visiblePre.querySelector('.copy-target').textContent : "";
                 }
                 
-                const textArea = document.createElement("textarea");
-                textArea.value = code;
-                document.body.appendChild(textArea);
-                textArea.select();
-                try {
-                    document.execCommand('copy');
-                    const icon = btn.querySelector('i');
-                    icon.className = 'fa-solid fa-check text-green-400';
-                    setTimeout(() => { icon.className = 'fa-regular fa-copy'; }, 2000);
-                } catch (err) { console.error('Failed to copy', err); }
-                document.body.removeChild(textArea);
+                ui.copyToClipboardText(code, btn);
             },
             
             toggleCode: (btn) => {
@@ -1827,23 +1983,25 @@ if ($context.Request.IsWebSocketRequest) {
             },
 
             switchMainTab: (tabId) => {
-                const docView = document.getElementById('view-docs');
-                const apiView = document.getElementById('view-api');
-                const navBtns = document.querySelectorAll('.top-nav-btn');
+                const views = {
+                    docs: document.getElementById('view-docs'),
+                    api: document.getElementById('view-api'),
+                    perms: document.getElementById('view-perms'),
+                    cmds: document.getElementById('view-cmds')
+                };
                 
-                navBtns.forEach(b => b.classList.remove('active'));
+                Object.values(views).forEach(v => v.classList.add('hidden'));
+                views[tabId].classList.remove('hidden');
                 
-                if (tabId === 'docs') {
-                    apiView.classList.add('hidden');
-                    docView.classList.remove('hidden');
-                    navBtns[0].classList.add('active');
-                    renderer.renderDocsSidebar();
-                } else {
-                    docView.classList.add('hidden');
-                    apiView.classList.remove('hidden');
-                    navBtns[1].classList.add('active');
-                    renderer.renderApiSidebar();
-                }
+                document.querySelectorAll('.top-nav-btn').forEach(b => {
+                    b.classList.remove('active');
+                    if (b.dataset.tab === tabId) b.classList.add('active');
+                });
+                
+                if (tabId === 'docs') renderer.renderDocsSidebar();
+                else if (tabId === 'api') renderer.renderApiSidebar();
+                else if (tabId === 'perms') renderer.renderPermsSidebar();
+                else if (tabId === 'cmds') renderer.renderCmdsSidebar();
                 
                 document.getElementById('main-scroll-area').scrollTop = 0;
             }
@@ -1888,12 +2046,15 @@ if ($context.Request.IsWebSocketRequest) {
         const renderer = {
             init: () => {
                 // Render the correct sidebar for whichever tab is currently active
-                const isApiView = document.getElementById('view-docs').classList.contains('hidden');
-                if (isApiView) {
-                    renderer.renderApiSidebar();
-                } else {
-                    renderer.renderDocsSidebar();
-                }
+                const activeView = !document.getElementById('view-docs').classList.contains('hidden') ? 'docs' : 
+                                   (!document.getElementById('view-api').classList.contains('hidden') ? 'api' : 
+                                   (!document.getElementById('view-perms').classList.contains('hidden') ? 'perms' : 'cmds'));
+                
+                if (activeView === 'api') renderer.renderApiSidebar();
+                else if (activeView === 'docs') renderer.renderDocsSidebar();
+                else if (activeView === 'perms') renderer.renderPermsSidebar();
+                else renderer.renderCmdsSidebar();
+                
                 const container = document.getElementById('endpoints-container');
                 const registry = document.getElementById('permission-registry');
 
@@ -1967,9 +2128,28 @@ if ($context.Request.IsWebSocketRequest) {
                     });
                 });
 
-                permissionsList.forEach((perm, idx) => {
-                    registry.innerHTML += `<div class="perm-tag group hover:border-[#FFFC00]/50 transition-colors"><span class="perm-id group-hover:scale-110 transition-transform">${idx}</span>${perm}</div>`;
-                });
+                if (registry) {
+                    registry.innerHTML = '';
+                    permissionsGroups.forEach(group => {
+                        let html = `
+                            <div class="bg-[#0a0a0a] border border-[#222] rounded-xl overflow-hidden shadow-lg">
+                                <div class="bg-[#111] px-4 py-3 border-b border-[#222]">
+                                    <h3 class="text-[#FFFC00] font-bold text-xs uppercase tracking-widest">${group.group}</h3>
+                                </div>
+                                <div class="p-4 grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-3">
+                        `;
+                        group.nodes.forEach(perm => {
+                            html += `
+                                <div class="perm-tag group hover:border-[#FFFC00]/50 transition-colors cursor-pointer" onclick="ui.copyToClipboardText('${perm}', this)" title="${t('copy_tooltip') || 'Click to copy'}">
+                                    <span class="text-white font-mono text-sm group-hover:text-[#FFFC00] transition-colors">${perm}</span>
+                                    <i class="fa-regular fa-copy opacity-0 group-hover:opacity-100 text-gray-500 transition-opacity"></i>
+                                </div>
+                            `;
+                        });
+                        html += `</div></div>`;
+                        registry.innerHTML += html;
+                    });
+                }
 
                 Prism.highlightAll();
             },
@@ -1990,19 +2170,37 @@ if ($context.Request.IsWebSocketRequest) {
                         <i class="fa-solid fa-shield-halved w-6 text-center opacity-50 group-hover:opacity-100 group-hover:text-[#FFFC00] transition-all"></i>
                         <span>${t('sidebar_docs_roles')}</span>
                     </a>
-                    <a href="#doc-registry" class="sidebar-link flex items-center px-4 py-2 text-sm font-bold text-gray-400 rounded-r-lg group hover:text-white">
-                        <i class="fa-solid fa-list-check w-6 text-center opacity-50 group-hover:opacity-100 group-hover:text-[#FFFC00] transition-all"></i>
-                        <span>${t('sidebar_docs_registry')}</span>
-                    </a>
-                    <a href="#doc-chat" class="sidebar-link flex items-center px-4 py-2 text-sm font-bold text-gray-400 rounded-r-lg group hover:text-white">
-                        <i class="fa-solid fa-comment-dots w-6 text-center opacity-50 group-hover:opacity-100 group-hover:text-[#FFFC00] transition-all"></i>
-                        <span>${t('sidebar_docs_chat')}</span>
-                    </a>
                     <a href="#doc-events" class="sidebar-link flex items-center px-4 py-2 text-sm font-bold text-gray-400 rounded-r-lg group hover:text-white">
                         <i class="fa-solid fa-satellite-dish w-6 text-center opacity-50 group-hover:opacity-100 group-hover:text-[#FFFC00] transition-all"></i>
                         <span>${t('sidebar_docs_events')}</span>
                     </a>
                 `;
+            },
+            
+            renderPermsSidebar: () => {
+                const nav = document.getElementById('sidebar-nav');
+                nav.innerHTML = `
+                    <div class="px-4 pt-6 pb-2 text-[10px] font-black text-gray-600 uppercase tracking-[0.2em]">${t('sidebar_perms_heading') || 'Permissions'}</div>
+                    <a href="#doc-registry" class="sidebar-link flex items-center px-4 py-2 text-[11px] font-bold text-gray-400 rounded-r-lg group hover:text-white">
+                        <i class="fa-solid fa-list-check w-6 text-center opacity-50 group-hover:opacity-100 group-hover:text-[#FFFC00] transition-all"></i>
+                        <span>${t('sidebar_docs_registry') || 'Permission Registry'}</span>
+                    </a>
+                `;
+            },
+
+            renderCmdsSidebar: () => {
+                const nav = document.getElementById('sidebar-nav');
+                nav.innerHTML = `
+                    <div class="px-4 pt-6 pb-2 text-[10px] font-black text-gray-600 uppercase tracking-[0.2em]">${t('sidebar_cmds_heading') || 'Commands'}</div>
+                `;
+                cmdCategories.forEach((cat, cIdx) => {
+                    nav.innerHTML += `
+                        <a href="#cmd-cat-${cIdx}" class="sidebar-link flex items-center px-4 py-2 text-[11px] font-bold text-gray-400 rounded-r-lg group hover:text-white">
+                            <i class="fa-solid ${cat.icon} w-6 text-center opacity-50 group-hover:opacity-100 group-hover:text-${cat.color}-400 transition-all"></i>
+                            <span>${cat.name}</span>
+                        </a>
+                    `;
+                });
             },
 
             renderApiSidebar: () => {
@@ -2202,7 +2400,7 @@ if ($context.Request.IsWebSocketRequest) {
             rebuildAll: () => {
                 // Rebuild data arrays from language
                 apiData = buildApiData();
-                permissionsList = getPermissionsList();
+                permissionsGroups = getPermissionsGroups();
                 cmdCategories = buildCmdCategories();
 
                 // Apply simple translations
@@ -2249,7 +2447,7 @@ if ($context.Request.IsWebSocketRequest) {
 
             // Build data from language
             apiData = buildApiData();
-            permissionsList = getPermissionsList();
+            permissionsGroups = getPermissionsGroups();
             cmdCategories = buildCmdCategories();
 
             // Apply translations to static HTML
@@ -2264,18 +2462,32 @@ if ($context.Request.IsWebSocketRequest) {
             const search = document.getElementById('search-input');
             search.addEventListener('input', (e) => {
                 const term = e.target.value.toLowerCase();
-                const activeView = document.getElementById('view-docs').classList.contains('hidden') ? 'api' : 'docs';
+                const activeView = !document.getElementById('view-docs').classList.contains('hidden') ? 'docs' : 
+                                   (!document.getElementById('view-api').classList.contains('hidden') ? 'api' : 
+                                   (!document.getElementById('view-perms').classList.contains('hidden') ? 'perms' : 'cmds'));
                 
                 if (activeView === 'api') {
                     document.querySelectorAll('section[id^="cmd-"]').forEach(s => {
                         const match = s.textContent.toLowerCase().includes(term);
                         s.style.display = match ? 'block' : 'none';
                     });
-                } else {
+                } else if (activeView === 'docs') {
                     document.querySelectorAll('#view-docs section').forEach(s => {
                         const match = s.textContent.toLowerCase().includes(term);
                         s.style.display = match ? 'block' : 'none';
                     });
+                } else if (activeView === 'perms') {
+                    document.querySelectorAll('#permission-registry > div').forEach(groupDiv => {
+                        let anyVisible = false;
+                        groupDiv.querySelectorAll('.perm-tag').forEach(tag => {
+                            const match = tag.textContent.toLowerCase().includes(term);
+                            tag.style.display = match ? 'flex' : 'none';
+                            if (match) anyVisible = true;
+                        });
+                        groupDiv.style.display = anyVisible ? 'block' : 'none';
+                    });
+                } else if (activeView === 'cmds') {
+                    chatCmdSearch(term);
                 }
             });
         });
