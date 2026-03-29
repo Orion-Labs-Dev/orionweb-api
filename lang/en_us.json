@@ -26,6 +26,8 @@
     "nav_brand": "Athena",
     "nav_brand_suffix": "Mod",
     "nav_docs": "Documentation",
+    "nav_cmds": "Commands",
+    "nav_perms": "Permission Nodes",
     "nav_api": "WebSocket Reference",
     "nav_version": "v1.12.0",
     "nav_lock": "Lock",
@@ -41,6 +43,9 @@
     "sidebar_docs_registry": "Permission Registry",
     "sidebar_docs_chat": "In-Game Commands",
     "sidebar_docs_events": "Live Event Streams",
+    
+    "sidebar_cmds_heading": "Commands",
+    "sidebar_perms_heading": "Permissions",
 
     "sidebar_api_heading": "Quick Start",
     "sidebar_api_integration": "Integration Examples",
@@ -85,7 +90,7 @@
 
     "docs_registry_title": "Permission Registry",
     "docs_registry_btn": "Payload Generator",
-    "docs_registry_desc_prefix": "Use the integer IDs below when defining the ",
+    "docs_registry_desc_prefix": "Use the IDs below when defining the ",
     "docs_registry_desc_mid": " array in your ",
     "docs_registry_desc_mid2": " or ",
     "docs_registry_desc_mid3": " JSON payloads. Alternatively, use the ",
@@ -191,31 +196,6 @@
     "cmd_detail_label_notes": "Notes",
     "cmd_detail_label_alias": "alias",
 
-    "permissions": [
-        "CanHeal", "CanHealOthers",
-        "CanVanish", "CanVanishOthers",
-        "CanGodMode", "CanGodModeOthers",
-        "CanSlay", "CanSlayOthers",
-        "CanSmite", "CanSmiteOthers",
-        "CanSpawnAI", "CanWipeAI",
-        "CanWipeCorpses", "CanSpawnCorpse",
-        "CanToggleElder", "CanToggleElderOthers",
-        "CanPark", "CanParkOthers",
-        "CanShowGarage", "CanShowGarageOthers",
-        "CanRetrieve", "CanRetrieveOthers",
-        "CanTeleport", "CanTeleportOthers",
-        "CanSwap", "CanSwapOthers",
-        "CanGrow", "CanGrowOthers",
-        "CanSetHealth", "CanSetHealthOthers",
-        "CanSetHunger", "CanSetHungerOthers",
-        "CanSetThirst", "CanSetThirstOthers",
-        "CanSetStamina", "CanSetStaminaOthers",
-        "CanSetBlood", "CanSetBloodOthers",
-        "CanCreateRoles", "CanUpdateRoles",
-        "CanDeleteRoles", "CanManageRolesOthers",
-        "CanBypassRolePriority"
-    ],
-
     "api_categories": {
         "diagnostics": "Diagnostics",
         "physiological_control": "Physiological Control",
@@ -228,114 +208,42 @@
     },
 
     "api_items": {
-        "RETRIEVE_PLAYERS_LIST": {
-            "desc": "Retrieves status and global coordinates for all active server connections."
-        },
-        "RETRIEVE_PLAYER_INFO": {
-            "desc": "Full state acquisition including vitals, nutrients, phenotypic skin data, and mutation slot contents."
-        },
-        "HEAL_DINO": {
-            "desc": "Atomic restoration of Health, Hunger, Thirst, Stamina, and Blood to maximum values."
-        },
-        "GROW_DINO": {
-            "desc": "Forced development set to a decimal percentage (0.0 to 100.0)."
-        },
-        "SLAY_DINO": {
-            "desc": "Neutralizes target actor using standard damage logic."
-        },
-        "ADMIN_SLAY_DINO": {
-            "desc": "Immediate actor destruction, bypassing invincibility or combat-lock states."
-        },
-        "SET_SKIN": {
-            "desc": "Modifies gender, variation index, pattern index, and RGB color vectors for the specimen."
-        },
-        "SET_PLAYER_INFO": {
-            "desc": "Bulk specimen update. Targets Health, Hunger, Thirst, Stamina, Blood, Growth, Nutrients, and Location."
-        },
-        "SET_HEALTH": {
-            "desc": "Set health stat specifically."
-        },
-        "SET_HUNGER": {
-            "desc": "Set hunger stat specifically."
-        },
-        "SET_THIRST": {
-            "desc": "Set thirst stat specifically."
-        },
-        "SET_STAMINA": {
-            "desc": "Set stamina stat specifically."
-        },
-        "SET_BLOOD": {
-            "desc": "Set blood stat specifically."
-        },
-        "SET_NUTRIENT": {
-            "desc": "Set specific nutrient stat (Protein, Carbs, Lipids)."
-        },
-        "RETRIEVE_PLAYER_GARAGE_DATA": {
-            "desc": "Retrieves the array of stored specimens. The array 'Index' is required to use the RETRIEVE_DINO_FROM_GARAGE command."
-        },
-        "GARAGE_STORE": {
-            "desc": "Archives active specimen to save file and removes actor from simulation."
-        },
-        "RETRIEVE_DINO_FROM_GARAGE": {
-            "desc": "Deploys archived specimen by array index. Automatically archives active character."
-        },
-        "SWAP_DINO": {
-            "desc": "Forced transformation of active character to specified class string."
-        },
-        "GET_PRIME_ELDER": {
-            "desc": "Queries the completion status of all Prime Elder lifecycle requirements."
-        },
-        "SET_PRIME_ELDER": {
-            "desc": "Manually configures Prime Elder requirements or forces eligibility status."
-        },
-        "TELEPORT_TO_PLAYER": {
-            "desc": "Transports the target player to the coordinates of a destination player."
-        },
-        "TELEPORT_TO_COORDS": {
-            "desc": "Transports the target player to precise X/Y/Z world coordinates."
-        },
-        "RETRIEVE_ROLES": {
-            "desc": "Retrieves the complete list of available server roles."
-        },
-        "CREATE_ROLE": {
-            "desc": "Defines new security role with priority and permission ID list."
-        },
-        "UPDATE_ROLE": {
-            "desc": "Modifies role attributes. Validated against executor priority level."
-        },
-        "DELETE_ROLE": {
-            "desc": "Removes role definition. Validated against executor priority."
-        },
-        "ASSIGN_ROLE_TO_USER": {
-            "desc": "Persistent attachment of role to target SteamID."
-        },
-        "REMOVE_ROLE_FROM_USER": {
-            "desc": "Revokes role from target SteamID and updates assignment database."
-        },
-        "RETRIEVE_USER_ROLES": {
-            "desc": "Acquires all roles currently linked to the target SteamID."
-        },
-        "CHECK_USER_PERMISSION": {
-            "desc": "Verifies if the SteamID holds a specific permission ID via any assigned role."
-        },
-        "CONSOLE_ASSIGN_ROLE": {
-            "desc": "Administrative role grant, bypassing priority logic."
-        },
-        "CONSOLE_UPDATE_ROLE": {
-            "desc": "Bypass override of role definitions, including renaming and priority resets."
-        },
-        "CONSOLE_DELETE_ROLE": {
-            "desc": "Administrative removal of role definition, bypassing priority checks."
-        },
-        "SEND_GLOBAL_ANNOUNCEMENT": {
-            "desc": "Triggers on-screen UI announcement for all active clients."
-        },
-        "SEND_DIRECT_ANNOUNCEMENT": {
-            "desc": "Private UI notification sent to a specific target specimen."
-        },
-        "SEND_NOTIFICATION": {
-            "desc": "Sends a subtle UI popup notification to a specific player."
-        }
+        "RETRIEVE_PLAYERS_LIST": { "desc": "Retrieves status and global coordinates for all active server connections." },
+        "RETRIEVE_PLAYER_INFO": { "desc": "Full state acquisition including vitals, nutrients, phenotypic skin data, and mutation slot contents." },
+        "HEAL_DINO": { "desc": "Atomic restoration of Health, Hunger, Thirst, Stamina, and Blood to maximum values." },
+        "GROW_DINO": { "desc": "Forced development set to a decimal percentage (0.0 to 100.0)." },
+        "SLAY_DINO": { "desc": "Neutralizes target actor using standard damage logic." },
+        "ADMIN_SLAY_DINO": { "desc": "Immediate actor destruction, bypassing invincibility or combat-lock states." },
+        "SET_SKIN": { "desc": "Modifies gender, variation index, pattern index, and RGB color vectors for the specimen." },
+        "SET_PLAYER_INFO": { "desc": "Bulk specimen update. Targets Health, Hunger, Thirst, Stamina, Blood, Growth, Nutrients, and Location." },
+        "SET_HEALTH": { "desc": "Set health stat specifically." },
+        "SET_HUNGER": { "desc": "Set hunger stat specifically." },
+        "SET_THIRST": { "desc": "Set thirst stat specifically." },
+        "SET_STAMINA": { "desc": "Set stamina stat specifically." },
+        "SET_BLOOD": { "desc": "Set blood stat specifically." },
+        "SET_NUTRIENT": { "desc": "Set specific nutrient stat (Protein, Carbs, Lipids)." },
+        "RETRIEVE_PLAYER_GARAGE_DATA": { "desc": "Retrieves the array of stored specimens. The array 'Index' is required to use the RETRIEVE_DINO_FROM_GARAGE command." },
+        "GARAGE_STORE": { "desc": "Archives active specimen to save file and removes actor from simulation." },
+        "RETRIEVE_DINO_FROM_GARAGE": { "desc": "Deploys archived specimen by array index. Automatically archives active character." },
+        "SWAP_DINO": { "desc": "Forced transformation of active character to specified class string." },
+        "GET_PRIME_ELDER": { "desc": "Queries the completion status of all Prime Elder lifecycle requirements." },
+        "SET_PRIME_ELDER": { "desc": "Manually configures Prime Elder requirements or forces eligibility status." },
+        "TELEPORT_TO_PLAYER": { "desc": "Transports the target player to the coordinates of a destination player." },
+        "TELEPORT_TO_COORDS": { "desc": "Transports the target player to precise X/Y/Z world coordinates." },
+        "RETRIEVE_ROLES": { "desc": "Retrieves the complete list of available server roles." },
+        "CREATE_ROLE": { "desc": "Defines new security role with priority and permission ID list." },
+        "UPDATE_ROLE": { "desc": "Modifies role attributes. Validated against executor priority level." },
+        "DELETE_ROLE": { "desc": "Removes role definition. Validated against executor priority." },
+        "ASSIGN_ROLE_TO_USER": { "desc": "Persistent attachment of role to target SteamID." },
+        "REMOVE_ROLE_FROM_USER": { "desc": "Revokes role from target SteamID and updates assignment database." },
+        "RETRIEVE_USER_ROLES": { "desc": "Acquires all roles currently linked to the target SteamID." },
+        "CHECK_USER_PERMISSION": { "desc": "Verifies if the SteamID holds a specific permission ID via any assigned role." },
+        "CONSOLE_ASSIGN_ROLE": { "desc": "Administrative role grant, bypassing priority logic." },
+        "CONSOLE_UPDATE_ROLE": { "desc": "Bypass override of role definitions, including renaming and priority resets." },
+        "CONSOLE_DELETE_ROLE": { "desc": "Administrative removal of role definition, bypassing priority checks." },
+        "SEND_GLOBAL_ANNOUNCEMENT": { "desc": "Triggers on-screen UI announcement for all active clients." },
+        "SEND_DIRECT_ANNOUNCEMENT": { "desc": "Private UI notification sent to a specific target specimen." },
+        "SEND_NOTIFICATION": { "desc": "Sends a subtle UI popup notification to a specific player." }
     },
 
     "cmd_categories": {
@@ -344,25 +252,25 @@
             "items": {
                 "createrole": {
                     "desc": "Defines a new role. Priority must be lower than yours.",
-                    "perm": "Can Create Roles",
+                    "perm": "roles.create",
                     "summary": "Creates a new role definition on the server with the given name and priority level.",
                     "notes": "The priority you assign must be strictly less than your own highest role priority. Role names are case-insensitive and must be unique."
                 },
                 "deleterole": {
                     "desc": "Permanently removes a role definition from the server.",
-                    "perm": "Can Delete Roles",
+                    "perm": "roles.delete",
                     "summary": "Destroys a role definition entirely. Any users who held this role will lose it immediately.",
                     "notes": "You can only delete roles with a priority lower than your own. This action is irreversible."
                 },
                 "assignrole": {
                     "desc": "Assigns a role to a target player. Priority checks apply.",
-                    "perm": "Can Manage Roles · Others",
+                    "perm": "roles.assign",
                     "summary": "Attaches a role to a player, granting them all permissions defined in that role.",
                     "notes": "The Player field accepts either a username (best-match lookup) or an exact SteamID. You cannot assign a role with a priority equal to or higher than your own."
                 },
                 "removerole": {
                     "desc": "Removes a role from a target player.",
-                    "perm": "Can Manage Roles · Others",
+                    "perm": "roles.assign",
                     "summary": "Detaches a role from a player, revoking any permissions that were exclusively granted by it.",
                     "notes": "The Player field accepts either a username (best-match lookup) or an exact SteamID. Priority restrictions apply."
                 }
@@ -373,73 +281,79 @@
             "items": {
                 "heal": {
                     "desc": "Restores all vitals to 100%.",
-                    "perm": "Can Heal",
+                    "perm": "heal.use / heal.others",
                     "summary": "Fully restores Health, Hunger, Thirst, Stamina, and Blood to maximum for the target player.",
                     "notes": "The Player field accepts a username (best-match) or exact SteamID."
                 },
                 "grow": {
                     "desc": "Sets growth development to 100%.",
-                    "perm": "Can Grow",
+                    "perm": "grow.use / grow.others",
                     "summary": "Instantly matures the target player's dinosaur to full adult growth.",
                     "notes": "The Player field accepts a username (best-match) or exact SteamID."
                 },
                 "vanish": {
                     "desc": "Toggles invisibility/ghost state.",
-                    "perm": "Can Vanish",
+                    "perm": "vanish.use",
                     "summary": "Toggles the target player into or out of an invisible ghost state. Other players cannot see or interact with a vanished player.",
                     "notes": "The Player field accepts a username (best-match) or exact SteamID. Running the command again on the same player disables vanish."
                 },
                 "slay": {
                     "desc": "Deals fatal damage to target.",
-                    "perm": "Can Slay",
+                    "perm": "slay.use / slay.others",
                     "summary": "Applies lethal damage to the target player's dinosaur using standard damage logic.",
                     "notes": "The Player field accepts a username (best-match) or exact SteamID. Does not bypass invincibility — use the ADMIN_SLAY_DINO API endpoint for that."
                 },
+                "smite": {
+                    "desc": "Applies visual smite effect.",
+                    "perm": "smite.use / smite.others",
+                    "summary": "Calls down a visual lightning strike on the target. If configured, this can also kill them.",
+                    "notes": "The Player field accepts a username (best-match) or exact SteamID."
+                },
                 "tp": {
                     "desc": "Teleports to a player or coordinates.",
-                    "perm": "Can Teleport",
+                    "perm": "tp.use",
                     "summary": "Teleports yourself or a target player to another player's location or to exact world coordinates. Supports multiple syntax forms for flexibility.",
                     "notes": "All player fields accept a username (best-match lookup on the server) or an exact SteamID. When given one player, teleports you to them. When given coordinates alone, teleports you there. When given two players, teleports the first player to the second. When given a player followed by X Y Z, teleports that player to those coordinates."
                 },
                 "swap": {
                     "desc": "Transforms into a different species.",
-                    "perm": "Can Swap",
+                    "perm": "swap.use",
                     "summary": "Replaces your active dinosaur with a new species. Your current character data is lost.",
                     "notes": "The Class parameter must be the exact Blueprint class name string (e.g. BP_Tyrannosaurus_C). Invalid class names will be rejected."
                 },
                 "health": {
                     "desc": "Sets health to the specified percentage.",
-                    "perm": "Can Set Health",
+                    "perm": "health.use / health.others",
                     "summary": "Sets the target player's health stat to a specific percentage value.",
                     "notes": "Value must be between 0 and 100. The Player field accepts a username (best-match) or exact SteamID."
                 },
                 "hunger": {
                     "desc": "Sets hunger to the specified percentage.",
-                    "perm": "Can Set Hunger",
+                    "perm": "hunger.use / hunger.others",
                     "summary": "Sets the target player's hunger stat to a specific percentage value.",
                     "notes": "Value must be between 0 and 100. The Player field accepts a username (best-match) or exact SteamID."
                 },
                 "thirst": {
                     "desc": "Sets thirst to the specified percentage.",
-                    "perm": "Can Set Thirst",
+                    "perm": "thirst.use / thirst.others",
                     "summary": "Sets the target player's thirst stat to a specific percentage value.",
                     "notes": "Value must be between 0 and 100. The Player field accepts a username (best-match) or exact SteamID."
                 },
                 "stamina": {
                     "desc": "Sets stamina to the specified percentage.",
-                    "perm": "Can Set Stamina",
+                    "perm": "stamina.use / stamina.others",
                     "summary": "Sets the target player's stamina stat to a specific percentage value.",
                     "notes": "Value must be between 0 and 100. The Player field accepts a username (best-match) or exact SteamID."
                 },
                 "blood": {
                     "desc": "Sets blood to the specified percentage.",
-                    "perm": "Can Set Blood",
+                    "perm": "blood.use / blood.others",
                     "summary": "Sets the target player's blood stat to a specific percentage value.",
                     "notes": "Value must be between 0 and 100. The Player field accepts a username (best-match) or exact SteamID."
                 },
                 "set-nutrient": {
                     "desc": "Sets a specific nutrient stat by type.",
-                    "perm": "Can Set Nutrient",
+                    "perm": "nutrients.use",
                     "summary": "Sets one of the three nutrient values (Protein, Lipids, or Carbs) to a specific percentage.",
                     "notes": "The Type must be one of: PROTEIN, LIPIDS, or CARBS (case-insensitive). Value must be between 0 and 100."
                 }
@@ -450,45 +364,121 @@
             "items": {
                 "garage": {
                     "desc": "Lists your stored dinosaurs in chat.",
-                    "perm": "Can Show Garage",
+                    "perm": "garage.use",
                     "summary": "Displays all dinosaurs currently stored in your personal garage, along with their array indices.",
                     "notes": "Use the Index values shown here with the /retrieve command to deploy a stored dinosaur."
                 },
                 "park": {
                     "desc": "Archives your current dinosaur to the garage.",
-                    "perm": "Can Park",
+                    "perm": "park.use",
                     "summary": "Saves your active dinosaur into the garage storage system and removes it from the world. You will need to select a new character or retrieve a stored one.",
                     "notes": "Your full character state (growth, stats, skin) is preserved in storage."
                 },
                 "retrieve": {
                     "desc": "Spawns a stored dinosaur by index.",
-                    "perm": "Can Retrieve",
+                    "perm": "retrieve.use",
                     "summary": "Deploys a dinosaur from your garage by its stored array index. Your currently active character is automatically archived first.",
                     "notes": "Use /garage to see available indices. If you have an active character, it will be parked automatically before the retrieval."
                 },
                 "spawn_ai": {
                     "desc": "Spawns an AI-controlled entity.",
-                    "perm": "Can Spawn AI",
+                    "perm": "spawn.ai",
                     "summary": "Creates an AI-controlled dinosaur entity in the game world.",
                     "notes": "The AI entity spawns near your current location."
                 },
                 "wipe_ai": {
                     "desc": "Removes all AI from the map.",
-                    "perm": "Can Wipe AI",
+                    "perm": "wipe.ai",
                     "summary": "Instantly destroys every AI-controlled entity currently active on the server.",
                     "notes": "This is a global action — all AI across the entire map is removed."
                 },
                 "wipecorpses": {
                     "desc": "Clears all carcasses from the world.",
-                    "perm": "Can Wipe Corpses",
+                    "perm": "wipe.corpses",
                     "summary": "Removes every dropped carcass (food source) from the game world.",
                     "notes": "This is a global action and cannot be undone."
                 },
                 "spawncorpse": {
                     "desc": "Spawns a food source at your location.",
-                    "perm": "Can Spawn Corpse",
+                    "perm": "spawn.corpse",
                     "summary": "Creates a carcass of the specified dinosaur type at your current world position, usable as a food source.",
                     "notes": "The DinoName should be the common species name. The carcass spawns directly at your feet."
+                }
+            }
+        },
+        "moderation": {
+            "name": "Moderation & Punishments",
+            "items": {
+                "mute": {
+                    "desc": "Mutes a player in chat.",
+                    "perm": "mute.use",
+                    "summary": "Silences the target player's ability to speak in global chat for a specific duration.",
+                    "notes": "Duration format: 1h, 30m, 2d. Omit for permanent."
+                },
+                "unmute": {
+                    "desc": "Removes an active mute.",
+                    "perm": "unmute.use",
+                    "summary": "Restores a muted player's ability to speak in global chat.",
+                    "notes": ""
+                },
+                "kick": {
+                    "desc": "Disconnects player from server.",
+                    "perm": "kick.use",
+                    "summary": "Forcefully disconnects the target player from the server with an optional reason.",
+                    "notes": "Supports !everyone target."
+                },
+                "ban": {
+                    "desc": "Bans a player.",
+                    "perm": "ban.use",
+                    "summary": "Bans the target player from the server for a specific duration.",
+                    "notes": "Duration format: 1h, 30m, 2d. Omit for permanent."
+                },
+                "unban": {
+                    "desc": "Unbans a player by exact SteamID.",
+                    "perm": "unban.use",
+                    "summary": "Removes an active ban from a player. Must provide their exact SteamID since they are offline.",
+                    "notes": "Used when player is offline."
+                },
+                "announce": {
+                    "desc": "Sends a global screen announcement.",
+                    "perm": "announce.use",
+                    "summary": "Displays an intrusive screen-space announcement to all connected clients.",
+                    "notes": ""
+                },
+                "dm": {
+                    "desc": "Sends a direct message to a player.",
+                    "perm": "dm.use",
+                    "summary": "Sends a private screen-space announcement to a specific player.",
+                    "notes": ""
+                }
+            }
+        },
+        "cosmetics_weather": {
+            "name": "Cosmetics, Time & Weather",
+            "items": {
+                "skin": {
+                    "desc": "Applies skin colors to a player.",
+                    "perm": "skin.use",
+                    "summary": "Forces custom skin colors on specific body regions of the target player's dinosaur.",
+                    "notes": "Apply RGB, HEX, or preset names (e.g. RAINBOW)."
+                },
+                "gender": {
+                    "desc": "Swaps dinosaur gender.",
+                    "perm": "gender.use",
+                    "summary": "Flips the gender of the target player's active dinosaur without affecting their custom skin colors.",
+                    "notes": "Preserves existing skin colors."
+                },
+                "time": {
+                    "desc": "Changes time of day immediately.",
+                    "perm": "time.use",
+                    "summary": "Forces the server time to a specific state (day, night, or numeric value).",
+                    "notes": ""
+                },
+                "weather": {
+                    "desc": "Overrides current dynamic weather.",
+                    "perm": "weather.use",
+                    "summary": "Transitions the global weather to a specific preset, or modifies fog density.",
+                    "notes": "Presets: clear, cloudy, storm, blizzard, sandstorm, etc."
                 }
             }
         }

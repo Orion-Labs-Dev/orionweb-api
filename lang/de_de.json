@@ -26,6 +26,8 @@
     "nav_brand": "Athena",
     "nav_brand_suffix": "Mod",
     "nav_docs": "Dokumentation",
+    "nav_cmds": "Befehle",
+    "nav_perms": "Berechtigungsknoten",
     "nav_api": "WebSocket-Referenz",
     "nav_version": "v1.12.0",
     "nav_lock": "Sperren",
@@ -41,6 +43,9 @@
     "sidebar_docs_registry": "Berechtigungsregister",
     "sidebar_docs_chat": "Chat-Befehle im Spiel",
     "sidebar_docs_events": "Live-Ereignisströme",
+
+    "sidebar_cmds_heading": "Befehle",
+    "sidebar_perms_heading": "Berechtigungen",
 
     "sidebar_api_heading": "Schnellstart",
     "sidebar_api_integration": "Integrationsbeispiele",
@@ -62,7 +67,7 @@
     "docs_config_code_label": "AthenaMod.ini (Standard)",
 
     "docs_roles_title": "Benutzer- & Rollenverwaltung",
-    "docs_roles_desc_prefix": "Das Framework implementiert ein prioritätsbasiertes, additives Berechtigungssystem, das stark von Discords Architektur inspiriert ist. Benutzer haben nicht einfach \u201EStufen\u201C; ihnen werden spezifische ",
+    "docs_roles_desc_prefix": "Das Framework implementiert ein prioritätsbasiertes, additives Berechtigungssystem, das stark von Discords Architektur inspiriert ist. Benutzer haben nicht einfach \"Stufen\"; ihnen werden spezifische ",
     "docs_roles_desc_mid": " zugewiesen, die Arrays granularer Berechtigungen gewähren.",
 
     "docs_roles_hierarchy_title": "Additive Hierarchie",
@@ -85,7 +90,7 @@
 
     "docs_registry_title": "Berechtigungsregister",
     "docs_registry_btn": "Payload-Generator",
-    "docs_registry_desc_prefix": "Verwende die folgenden ganzzahligen IDs beim Definieren des ",
+    "docs_registry_desc_prefix": "Verwende die folgenden IDs beim Definieren des ",
     "docs_registry_desc_mid": "-Arrays in deinen ",
     "docs_registry_desc_mid2": "- oder ",
     "docs_registry_desc_mid3": "-JSON-Payloads. Alternativ verwende den ",
@@ -192,28 +197,62 @@
     "cmd_detail_label_alias": "Alias",
 
     "permissions": [
-        "CanHeal", "CanHealOthers",
-        "CanVanish", "CanVanishOthers",
-        "CanGodMode", "CanGodModeOthers",
-        "CanSlay", "CanSlayOthers",
-        "CanSmite", "CanSmiteOthers",
-        "CanSpawnAI", "CanWipeAI",
-        "CanWipeCorpses", "CanSpawnCorpse",
-        "CanToggleElder", "CanToggleElderOthers",
-        "CanPark", "CanParkOthers",
-        "CanShowGarage", "CanShowGarageOthers",
-        "CanRetrieve", "CanRetrieveOthers",
-        "CanTeleport", "CanTeleportOthers",
-        "CanSwap", "CanSwapOthers",
-        "CanGrow", "CanGrowOthers",
-        "CanSetHealth", "CanSetHealthOthers",
-        "CanSetHunger", "CanSetHungerOthers",
-        "CanSetThirst", "CanSetThirstOthers",
-        "CanSetStamina", "CanSetStaminaOthers",
-        "CanSetBlood", "CanSetBloodOthers",
-        "CanCreateRoles", "CanUpdateRoles",
-        "CanDeleteRoles", "CanManageRolesOthers",
-        "CanBypassRolePriority"
+        "*",
+        "admin.*",
+        "slay.use",
+        "slay.others",
+        "heal.use",
+        "heal.others",
+        "smite.use",
+        "smite.others",
+        "grow.use",
+        "grow.others",
+        "health.use",
+        "health.others",
+        "hunger.use",
+        "hunger.others",
+        "thirst.use",
+        "thirst.others",
+        "stamina.use",
+        "stamina.others",
+        "blood.use",
+        "blood.others",
+        "tp.use",
+        "skin.use",
+        "skin.rainbow",
+        "skin.rainbow2",
+        "skin.dev",
+        "gender.use",
+        "elder.use",
+        "godmode.use",
+        "vanish.use",
+        "garage.use",
+        "park.use",
+        "retrieve.use",
+        "swap.use",
+        "roles.create",
+        "roles.delete",
+        "roles.assign",
+        "roles.console",
+        "mute.use",
+        "unmute.use",
+        "kick.use",
+        "ban.use",
+        "unban.use",
+        "announce.use",
+        "dm.use",
+        "weather.use",
+        "time.use",
+        "group.use",
+        "admin.whitelist",
+        "admin.op",
+        "spawn.ai",
+        "wipe.ai",
+        "wipe.corpses",
+        "spawn.corpse",
+        "command.delay.<N>",
+        "command.delay.bypass",
+        "athena.dev"
     ],
 
     "api_categories": {
@@ -344,25 +383,25 @@
             "items": {
                 "createrole": {
                     "desc": "Definiert eine neue Rolle. Die Priorität muss niedriger als deine sein.",
-                    "perm": "Kann Rollen erstellen",
+                    "perm": "roles.create",
                     "summary": "Erstellt eine neue Rollendefinition auf dem Server mit dem angegebenen Namen und der Prioritätsstufe.",
                     "notes": "Die zugewiesene Priorität muss strikt niedriger sein als die Priorität deiner höchsten Rolle. Rollennamen sind nicht case-sensitiv und müssen eindeutig sein."
                 },
                 "deleterole": {
                     "desc": "Entfernt eine Rollendefinition dauerhaft vom Server.",
-                    "perm": "Kann Rollen löschen",
+                    "perm": "roles.delete",
                     "summary": "Zerstört eine Rollendefinition vollständig. Benutzer, die diese Rolle hatten, verlieren sie sofort.",
                     "notes": "Du kannst nur Rollen mit einer niedrigeren Priorität als deiner eigenen löschen. Diese Aktion ist unwiderruflich."
                 },
                 "assignrole": {
                     "desc": "Weist einem Zielspieler eine Rolle zu. Prioritätsprüfungen gelten.",
-                    "perm": "Kann Rollen verwalten · Andere",
+                    "perm": "roles.assign",
                     "summary": "Verknüpft eine Rolle mit einem Spieler und gewährt ihm alle in dieser Rolle definierten Berechtigungen.",
                     "notes": "Das Spielerfeld akzeptiert entweder einen Benutzernamen (Best-Match-Suche) oder eine exakte SteamID. Du kannst keine Rolle mit einer Priorität gleich oder höher als deiner eigenen zuweisen."
                 },
                 "removerole": {
                     "desc": "Entfernt eine Rolle von einem Zielspieler.",
-                    "perm": "Kann Rollen verwalten · Andere",
+                    "perm": "roles.assign",
                     "summary": "Trennt eine Rolle von einem Spieler und entzieht alle Berechtigungen, die ausschließlich durch sie gewährt wurden.",
                     "notes": "Das Spielerfeld akzeptiert entweder einen Benutzernamen (Best-Match-Suche) oder eine exakte SteamID. Prioritätsbeschränkungen gelten."
                 }
@@ -372,74 +411,80 @@
             "name": "Dino- & Spielerstatistiken",
             "items": {
                 "heal": {
-                    "desc": "Stellt alle Vitalwerte auf 100% wieder her.",
-                    "perm": "Kann heilen",
-                    "summary": "Stellt Gesundheit, Hunger, Durst, Ausdauer und Blut des Zielspielers vollständig auf Maximum wieder her.",
+                    "desc": "Stellt Gesundheit, Blutungen und Knochenbrüche wieder her.",
+                    "perm": "heal.use / heal.others",
+                    "summary": "Unterstützt das !everyone-Ziel.",
                     "notes": "Das Spielerfeld akzeptiert einen Benutzernamen (Best-Match) oder eine exakte SteamID."
                 },
                 "grow": {
-                    "desc": "Setzt die Wachstumsentwicklung auf 100%.",
-                    "perm": "Kann wachsen lassen",
-                    "summary": "Reift den Dinosaurier des Zielspielers sofort zum vollständigen Erwachsenenwachstum.",
+                    "desc": "Setzt die Wachstumsentwicklung des Dinosauriers.",
+                    "perm": "grow.use / grow.others",
+                    "summary": "Unterstützt das !everyone-Ziel.",
                     "notes": "Das Spielerfeld akzeptiert einen Benutzernamen (Best-Match) oder eine exakte SteamID."
                 },
                 "vanish": {
-                    "desc": "Schaltet den Unsichtbarkeits-/Geistmodus um.",
-                    "perm": "Kann verschwinden",
-                    "summary": "Schaltet den Zielspieler in oder aus einem unsichtbaren Geistzustand. Andere Spieler können einen verschwundenen Spieler weder sehen noch mit ihm interagieren.",
+                    "desc": "Schaltet den Unsichtbarkeitsmodus um.",
+                    "perm": "vanish.use",
+                    "summary": "Verbirgt den Spieler vor anderen Clients.",
                     "notes": "Das Spielerfeld akzeptiert einen Benutzernamen (Best-Match) oder eine exakte SteamID. Erneutes Ausführen des Befehls auf demselben Spieler deaktiviert die Unsichtbarkeit."
                 },
                 "slay": {
-                    "desc": "Fügt dem Ziel tödlichen Schaden zu.",
-                    "perm": "Kann töten",
-                    "summary": "Fügt dem Dinosaurier des Zielspielers tödlichen Schaden mittels standardmäßiger Schadenslogik zu.",
+                    "desc": "Tötet den Dinosaurier sofort.",
+                    "perm": "slay.use / slay.others",
+                    "summary": "Unterstützt das !everyone-Ziel.",
                     "notes": "Das Spielerfeld akzeptiert einen Benutzernamen (Best-Match) oder eine exakte SteamID. Umgeht keine Unverwundbarkeit — verwende dafür den ADMIN_SLAY_DINO API-Endpunkt."
                 },
+                "smite": {
+                    "desc": "Wendet einen visuellen Blitzeffekt an.",
+                    "perm": "smite.use / smite.others",
+                    "summary": "Unterstützt das !everyone-Ziel.",
+                    "notes": "Das Spielerfeld akzeptiert einen Benutzernamen (Best-Match) oder eine exakte SteamID."
+                },
                 "tp": {
-                    "desc": "Teleportiert zu einem Spieler oder Koordinaten.",
-                    "perm": "Kann teleportieren",
+                    "desc": "Teleportiert den Spieler.",
+                    "perm": "tp.use",
                     "summary": "Teleportiert dich selbst oder einen Zielspieler zum Standort eines anderen Spielers oder zu exakten Weltkoordinaten. Unterstützt mehrere Syntaxformen für Flexibilität.",
                     "notes": "Alle Spielerfelder akzeptieren einen Benutzernamen (Best-Match-Suche auf dem Server) oder eine exakte SteamID. Bei einem Spieler wirst du zu ihm teleportiert. Bei Koordinaten allein wirst du dorthin teleportiert. Bei zwei Spielern wird der erste zum zweiten teleportiert. Bei einem Spieler gefolgt von X Y Z wird dieser Spieler zu diesen Koordinaten teleportiert."
                 },
                 "swap": {
-                    "desc": "Verwandelt sich in eine andere Spezies.",
-                    "perm": "Kann wechseln",
+                    "desc": "Wechselt die Dinosaurierart.",
+                    "perm": "swap.use",
                     "summary": "Ersetzt deinen aktiven Dinosaurier durch eine neue Spezies. Deine aktuellen Charakterdaten gehen verloren.",
-                    "notes": "Der Klasse-Parameter muss die exakte Blueprint-Klassenbezeichnung sein (z. B. BP_Tyrannosaurus_C). Ungültige Klassennamen werden abgelehnt."
+                    "notes": "Der Parameter Class muss die exakte Blueprint-Klassenbezeichnung sein (z. B. BP_Tyrannosaurus_C). Ungültige Klassennamen werden abgelehnt."
                 },
                 "health": {
-                    "desc": "Setzt die Gesundheit auf den angegebenen Prozentsatz.",
-                    "perm": "Kann Gesundheit setzen",
-                    "summary": "Setzt den Gesundheitswert des Zielspielers auf einen bestimmten Prozentsatz.",
+                    "desc": "Setzt den Gesundheitswert in Prozent.",
+                    "perm": "health.use / health.others",
+                    "summary": "Unterstützt das !everyone-Ziel.",
                     "notes": "Der Wert muss zwischen 0 und 100 liegen. Das Spielerfeld akzeptiert einen Benutzernamen (Best-Match) oder eine exakte SteamID."
                 },
                 "hunger": {
-                    "desc": "Setzt den Hunger auf den angegebenen Prozentsatz.",
-                    "perm": "Kann Hunger setzen",
-                    "summary": "Setzt den Hungerwert des Zielspielers auf einen bestimmten Prozentsatz.",
+                    "desc": "Setzt den Hungerwert in Prozent.",
+                    "perm": "hunger.use / hunger.others",
+                    "summary": "Unterstützt das !everyone-Ziel.",
                     "notes": "Der Wert muss zwischen 0 und 100 liegen. Das Spielerfeld akzeptiert einen Benutzernamen (Best-Match) oder eine exakte SteamID."
                 },
                 "thirst": {
-                    "desc": "Setzt den Durst auf den angegebenen Prozentsatz.",
-                    "perm": "Kann Durst setzen",
-                    "summary": "Setzt den Durstwert des Zielspielers auf einen bestimmten Prozentsatz.",
+                    "desc": "Setzt den Durstwert in Prozent.",
+                    "perm": "thirst.use / thirst.others",
+                    "summary": "Unterstützt das !everyone-Ziel.",
                     "notes": "Der Wert muss zwischen 0 und 100 liegen. Das Spielerfeld akzeptiert einen Benutzernamen (Best-Match) oder eine exakte SteamID."
                 },
                 "stamina": {
-                    "desc": "Setzt die Ausdauer auf den angegebenen Prozentsatz.",
-                    "perm": "Kann Ausdauer setzen",
-                    "summary": "Setzt den Ausdauerwert des Zielspielers auf einen bestimmten Prozentsatz.",
+                    "desc": "Setzt den Ausdauerwert in Prozent.",
+                    "perm": "stamina.use / stamina.others",
+                    "summary": "Unterstützt das !everyone-Ziel.",
                     "notes": "Der Wert muss zwischen 0 und 100 liegen. Das Spielerfeld akzeptiert einen Benutzernamen (Best-Match) oder eine exakte SteamID."
                 },
                 "blood": {
-                    "desc": "Setzt das Blut auf den angegebenen Prozentsatz.",
-                    "perm": "Kann Blut setzen",
-                    "summary": "Setzt den Blutwert des Zielspielers auf einen bestimmten Prozentsatz.",
+                    "desc": "Setzt den Blutwert in Prozent.",
+                    "perm": "blood.use / blood.others",
+                    "summary": "Unterstützt das !everyone-Ziel.",
                     "notes": "Der Wert muss zwischen 0 und 100 liegen. Das Spielerfeld akzeptiert einen Benutzernamen (Best-Match) oder eine exakte SteamID."
                 },
                 "set-nutrient": {
-                    "desc": "Setzt einen bestimmten Nährstoff nach Typ.",
-                    "perm": "Kann Nährstoff setzen",
+                    "desc": "Setzt bestimmte Nährstoffwerte.",
+                    "perm": "nutrients.use",
                     "summary": "Setzt einen der drei Nährstoffwerte (Protein, Lipide oder Kohlenhydrate) auf einen bestimmten Prozentsatz.",
                     "notes": "Der Typ muss einer der folgenden sein: PROTEIN, LIPIDS oder CARBS (Groß-/Kleinschreibung irrelevant). Der Wert muss zwischen 0 und 100 liegen."
                 }
@@ -450,45 +495,121 @@
             "items": {
                 "garage": {
                     "desc": "Listet deine gespeicherten Dinosaurier im Chat auf.",
-                    "perm": "Kann Garage anzeigen",
+                    "perm": "garage.use",
                     "summary": "Zeigt alle derzeit in deiner persönlichen Garage gespeicherten Dinosaurier zusammen mit ihren Array-Indizes an.",
                     "notes": "Verwende die hier angezeigten Indexwerte mit dem Befehl /retrieve, um einen gespeicherten Dinosaurier einzusetzen."
                 },
                 "park": {
                     "desc": "Archiviert deinen aktuellen Dinosaurier in der Garage.",
-                    "perm": "Kann parken",
+                    "perm": "park.use",
                     "summary": "Speichert deinen aktiven Dinosaurier im Garagen-Speichersystem und entfernt ihn aus der Welt. Du musst einen neuen Charakter auswählen oder einen gespeicherten abrufen.",
                     "notes": "Der vollständige Charakterzustand (Wachstum, Statistiken, Haut) wird im Speicher erhalten."
                 },
                 "retrieve": {
                     "desc": "Stellt einen gespeicherten Dinosaurier nach Index bereit.",
-                    "perm": "Kann abrufen",
+                    "perm": "retrieve.use",
                     "summary": "Stellt einen Dinosaurier aus deiner Garage anhand seines gespeicherten Array-Index bereit. Dein aktuell aktiver Charakter wird automatisch zuerst archiviert.",
                     "notes": "Verwende /garage, um verfügbare Indizes zu sehen. Wenn du einen aktiven Charakter hast, wird dieser automatisch vor dem Abruf geparkt."
                 },
                 "spawn_ai": {
                     "desc": "Erzeugt eine KI-gesteuerte Entität.",
-                    "perm": "Kann KI erzeugen",
+                    "perm": "spawn.ai",
                     "summary": "Erstellt eine KI-gesteuerte Dinosaurier-Entität in der Spielwelt.",
                     "notes": "Die KI-Entität erscheint in der Nähe deines aktuellen Standorts."
                 },
                 "wipe_ai": {
                     "desc": "Entfernt alle KI von der Karte.",
-                    "perm": "Kann KI löschen",
+                    "perm": "wipe.ai",
                     "summary": "Zerstört sofort jede KI-gesteuerte Entität, die derzeit auf dem Server aktiv ist.",
                     "notes": "Dies ist eine globale Aktion — alle KI auf der gesamten Karte wird entfernt."
                 },
                 "wipecorpses": {
                     "desc": "Entfernt alle Kadaver aus der Welt.",
-                    "perm": "Kann Kadaver löschen",
+                    "perm": "wipe.corpses",
                     "summary": "Entfernt jeden abgelegten Kadaver (Nahrungsquelle) aus der Spielwelt.",
                     "notes": "Dies ist eine globale Aktion und kann nicht rückgängig gemacht werden."
                 },
                 "spawncorpse": {
                     "desc": "Erzeugt eine Nahrungsquelle an deinem Standort.",
-                    "perm": "Kann Kadaver erzeugen",
+                    "perm": "spawn.corpse",
                     "summary": "Erstellt einen Kadaver des angegebenen Dinosauriertyps an deiner aktuellen Weltposition, nutzbar als Nahrungsquelle.",
                     "notes": "Der DinoName sollte der allgemeine Artname sein. Der Kadaver erscheint direkt zu deinen Füßen."
+                }
+            }
+        },
+        "moderation": {
+            "name": "Moderation & Strafen",
+            "items": {
+                "mute": {
+                    "desc": "Schaltet einen Spieler im Chat stumm.",
+                    "perm": "mute.use",
+                    "summary": "Schaltet die Fähigkeit des Zielspielers, im globalen Chat zu sprechen, für eine bestimmte Dauer stumm.",
+                    "notes": "Dauer-Format: 1h, 30m, 2d. Auslassen für permanent."
+                },
+                "unmute": {
+                    "desc": "Hebt eine aktive Stummschaltung auf.",
+                    "perm": "unmute.use",
+                    "summary": "Stellt die Fähigkeit eines stummgeschalteten Spielers wieder her, im globalen Chat zu sprechen.",
+                    "notes": ""
+                },
+                "kick": {
+                    "desc": "Trennt den Spieler vom Server.",
+                    "perm": "kick.use",
+                    "summary": "Trennt den Zielspieler zwangsweise mit einem optionalen Grund vom Server.",
+                    "notes": "Unterstützt das !everyone-Ziel."
+                },
+                "ban": {
+                    "desc": "Sperrt einen Spieler.",
+                    "perm": "ban.use",
+                    "summary": "Sperrt den Zielspieler für eine bestimmte Dauer vom Server.",
+                    "notes": "Dauer-Format: 1h, 30m, 2d. Auslassen für permanent."
+                },
+                "unban": {
+                    "desc": "Entsperrt einen Spieler anhand der genauen SteamID.",
+                    "perm": "unban.use",
+                    "summary": "Entfernt eine aktive Sperre von einem Spieler. Die genaue SteamID muss angegeben werden, da er offline ist.",
+                    "notes": "Wird verwendet, wenn der Spieler offline ist."
+                },
+                "announce": {
+                    "desc": "Sendet eine globale Bildschirmankündigung.",
+                    "perm": "announce.use",
+                    "summary": "Zeigt allen verbundenen Clients eine auffällige Bildschirmankündigung an.",
+                    "notes": ""
+                },
+                "dm": {
+                    "desc": "Sendet eine Direktnachricht an einen Spieler.",
+                    "perm": "dm.use",
+                    "summary": "Sendet eine private Bildschirmankündigung an einen bestimmten Spieler.",
+                    "notes": ""
+                }
+            }
+        },
+        "cosmetics_weather": {
+            "name": "Kosmetik, Zeit & Wetter",
+            "items": {
+                "skin": {
+                    "desc": "Wendet Hautfarben auf einen Spieler an.",
+                    "perm": "skin.use",
+                    "summary": "Erzwingt benutzerdefinierte Hautfarben an bestimmten Körperregionen des Dinosauriers des Zielspielers.",
+                    "notes": "Wende RGB, HEX oder voreingestellte Namen (z. B. RAINBOW) an."
+                },
+                "gender": {
+                    "desc": "Wechselt das Geschlecht des Dinosauriers.",
+                    "perm": "gender.use",
+                    "summary": "Wechselt das Geschlecht des aktiven Dinosauriers des Zielspielers, ohne die benutzerdefinierten Hautfarben zu verändern.",
+                    "notes": "Bewahrt vorhandene Hautfarben."
+                },
+                "time": {
+                    "desc": "Ändert sofort die Tageszeit.",
+                    "perm": "time.use",
+                    "summary": "Erzwingt die Serverzeit auf einen bestimmten Zustand (Tag, Nacht oder numerischer Wert).",
+                    "notes": ""
+                },
+                "weather": {
+                    "desc": "Überschreibt das aktuelle dynamische Wetter.",
+                    "perm": "weather.use",
+                    "summary": "Wechselt das globale Wetter zu einer bestimmten Voreinstellung oder ändert die Nebeldichte.",
+                    "notes": "Voreinstellungen: clear, cloudy, storm, blizzard, sandstorm usw."
                 }
             }
         }

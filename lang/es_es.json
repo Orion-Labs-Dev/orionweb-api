@@ -26,6 +26,8 @@
     "nav_brand": "Athena",
     "nav_brand_suffix": "Mod",
     "nav_docs": "Documentación",
+    "nav_cmds": "Comandos",
+    "nav_perms": "Nodos de Permiso",
     "nav_api": "Referencia WebSocket",
     "nav_version": "v1.12.0",
     "nav_lock": "Cerrar",
@@ -41,6 +43,9 @@
     "sidebar_docs_registry": "Registro de Permisos",
     "sidebar_docs_chat": "Comandos del Chat",
     "sidebar_docs_events": "Eventos en Tiempo Real",
+
+    "sidebar_cmds_heading": "Comandos",
+    "sidebar_perms_heading": "Permisos",
 
     "sidebar_api_heading": "Inicio Rápido",
     "sidebar_api_integration": "Ejemplos de Integración",
@@ -192,28 +197,62 @@
     "cmd_detail_label_alias": "alias",
 
     "permissions": [
-        "CanHeal", "CanHealOthers",
-        "CanVanish", "CanVanishOthers",
-        "CanGodMode", "CanGodModeOthers",
-        "CanSlay", "CanSlayOthers",
-        "CanSmite", "CanSmiteOthers",
-        "CanSpawnAI", "CanWipeAI",
-        "CanWipeCorpses", "CanSpawnCorpse",
-        "CanToggleElder", "CanToggleElderOthers",
-        "CanPark", "CanParkOthers",
-        "CanShowGarage", "CanShowGarageOthers",
-        "CanRetrieve", "CanRetrieveOthers",
-        "CanTeleport", "CanTeleportOthers",
-        "CanSwap", "CanSwapOthers",
-        "CanGrow", "CanGrowOthers",
-        "CanSetHealth", "CanSetHealthOthers",
-        "CanSetHunger", "CanSetHungerOthers",
-        "CanSetThirst", "CanSetThirstOthers",
-        "CanSetStamina", "CanSetStaminaOthers",
-        "CanSetBlood", "CanSetBloodOthers",
-        "CanCreateRoles", "CanUpdateRoles",
-        "CanDeleteRoles", "CanManageRolesOthers",
-        "CanBypassRolePriority"
+        "*",
+        "admin.*",
+        "slay.use",
+        "slay.others",
+        "heal.use",
+        "heal.others",
+        "smite.use",
+        "smite.others",
+        "grow.use",
+        "grow.others",
+        "health.use",
+        "health.others",
+        "hunger.use",
+        "hunger.others",
+        "thirst.use",
+        "thirst.others",
+        "stamina.use",
+        "stamina.others",
+        "blood.use",
+        "blood.others",
+        "tp.use",
+        "skin.use",
+        "skin.rainbow",
+        "skin.rainbow2",
+        "skin.dev",
+        "gender.use",
+        "elder.use",
+        "godmode.use",
+        "vanish.use",
+        "garage.use",
+        "park.use",
+        "retrieve.use",
+        "swap.use",
+        "roles.create",
+        "roles.delete",
+        "roles.assign",
+        "roles.console",
+        "mute.use",
+        "unmute.use",
+        "kick.use",
+        "ban.use",
+        "unban.use",
+        "announce.use",
+        "dm.use",
+        "weather.use",
+        "time.use",
+        "group.use",
+        "admin.whitelist",
+        "admin.op",
+        "spawn.ai",
+        "wipe.ai",
+        "wipe.corpses",
+        "spawn.corpse",
+        "command.delay.<N>",
+        "command.delay.bypass",
+        "athena.dev"
     ],
 
     "api_categories": {
@@ -344,25 +383,25 @@
             "items": {
                 "createrole": {
                     "desc": "Define un nuevo rol. La prioridad debe ser menor que la tuya.",
-                    "perm": "Puede Crear Roles",
+                    "perm": "roles.create",
                     "summary": "Crea una nueva definición de rol en el servidor con el nombre y nivel de prioridad proporcionados.",
                     "notes": "La prioridad que asignes debe ser estrictamente menor que la prioridad de tu rol más alto. Los nombres de roles no distinguen entre mayúsculas y minúsculas y deben ser únicos."
                 },
                 "deleterole": {
                     "desc": "Elimina permanentemente la definición de un rol del servidor.",
-                    "perm": "Puede Eliminar Roles",
+                    "perm": "roles.delete",
                     "summary": "Destruye completamente la definición de un rol. Los usuarios que tenían este rol lo perderán de inmediato.",
                     "notes": "Solo puedes eliminar roles con una prioridad menor que la tuya. Esta acción es irreversible."
                 },
                 "assignrole": {
                     "desc": "Asigna un rol a un jugador objetivo. Se aplican verificaciones de prioridad.",
-                    "perm": "Puede Gestionar Roles · Otros",
+                    "perm": "roles.assign",
                     "summary": "Vincula un rol a un jugador, otorgándole todos los permisos definidos en ese rol.",
                     "notes": "El campo Jugador acepta un nombre de usuario (búsqueda aproximada) o un SteamID exacto. No puedes asignar un rol con una prioridad igual o superior a la tuya."
                 },
                 "removerole": {
                     "desc": "Remueve un rol de un jugador objetivo.",
-                    "perm": "Puede Gestionar Roles · Otros",
+                    "perm": "roles.assign",
                     "summary": "Desvincula un rol de un jugador, revocando cualquier permiso que fuera otorgado exclusivamente por él.",
                     "notes": "El campo Jugador acepta un nombre de usuario (búsqueda aproximada) o un SteamID exacto. Se aplican restricciones de prioridad."
                 }
@@ -373,73 +412,79 @@
             "items": {
                 "heal": {
                     "desc": "Restaura todos los signos vitales al 100%.",
-                    "perm": "Puede Curar",
+                    "perm": "heal.use / heal.others",
                     "summary": "Restaura completamente Salud, Hambre, Sed, Resistencia y Sangre al máximo para el jugador objetivo.",
                     "notes": "El campo Jugador acepta un nombre de usuario (búsqueda aproximada) o un SteamID exacto."
                 },
                 "grow": {
                     "desc": "Establece el desarrollo de crecimiento al 100%.",
-                    "perm": "Puede Crecer",
+                    "perm": "grow.use / grow.others",
                     "summary": "Madura instantáneamente al dinosaurio del jugador objetivo a su crecimiento adulto completo.",
                     "notes": "El campo Jugador acepta un nombre de usuario (búsqueda aproximada) o un SteamID exacto."
                 },
                 "vanish": {
                     "desc": "Activa/desactiva el estado de invisibilidad.",
-                    "perm": "Puede Desaparecer",
+                    "perm": "vanish.use",
                     "summary": "Alterna al jugador objetivo dentro o fuera de un estado fantasma invisible. Los demás jugadores no pueden ver ni interactuar con un jugador desaparecido.",
                     "notes": "El campo Jugador acepta un nombre de usuario (búsqueda aproximada) o un SteamID exacto. Ejecutar el comando nuevamente en el mismo jugador desactiva la invisibilidad."
                 },
                 "slay": {
                     "desc": "Inflige daño fatal al objetivo.",
-                    "perm": "Puede Eliminar",
+                    "perm": "slay.use / slay.others",
                     "summary": "Aplica daño letal al dinosaurio del jugador objetivo utilizando la lógica de daño estándar.",
                     "notes": "El campo Jugador acepta un nombre de usuario (búsqueda aproximada) o un SteamID exacto. No elude la invencibilidad — usa el endpoint de la API ADMIN_SLAY_DINO para eso."
                 },
+                "smite": {
+                    "desc": "Aplica un efecto visual de relámpago.",
+                    "perm": "smite.use / smite.others",
+                    "summary": "Invoca un rayo visual sobre el objetivo. Si está configurado, también puede matarlo.",
+                    "notes": "El campo Jugador acepta un nombre de usuario (búsqueda aproximada) o un SteamID exacto."
+                },
                 "tp": {
                     "desc": "Teletransporta a un jugador o coordenadas.",
-                    "perm": "Puede Teletransportar",
+                    "perm": "tp.use",
                     "summary": "Te teletransporta a ti o a un jugador objetivo a la ubicación de otro jugador o a coordenadas exactas del mundo. Soporta múltiples formas de sintaxis para mayor flexibilidad.",
                     "notes": "Todos los campos de jugador aceptan un nombre de usuario (búsqueda aproximada en el servidor) o un SteamID exacto. Con un solo jugador, te teletransporta a él. Con coordenadas solas, te teletransporta allí. Con dos jugadores, teletransporta al primero hacia el segundo. Con un jugador seguido de X Y Z, teletransporta a ese jugador a esas coordenadas."
                 },
                 "swap": {
                     "desc": "Se transforma en una especie diferente.",
-                    "perm": "Puede Intercambiar",
+                    "perm": "swap.use",
                     "summary": "Reemplaza tu dinosaurio activo con una nueva especie. Los datos de tu personaje actual se pierden.",
                     "notes": "El parámetro Clase debe ser la cadena exacta del nombre Blueprint (por ejemplo, BP_Tyrannosaurus_C). Los nombres de clase no válidos serán rechazados."
                 },
                 "health": {
                     "desc": "Establece la salud al porcentaje especificado.",
-                    "perm": "Puede Establecer Salud",
+                    "perm": "health.use / health.others",
                     "summary": "Establece el valor de salud del jugador objetivo a un porcentaje específico.",
                     "notes": "El valor debe estar entre 0 y 100. El campo Jugador acepta un nombre de usuario (búsqueda aproximada) o un SteamID exacto."
                 },
                 "hunger": {
                     "desc": "Establece el hambre al porcentaje especificado.",
-                    "perm": "Puede Establecer Hambre",
+                    "perm": "hunger.use / hunger.others",
                     "summary": "Establece el valor de hambre del jugador objetivo a un porcentaje específico.",
                     "notes": "El valor debe estar entre 0 y 100. El campo Jugador acepta un nombre de usuario (búsqueda aproximada) o un SteamID exacto."
                 },
                 "thirst": {
                     "desc": "Establece la sed al porcentaje especificado.",
-                    "perm": "Puede Establecer Sed",
+                    "perm": "thirst.use / thirst.others",
                     "summary": "Establece el valor de sed del jugador objetivo a un porcentaje específico.",
                     "notes": "El valor debe estar entre 0 y 100. El campo Jugador acepta un nombre de usuario (búsqueda aproximada) o un SteamID exacto."
                 },
                 "stamina": {
                     "desc": "Establece la resistencia al porcentaje especificado.",
-                    "perm": "Puede Establecer Resistencia",
+                    "perm": "stamina.use / stamina.others",
                     "summary": "Establece el valor de resistencia del jugador objetivo a un porcentaje específico.",
                     "notes": "El valor debe estar entre 0 y 100. El campo Jugador acepta un nombre de usuario (búsqueda aproximada) o un SteamID exacto."
                 },
                 "blood": {
                     "desc": "Establece la sangre al porcentaje especificado.",
-                    "perm": "Puede Establecer Sangre",
+                    "perm": "blood.use / blood.others",
                     "summary": "Establece el valor de sangre del jugador objetivo a un porcentaje específico.",
                     "notes": "El valor debe estar entre 0 y 100. El campo Jugador acepta un nombre de usuario (búsqueda aproximada) o un SteamID exacto."
                 },
                 "set-nutrient": {
                     "desc": "Establece un nutriente específico por tipo.",
-                    "perm": "Puede Establecer Nutriente",
+                    "perm": "nutrients.use",
                     "summary": "Establece uno de los tres valores de nutrientes (Proteína, Lípidos o Carbohidratos) a un porcentaje específico.",
                     "notes": "El Tipo debe ser uno de: PROTEIN, LIPIDS o CARBS (sin distinción de mayúsculas). El valor debe estar entre 0 y 100."
                 }
@@ -450,45 +495,121 @@
             "items": {
                 "garage": {
                     "desc": "Lista tus dinosaurios almacenados en el chat.",
-                    "perm": "Puede Mostrar Garaje",
+                    "perm": "garage.use",
                     "summary": "Muestra todos los dinosaurios almacenados actualmente en tu garaje personal, junto con sus índices del arreglo.",
                     "notes": "Usa los valores de Índice mostrados aquí con el comando /retrieve para desplegar un dinosaurio almacenado."
                 },
                 "park": {
                     "desc": "Archiva tu dinosaurio actual en el garaje.",
-                    "perm": "Puede Estacionar",
+                    "perm": "park.use",
                     "summary": "Guarda tu dinosaurio activo en el sistema de almacenamiento del garaje y lo retira del mundo. Necesitarás seleccionar un nuevo personaje o recuperar uno almacenado.",
                     "notes": "El estado completo de tu personaje (crecimiento, estadísticas, piel) se conserva en el almacenamiento."
                 },
                 "retrieve": {
                     "desc": "Despliega un dinosaurio almacenado por índice.",
-                    "perm": "Puede Recuperar",
+                    "perm": "retrieve.use",
                     "summary": "Despliega un dinosaurio de tu garaje por su índice del arreglo almacenado. Tu personaje activo se archiva automáticamente primero.",
                     "notes": "Usa /garage para ver los índices disponibles. Si tienes un personaje activo, será estacionado automáticamente antes de la recuperación."
                 },
                 "spawn_ai": {
                     "desc": "Genera una entidad controlada por IA.",
-                    "perm": "Puede Generar IA",
+                    "perm": "spawn.ai",
                     "summary": "Crea una entidad de dinosaurio controlada por IA en el mundo del juego.",
                     "notes": "La entidad de IA aparece cerca de tu ubicación actual."
                 },
                 "wipe_ai": {
                     "desc": "Elimina toda la IA del mapa.",
-                    "perm": "Puede Borrar IA",
+                    "perm": "wipe.ai",
                     "summary": "Destruye instantáneamente todas las entidades controladas por IA activas en el servidor.",
                     "notes": "Esta es una acción global — toda la IA en todo el mapa es eliminada."
                 },
                 "wipecorpses": {
                     "desc": "Limpia todos los cadáveres del mundo.",
-                    "perm": "Puede Borrar Cadáveres",
+                    "perm": "wipe.corpses",
                     "summary": "Elimina todos los cadáveres (fuentes de comida) caídos del mundo del juego.",
                     "notes": "Esta es una acción global y no se puede deshacer."
                 },
                 "spawncorpse": {
                     "desc": "Genera una fuente de comida en tu ubicación.",
-                    "perm": "Puede Generar Cadáver",
+                    "perm": "spawn.corpse",
                     "summary": "Crea un cadáver del tipo de dinosaurio especificado en tu posición actual del mundo, utilizable como fuente de comida.",
                     "notes": "El NombreDino debe ser el nombre común de la especie. El cadáver aparece directamente a tus pies."
+                }
+            }
+        },
+        "moderation": {
+            "name": "Moderación y Castigos",
+            "items": {
+                "mute": {
+                    "desc": "Silencia a un jugador en el chat.",
+                    "perm": "mute.use",
+                    "summary": "Silencia la capacidad del jugador objetivo para hablar en el chat global durante un tiempo específico.",
+                    "notes": "Formato de duración: 1h, 30m, 2d. Omitir para permanente."
+                },
+                "unmute": {
+                    "desc": "Remueve un silencio activo.",
+                    "perm": "unmute.use",
+                    "summary": "Restaura la capacidad de un jugador silenciado para hablar en el chat global.",
+                    "notes": ""
+                },
+                "kick": {
+                    "desc": "Desconecta al jugador del servidor.",
+                    "perm": "kick.use",
+                    "summary": "Desconecta forzosamente al jugador objetivo del servidor con una razón opcional.",
+                    "notes": "Soporta el objetivo !everyone."
+                },
+                "ban": {
+                    "desc": "Banea a un jugador.",
+                    "perm": "ban.use",
+                    "summary": "Banea al jugador objetivo del servidor durante un tiempo específico.",
+                    "notes": "Formato de duración: 1h, 30m, 2d. Omitir para permanente."
+                },
+                "unban": {
+                    "desc": "Desbanea a un jugador por su SteamID exacto.",
+                    "perm": "unban.use",
+                    "summary": "Remueve un baneo activo de un jugador. Debes proporcionar su SteamID exacto ya que está desconectado.",
+                    "notes": "Usado cuando el jugador está fuera de línea."
+                },
+                "announce": {
+                    "desc": "Envía un anuncio global en pantalla.",
+                    "perm": "announce.use",
+                    "summary": "Muestra un anuncio intrusivo en el espacio de la pantalla a todos los clientes conectados.",
+                    "notes": ""
+                },
+                "dm": {
+                    "desc": "Envía un mensaje directo a un jugador.",
+                    "perm": "dm.use",
+                    "summary": "Envía un anuncio privado en el espacio de la pantalla a un jugador específico.",
+                    "notes": ""
+                }
+            }
+        },
+        "cosmetics_weather": {
+            "name": "Cosméticos, Tiempo y Clima",
+            "items": {
+                "skin": {
+                    "desc": "Aplica colores de piel a un jugador.",
+                    "perm": "skin.use",
+                    "summary": "Fuerza colores de piel personalizados en regiones específicas del cuerpo del dinosaurio del jugador objetivo.",
+                    "notes": "Aplica RGB, HEX, o nombres preestablecidos (ej. RAINBOW)."
+                },
+                "gender": {
+                    "desc": "Cambia el género del dinosaurio.",
+                    "perm": "gender.use",
+                    "summary": "Cambia el género del dinosaurio activo del jugador objetivo sin afectar sus colores de piel personalizados.",
+                    "notes": "Conserva los colores de piel existentes."
+                },
+                "time": {
+                    "desc": "Cambia la hora del día de inmediato.",
+                    "perm": "time.use",
+                    "summary": "Fuerza la hora del servidor a un estado específico (día, noche o valor numérico).",
+                    "notes": ""
+                },
+                "weather": {
+                    "desc": "Anula el clima dinámico actual.",
+                    "perm": "weather.use",
+                    "summary": "Transiciona el clima global a un preajuste específico, o modifica la densidad de la niebla.",
+                    "notes": "Preajustes: clear, cloudy, storm, blizzard, sandstorm, etc."
                 }
             }
         }
